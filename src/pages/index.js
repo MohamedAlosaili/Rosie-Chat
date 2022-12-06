@@ -1,5 +1,5 @@
 import Home from "./Home";
-import LogIn from "./LogIn";
+import UserAuth from "./UserAuth";
 import ErrorBoundary from "./ErrorBoundary";
 
-export { Home, LogIn, ErrorBoundary };
+export { Home, UserAuth, ErrorBoundary };

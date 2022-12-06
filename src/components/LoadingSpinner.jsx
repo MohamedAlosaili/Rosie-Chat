@@ -1,5 +1,5 @@
 export default function LoadingSpinner() {
     return (
-        <div className="rounded-full">Loading...</div>
+        <div className="rounded-full"></div>
     )
 }

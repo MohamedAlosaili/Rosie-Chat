@@ -1,17 +1,8 @@
+import StatusMessage from "./StatusMessage.jsx";
 import ChatRoom from "./ChatRoom";
 import ChatMessage from "./ChatMessage";
-import InputField from "./InputField";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import Input from "./InputField";
 import SignOut from "./SignOut";
 import LoadingSpinner from "./LoadingSpinner";
 
-export {
-  ChatRoom,
-  ChatMessage,
-  InputField,
-  SignIn,
-  SignUp,
-  SignOut,
-  LoadingSpinner,
-};
+export { StatusMessage, ChatRoom, ChatMessage, Input, SignOut, LoadingSpinner };
