@@ -8,7 +8,7 @@ module.exports = {
         50: "50%",
       },
       fontFamily: {
-        sans: ["Poppins, sans-serif", ...defaultTheme.fontFamily.sans],
+        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
     },
   },
