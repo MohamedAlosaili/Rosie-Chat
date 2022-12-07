@@ -106,7 +106,7 @@ function SignUp() {
                     <div className="flex flex-wrap mt-4">
                         <p 
                             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.lowercase ? "text-slate-300" : "text-slate-500"}`
+                            ${passwordStrength.lowercase ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
                         }
                         >
                             <img src={passwordStrength.lowercase ? checked : notChecked} alt="check image" className="w-3" />
@@ -114,7 +114,7 @@ function SignUp() {
                         </p>
                         <p 
                             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.uppercase ? "text-slate-300" : "text-slate-500"}`
+                            ${passwordStrength.uppercase ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
                         }
                         >
                             <img src={passwordStrength.uppercase ? checked : notChecked} alt="check image" className="w-3" />
@@ -122,7 +122,7 @@ function SignUp() {
                         </p>
                         <p 
                             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.number ? "text-slate-300" : "text-slate-500"}`
+                            ${passwordStrength.number ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
                         }
                         >
                             <img src={passwordStrength.number ? checked : notChecked} alt="check image" className="w-3" />
@@ -130,7 +130,7 @@ function SignUp() {
                         </p>
                         <p 
                             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.specialCharacter ? "text-slate-300" : "text-slate-500"}`
+                            ${passwordStrength.specialCharacter ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
                         }
                         >
                             <img src={passwordStrength.specialCharacter ? checked : notChecked} alt="check image" className="w-3" />
@@ -138,7 +138,7 @@ function SignUp() {
                         </p>
                         <p 
                             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.eightCharacters ? "text-slate-300" : "text-slate-500"}`
+                            ${passwordStrength.eightCharacters ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
                         }
                         >
                             <img src={passwordStrength.eightCharacters ? checked : notChecked} alt="check image" className="w-3" />
@@ -148,7 +148,7 @@ function SignUp() {
                 </div>
                 <button 
                     disabled={loading}
-                    className="bg-indigo-600 hover:bg-indigo-700 p-2 mb-6 rounded-xl active:scale-[0.98] text-sm font-medium"
+                    className="bg-accent hover:bg-accent-600 p-2 mb-6 rounded-xl active:scale-[0.98] text-primary-200 font-medium"
                     >
                     {loading ? "Creating account..." : "Create account"}
                 </button>

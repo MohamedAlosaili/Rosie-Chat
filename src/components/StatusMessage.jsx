@@ -2,7 +2,10 @@ import PropTypes from "prop-types"
 
 const StatusMessage = ({message, type}) => {
     // console.log(message)
-    const msgColor = type === "loading" ? "bg-slate-100 text-slate-900" : "bg-pink-700"
+    const msgColor = 
+            (type === "loading") 
+            ? "bg-primary-900 dark:bg-primary-100 text-primary-200 dark:text-primary-900" 
+            : "text-white bg-error"
 
     let errorMsg = message?.slice(message.lastIndexOf("auth/") + 5).replaceAll("-", " ")
     errorMsg = errorMsg ? errorMsg[0].toUpperCase() + errorMsg.slice(1) : "Some thing went wrong!"
@@ -14,29 +17,33 @@ const StatusMessage = ({message, type}) => {
                 `fixed top-4 left-0 w-full`
             }
         >
-            {
-                type === "loading" 
-                ? 
+            
                 <div className={`${msgColor} flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto`}>
-                    <LoadingSpinner />
-                    <p>{message}</p>
+                    {
+                        type === "loading" 
+                        ? 
+                        <>
+                            <LoadingSpinner />
+                            <p>{message}</p>
+                        </>
+                        :
+                        <>
+                            <ExclMark />
+                            <p>{errorMsg}</p>
+                        </>
+                    }
                 </div> 
-                :
-                <div className={`${msgColor} flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto`}>
-                    <ExclMark />
-                    <p>{errorMsg}</p>
-                </div> 
-            }
+                
         </div>
     )
 }
 
 const ExclMark = () => (
-    <div className="border-2 border-slate-200 rounded-50 w-6 h-6 grid place-items-center font-serif text-sm">!</div>
+    <div className="border-2 border-primary-200 rounded-50 w-6 h-6 grid place-items-center font-serif text-sm">!</div>
 )
 
 const LoadingSpinner = () => (
-    <div className="border-2 border-slate-300 border-t-slate-900 rounded-50 w-6 h-6 animate-spin"></div>
+    <div className="border-2 border-primary-700 border-t-primary-200 dark:border-primary-300 dark:border-t-primary-900 rounded-50 w-6 h-6 animate-spin"></div>
 ) 
 
 StatusMessage.propTypes = {

@@ -20,9 +20,9 @@ const VerifyEmail = ({ user }) => {
         isDisabled: false
     })
 
-
     let interval;
     useEffect(() => {
+        console.log(sending)
         interval = setInterval(countDown, 1000)
         sendVerificationEmail()
 
@@ -64,27 +64,27 @@ const VerifyEmail = ({ user }) => {
     }
 
     return (
-        <div className="bg-slate-800 p-6 rounded-2xl text-center">
+        <div className="bg-primary-100 dark:bg-primary-800 p-6 rounded-2xl text-center">
             {error && <StatusMessage message={error.code} type="error" />}
-            <h1 className="text-2xl font-bold mb-6">Verify your email</h1>
-            <h3 className="text-sm">You will need to verify your email to compelte registeration</h3>
+            <h1 className="text-2xl font-bold mb-6 text-primary-900 dark:text-primary-200">Verify your email</h1>
+            <h3 className="text-[0.9rem] text-primary-900 dark:text-primary-200">You will need to verify your email to compelte registeration</h3>
             <img src={verifyEmail} alt="Verify Email Image" className="w-40 mx-auto my-6" />
-            <p className="text-sm ">An email has been sent to {user.email} check your spam folder if you have not received the email</p>
+            <p className="text-[0.9rem] ">An email has been sent to {user.email} check your spam folder if you have not received the email</p>
             <div className="my-4">{timer.minutes}:{timer.seconds}</div>
             <div className="flex gap-4">
                 <button 
                     onClick={sendVerificationEmail}
                     disabled={!timer.isDisabled}
                     className={
-                        `bg-indigo-600 p-2 rounded-xl ${timer.isDisabled && "active:scale-[0.98] hover:bg-indigo-700"}
-                         ${!timer.isDisabled && "cursor-not-allowed"} text-sm font-medium flex-1`
+                        `bg-accent p-2 rounded-xl ${timer.isDisabled && "active:scale-[0.98] hover:bg-accent-600"}
+                         ${!timer.isDisabled && "cursor-not-allowed"} text-sm font-medium flex-1 text-primary-200`
                     }
                 >
                     Resend Email
                 </button>  
                 <button 
                     onClick={() => signOut(auth)}
-                    className="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-xl active:scale-[0.98] text-sm font-medium flex-1"
+                    className="bg-accent hover:bg-accent-600 p-2 rounded-xl active:scale-[0.98] text-sm font-medium flex-1 text-primary-200"
                 >
                     Sign in
                 </button> 

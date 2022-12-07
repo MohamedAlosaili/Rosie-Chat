@@ -37,22 +37,23 @@ function Input({
         submitForm && setSubmitForm(false)
     }
     
-    const colors = submitForm && !valid ? "border-pink-500 text-pink-500" : "border-slate-700"
-    const focusColors = valid ? "focus:border-sky-500 focus:text-sky-500" : "focus:border-pink-500 focus:text-pink-500"
+
+    let validationsFocus = validateValue ? "focus:ring-success focus:text-success" : "focus:ring-accent"
+    const colors = submitForm && !valid ? "ring-error text-error" : "ring-primary-200 dark:ring-primary-700"
+    const focusColors = valid ? validationsFocus : "focus:ring-error-400 focus:text-error-400"
 
     return (
         <label 
             htmlFor={id}
-            className={`flex flex-col w-100 gap-2 text-sm relative`}
+            className={`flex flex-col w-100 gap-2 text-sm relative font-medium`}
         >
             <div>
-                {label} {required && <span className="text-pink-500">*</span>}    
+                {label} {required && <span className="text-error">*</span>}    
             </div>
             <input 
                 className={
-                    `p-3 text-sm rounded-xl bg-slate-800 hover:bg-slate-700 border-2 ${colors} focus:outline-none 
-                    ${focusColors}
-                    `
+                    `p-3 text-sm text-primary-900 dark:text-primary-200 rounded-xl hover:bg-primary-50 dark:bg-primary-800 dark:hover:bg-primary-700
+                    ring-2 hover:ring-primary-300 ${colors} dark:${colors} focus:bg-primary-50 focus:outline-none ${focusColors} dark:${focusColors}`
                 }
                 type={type}
                 name={name}

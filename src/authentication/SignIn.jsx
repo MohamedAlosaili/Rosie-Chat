@@ -47,7 +47,7 @@ function SignIn() {
                 />
                 <button 
                     disabled={loading}
-                    className="bg-indigo-600 hover:bg-indigo-700 p-2 mb-6 rounded-xl active:scale-[0.98] text-sm font-medium"
+                    className="bg-accent hover:bg-accent-600 p-2 mb-6 rounded-xl active:scale-[0.98] text-primary-200 font-medium"
                 >
                     {loading ? "Signing in..." : "Sign in"}
                 </button>
