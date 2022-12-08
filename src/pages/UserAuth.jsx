@@ -16,7 +16,11 @@ function UserAuth({ user }) {
                 {
                     user 
                     ?
-                    <VerifyEmail user={user} />
+                    <VerifyEmail 
+                        user={user} 
+                        selectedTap={selectedTap}
+                        setSelectedTap={setSelectedTap} 
+                    />
                     :
                     selectedTap === "signin" 
                     ? 
