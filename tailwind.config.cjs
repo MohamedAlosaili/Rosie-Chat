@@ -13,11 +13,6 @@ module.exports = {
           DEFAULT: "#4f46e5",
           400: "#6366f1",
         },
-        accent: {
-          600: "#4338ca",
-          DEFAULT: "#4f46e5",
-          400: "#6366f1",
-        },
         loading: {
           light: "#0f172a",
           dark: "#f1f5f9",
