@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 
+import { auth } from "../../firebase"
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth"
 
-import { Input, StatusMessage, Button } from "../components"
-import { auth } from "../firebase"
-
-import {checked, notChecked} from "../imgs"
+import { Input, StatusMessage, Button } from "../../components"
+import Check from "./Check"
 
 function SignUp() {
 
@@ -56,7 +55,7 @@ function SignUp() {
         if(regex["email"].test(email) && regex["password"].test(password)) 
             await createUserWithEmailAndPassword(email, password)
     }
-    console.log("<SignUp /> Re-rendered")
+    
     return (
         <>
             {loading && <StatusMessage message="Creating account..." type="loading" />}
@@ -105,46 +104,11 @@ function SignUp() {
                         setSubmitForm={setSubmitForm}
                         />
                     <div className="flex flex-wrap mt-4">
-                        <p 
-                            className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.lowercase ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
-                        }
-                        >
-                            <img src={passwordStrength.lowercase ? checked : notChecked} alt="check image" className="w-3" />
-                            One lowercase character
-                        </p>
-                        <p 
-                            className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.uppercase ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
-                        }
-                        >
-                            <img src={passwordStrength.uppercase ? checked : notChecked} alt="check image" className="w-3" />
-                            One uppercase character
-                        </p>
-                        <p 
-                            className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.number ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
-                        }
-                        >
-                            <img src={passwordStrength.number ? checked : notChecked} alt="check image" className="w-3" />
-                            One number
-                        </p>
-                        <p 
-                            className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.specialCharacter ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
-                        }
-                        >
-                            <img src={passwordStrength.specialCharacter ? checked : notChecked} alt="check image" className="w-3" />
-                            One special character
-                        </p>
-                        <p 
-                            className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
-                            ${passwordStrength.eightCharacters ? "text-slate-700 dark:text-slate-300" : "text-slate-400"}`
-                        }
-                        >
-                            <img src={passwordStrength.eightCharacters ? checked : notChecked} alt="check image" className="w-3" />
-                            8 characters minimum
-                        </p>
+                        <Check condition="One lowercase character" passed={passwordStrength.lowercase} />
+                        <Check condition="One uppercase character" passed={passwordStrength.uppercase} />
+                        <Check condition="One number" passed={passwordStrength.number} />
+                        <Check condition="One special character" passed={passwordStrength.specialCharacter} />
+                        <Check condition="8 characters minimum" passed={passwordStrength.eightCharacters} />
                     </div>
                 </div>
                 <Button disabled={loading}>
