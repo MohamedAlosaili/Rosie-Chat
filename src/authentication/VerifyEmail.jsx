@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth"
 import { useSendEmailVerification } from "react-firebase-hooks/auth"
 
 import { auth } from "../firebase"
-import { StatusMessage } from "../components"
+import { Button, StatusMessage } from "../components"
 
 import {verifyEmail} from "../imgs"
 import { useState } from "react"
@@ -96,22 +96,14 @@ const VerifyEmail = ({ user, selectedTap, setSelectedTap }) => {
             <p className="text-[0.9rem] ">An email has been sent to {user.email} check your spam folder if you have not received the email</p>
             <div className="my-4">{timer.minutes}:{timer.seconds}</div>
             <div className="flex gap-4">
-                <button 
-                    onClick={sendVerificationEmail}
+                <Button
                     disabled={!timer.isFinished}
-                    className={
-                        `bg-accent p-2 rounded-xl ${timer.isFinished && "active:scale-[0.98] hover:bg-accent-600"}
-                         ${!timer.isFinished && "cursor-not-allowed opacity-30"} text-sm font-medium flex-1 text-primary-200`
-                    }
+                    handleClick={sendVerificationEmail}
+                    additionClasses={`flex-1 text-sm ${!timer.isFinished ? "cursor-not-allowed opacity-30" : ""}`}
                 >
                     Resend Email
-                </button>  
-                <button 
-                    onClick={backToSignInPage}
-                    className="bg-accent hover:bg-accent-600 p-2 rounded-xl active:scale-[0.98] text-sm font-medium flex-1 text-primary-200"
-                >
-                    Sign in
-                </button> 
+                </Button>  
+                <Button handleClick={backToSignInPage} additionClasses="flex-1 text-sm" >Sign in</Button>
             </div> 
         </div>
     )
