@@ -1,4 +1,4 @@
-import { SignOut } from "../components"
+import { SignOut } from "../authentication"
 import { auth } from "../firebase"
 
 import { useSendEmailVerification } from "react-firebase-hooks/auth"
