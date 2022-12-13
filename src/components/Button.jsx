@@ -25,7 +25,7 @@ const Button = ({children, handleClick, bg, padding, additionClasses, disabled})
 }
 
 Button.propTypes = {
-    children: PropTypes.oneOf([PropTypes.string, PropTypes.element]).isRequired,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]).isRequired,
     handleClick: PropTypes.func,
     bg: PropTypes.string,
     padding: PropTypes.string,
