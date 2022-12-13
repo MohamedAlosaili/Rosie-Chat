@@ -23,7 +23,7 @@ function SignIn() {
             {error && <StatusMessage message={error?.code} type="error" />}
             <form 
                 onSubmit={signUserIn}
-                className="flex flex-col gap-8"
+                className="flex flex-col gap-6"
             >
                 <Input 
                     label="Email"
