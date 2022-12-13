@@ -35,7 +35,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
     bg: "full",
-    padding: "p-2 mb-6" ,
+    padding: "p-2",
     additionClasses: "",
     disabled: false 
 }
