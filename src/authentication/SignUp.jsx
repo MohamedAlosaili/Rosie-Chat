@@ -86,6 +86,7 @@ function SignUp() {
                     placeholder="example@gmail.com"
                     required={true}
                     validateValue={true}
+                    regex={regex.email}
                     submitForm={submitForm}
                     setSubmitForm={setSubmitForm}
                     />
@@ -100,6 +101,7 @@ function SignUp() {
                         placeholder="●●●●●●●●"
                         required={true}
                         validateValue={true}
+                        regex={regex.password}
                         submitForm={submitForm}
                         setSubmitForm={setSubmitForm}
                         />
