@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import PropTypes from "prop-types"
 
 function Input({
@@ -14,6 +14,7 @@ function Input({
     submitForm, 
     setSubmitForm
 }) {
+    console.log("<Input /> Rendered type => "+type)
     const regex = {
         email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, 
         password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g
@@ -96,4 +97,5 @@ Input.defaultProps = {
     submitForm: false
 }
 
-export default Input
+// memo() helps stop unnecessary re-render
+export default memo(Input)
