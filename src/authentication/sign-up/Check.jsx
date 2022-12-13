@@ -3,7 +3,6 @@ import { memo } from "react"
 import {checked, notChecked} from "../../imgs"
 
 const Check = ({ condition, passed }) => {
-    console.log("<Check /> Rendered")
     return (
         <p 
             className={`flex items-center basis-2/4 text-xs gap-1 mb-2 
