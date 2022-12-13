@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
 
-import { Input, StatusMessage } from "../components"
+import { Input, StatusMessage, Button } from "../components"
 import { auth } from "../firebase"
 
 function SignIn() {
@@ -45,12 +45,9 @@ function SignIn() {
                     placeholder="●●●●●●●●"
                     required={true}
                 />
-                <button 
-                    disabled={loading}
-                    className="bg-accent hover:bg-accent-600 p-2 mb-6 rounded-xl active:scale-[0.98] text-primary-200 font-medium"
-                >
+                <Button disabled={loading}>
                     {loading ? "Signing in..." : "Sign in"}
-                </button>
+                </Button>
             </form>
         </>
     )
