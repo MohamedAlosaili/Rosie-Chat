@@ -6,7 +6,7 @@ const Button = ({children, handleClick, bg, padding, additionClasses, disabled})
 
     const bgColor = 
         (bg === "full") ? 
-        `bg-accent ${!disabled && "hover:bg-accent-600"} ring-accent hover:ring-accent-600` : 
+        `bg-accent ${!disabled && "hover:bg-accent-600"} ring-accent hover:ring-accent-600 text-primary-200` : 
         `ring-slate-400 dark:ring-slate-700 hover:ring-slate-500 hover:bg-primary-100 dark:hover:bg-primary-800`
 
     return (
@@ -14,8 +14,8 @@ const Button = ({children, handleClick, bg, padding, additionClasses, disabled})
             disabled={disabled}
             onClick={handleClick}
             className={
-                `flex gap-3 items-center justify-center rounded-xl text-primary-200 font-medium 
-                ring-1 ${bgColor} ${padding} ${!disabled && "active:scale-[0.98]"} ${additionClasses}
+                `flex gap-3 items-center justify-center rounded-xl font-medium ring-1 
+                ${bgColor} ${padding} ${!disabled && "active:scale-[0.98]"} ${additionClasses}
                 `
             }
         >

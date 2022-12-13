@@ -35,7 +35,7 @@ const Authentication = ({
             <Button
                 handleClick={signWithProviders.bind(this, "google")}
                 bg="empty"
-                additionClasses="w-full"
+                additionClasses="w-full text-slate-700"
             >
                 <img src={googleLogo} alt="Google logo" className="w-5" />
                 Sign {selectedTap === "signin" ? "in" : "up"} with Google
