@@ -1,21 +1,22 @@
+import { memo } from "react"
 import { auth } from "./firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 
 import { Home, UserAuth } from "./pages"
 import { StatusMessage } from "./components"
 
-export default function App() {
-
+function App() {
+  console.log("<App /> Rendered")
   const [user, loading, error] = useAuthState(auth)
 
   if(error) {
-    return <StatusMessage message={error?.code} type="loading" />
+    return <StatusMessage message={error?.code} type="error" />
   }
 
   if(loading) {
     return <StatusMessage message="loading..." type="loading" />
   }
-  console.log(user)
+
   return (
     <main>
       {
@@ -24,3 +25,5 @@ export default function App() {
     </main>
   )
 }
+
+export default App
