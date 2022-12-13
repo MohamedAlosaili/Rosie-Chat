@@ -26,12 +26,11 @@ function SignUp() {
     const [submitForm, setSubmitForm] = useState(false)
 
     useEffect(() => {
-        if(signUpValue.password !== "")
             checkPassword()
     }, [signUpValue.password])
 
     function checkPassword() {
-        const reqex = {
+        const passwordReqex = {
             lowercase: /[a-z]+/g,
             uppercase: /[A-Z]+/g,
             specialCharacter: /\W+/g,
@@ -39,10 +38,10 @@ function SignUp() {
         } 
 
         const matches = {
-            lowercase: reqex.lowercase.test(signUpValue.password),
-            uppercase: reqex.uppercase.test(signUpValue.password),
-            specialCharacter: reqex.specialCharacter.test(signUpValue.password),
-            number: reqex.number.test(signUpValue.password),
+            lowercase: passwordReqex.lowercase.test(signUpValue.password),
+            uppercase: passwordReqex.uppercase.test(signUpValue.password),
+            specialCharacter: passwordReqex.specialCharacter.test(signUpValue.password),
+            number: passwordReqex.number.test(signUpValue.password),
             eightCharacters: signUpValue.password.length >= 8
         }
 
@@ -57,7 +56,7 @@ function SignUp() {
         if(regex["email"].test(email) && regex["password"].test(password)) 
             await createUserWithEmailAndPassword(email, password)
     }
-    
+    console.log("<SignUp /> Re-rendered")
     return (
         <>
             {loading && <StatusMessage message="Creating account..." type="loading" />}
