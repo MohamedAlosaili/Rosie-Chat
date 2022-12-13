@@ -1,7 +1,7 @@
 import StatusMessage from "./StatusMessage.jsx";
 import ChatRoom from "./ChatRoom";
 import ChatMessage from "./ChatMessage";
-import Input from "./InputField";
+import Input from "./Input";
 import SignOut from "./SignOut";
 import LoadingSpinner from "./LoadingSpinner";
 

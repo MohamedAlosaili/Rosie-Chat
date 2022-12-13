@@ -14,7 +14,7 @@ function Input({
     submitForm, 
     setSubmitForm
 }) {
-    console.log("<Input /> Rendered type => "+type)
+    
     const regex = {
         email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, 
         password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g
