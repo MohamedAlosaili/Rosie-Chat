@@ -11,20 +11,16 @@ function Input({
     placeholder, 
     required, 
     validateValue, 
+    regex,
     submitForm, 
     setSubmitForm
 }) {
-    
-    const regex = {
-        email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, 
-        password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g
-    }
 
     const [valid, setValid] = useState(() => true)
     
     useEffect(() => {
-        if(validateValue) {  
-            setValid(regex[type]?.test(value))
+        if(validateValue && regex) {  
+            setValid(regex.test(value))
         }
     }, [value])
 
@@ -35,13 +31,17 @@ function Input({
             ...prevValue,
             [name]: value
         }))
+
         submitForm && setSubmitForm(false)
     }
     
 
-    let validationsFocus = validateValue ? "focus:ring-success focus:text-success" : "focus:ring-accent"
-    const colors = submitForm && !valid ? "ring-error text-error" : "ring-primary-200 dark:ring-primary-700"
-    const focusColors = valid ? validationsFocus : "focus:ring-error-400 focus:text-error-400"
+    let validationsFocus = validateValue ? `focus:ring-success focus:text-success dark:focus:text-success` : `focus:ring-accent`
+    const invalidInputColors = submitForm && !valid ? `ring-error-400 text-error-400 dark:text-error-400` : ` ring-transparent text-primary-900 dark:text-primary-200`
+    const focusColors = valid ? validationsFocus : `focus:ring-error-400 focus:text-error-400 dark:focus:text-error-400`
+
+    const dark = "dark:text-primary-200 dark:bg-primary-800 dark:hover:bg-primary-700 dark:border-primary-700"
+    const light = "text-primary-900 hover:bg-primary-50 border-primary-200"
 
     return (
         <label 
@@ -53,8 +53,8 @@ function Input({
             </div>
             <input 
                 className={
-                    `p-3 text-sm text-primary-900 dark:text-primary-200 rounded-xl hover:bg-primary-50 dark:bg-primary-800 dark:hover:bg-primary-700
-                    ring-2 hover:ring-primary-300 ${colors} dark:${colors} focus:bg-primary-50 focus:outline-none ${focusColors} dark:${focusColors}`
+                    `p-3 text-sm rounded-xl border-2 ring-2 focus:outline-none focus:border-1 
+                    ${light} ${dark} ${focusColors} ${invalidInputColors}`
                 }
                 type={type}
                 name={name}
