@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import { signWithProviders } from "../../firebase";
 import { Button } from "../../components";
-import googleLogo from "../imgs/Google_Logo.svg";
+import googleLogo from "../../imgs/Google_Logo.svg";
 
 const Authentication = ({
   title,
