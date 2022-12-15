@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { checked, notChecked } from "../../imgs";
+import { checked, notChecked } from "imgs";
 
 const Check = ({ condition, passed }) => {
   return (

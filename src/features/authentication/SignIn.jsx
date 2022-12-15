@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-import { Input, StatusMessage, Button } from "../../components";
-import { auth } from "../../firebase";
+import { Input, StatusMessage, Button } from "components";
+import { auth } from "rosie-firebase";
 
 function SignIn() {
   const [signInValue, setSignInValue] = useState({ email: "", password: "" });

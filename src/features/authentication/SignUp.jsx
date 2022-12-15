@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { auth } from "../../firebase";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-import { Input, StatusMessage, Button } from "../../components";
+import { auth } from "rosie-firebase";
+import { Input, StatusMessage, Button } from "components";
 import Check from "./Check";
 
 function SignUp() {

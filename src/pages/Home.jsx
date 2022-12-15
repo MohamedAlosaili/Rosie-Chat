@@ -1,7 +1,7 @@
 import { useSendEmailVerification } from "react-firebase-hooks/auth";
 
-import { SignOut } from "../features/authentication";
-import { auth } from "../firebase";
+import { SignOut } from "features/authentication";
+import { auth } from "rosie-firebase";
 
 export default function Home() {
   const [sendEmailVerification, sending, error] =

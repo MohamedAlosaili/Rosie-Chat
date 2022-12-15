@@ -1,12 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import {
-  Authentication,
-  SignIn,
-  SignUp,
-  VerifyEmail,
-} from "../features/authentication";
+import { Authentication, SignIn, SignUp, VerifyEmail } from "features/authentication";
 
 function UserAuth({ user }) {
   const [selectedTap, setSelectedTap] = useState("signin");

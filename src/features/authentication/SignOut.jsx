@@ -1,5 +1,6 @@
-import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
+
+import { auth } from "rosie-firebase";
 
 export default function SignOut() {
   return (

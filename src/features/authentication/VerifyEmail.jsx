@@ -1,15 +1,13 @@
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
 
 import { signOut } from "firebase/auth";
-
 import { useSendEmailVerification } from "react-firebase-hooks/auth";
 
-import { auth } from "../../firebase";
-import { Button, StatusMessage } from "../../components";
+import { auth } from "rosie-firebase";
+import { Button, StatusMessage } from "components";
+import { verifyEmail } from "imgs";
 
-import { verifyEmail } from "../../imgs";
-import { useState } from "react";
 
 const VerifyEmail = ({ user, selectedTap, setSelectedTap }) => {
   const [sendEmailVerification, sending, error] =

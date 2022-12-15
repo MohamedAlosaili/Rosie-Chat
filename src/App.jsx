@@ -1,9 +1,8 @@
-import { memo } from "react"
-import { auth } from "./firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 
-import { Home, UserAuth } from "./pages"
-import { StatusMessage } from "./components"
+import { auth } from "rosie-firebase"
+import { Home, UserAuth } from "pages"
+import { StatusMessage } from "components"
 
 function App() {
   console.log("<App /> Rendered")
