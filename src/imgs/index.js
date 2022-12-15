@@ -1,6 +1,20 @@
-import googleLogo from "./Google_Logo.svg";
-import checked from "./checkmark-checked.svg";
-import notChecked from "./checkmark-not-checked.svg";
-import verifyEmail from "./verify-email.svg";
+import googleLogo from "./auth/Google_Logo.svg";
+import checked from "./auth/checkmark-checked.svg";
+import notChecked from "./auth/checkmark-not-checked.svg";
+import verifyEmail from "./auth/verify-email.svg";
 
-export { googleLogo, checked, notChecked, verifyEmail };
+import chat from "./sidebar/nav-chat.svg";
+import contacts from "./sidebar/nav-contacts.svg";
+import setting from "./sidebar/nav-setting.svg";
+import logout from "./sidebar/logout.svg";
+
+export {
+  googleLogo,
+  checked,
+  notChecked,
+  verifyEmail,
+  chat,
+  contacts,
+  setting,
+  logout,
+};
