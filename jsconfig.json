@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "baseUrl": ".",
+    "paths": {
+      "components/*": ["./src/components/*"],
+      "features/*": ["./src/features/*"],
+      "rosie-firebase/*": ["./src/rosie-firebase/*"],
+      "pages/*": ["./src/pages/*"],
+      "imgs/*": ["./src/imgs/*"]
+    }
+  },
+  "include": ["src"]
+}
