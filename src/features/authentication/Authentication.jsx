@@ -19,9 +19,9 @@ const Authentication = ({
 
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="text-[2.5rem] font-bold text-center text-primary-900 dark:text-primary-200">
+      <h1 className="text-[2.5rem] font-bold text-center text-primary-900 dark:text-primary-200">
         {title}
-      </h2>
+      </h1>
       <p className="text-center font-medium">{greeting}</p>
       {children}
       <div className="relative before:absolute before:left-0 before:top-[50%] before:-mt-px before:h-px before:w-full before:bg-primary-400 dark:before:bg-primary-700">
