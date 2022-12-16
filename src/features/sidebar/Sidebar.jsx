@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { memo } from "react"
 
 import { signOut } from "firebase/auth"
 
@@ -6,12 +6,11 @@ import { auth } from "rosie-firebase"
 import { chat, contacts, setting, logout } from "imgs"
 import NvButton from "./NvButton" 
 
-function Sidebar() {
-  const [tap, setTap] = useState("chats")
+function Sidebar({tap, setTap}) {
 
   return (
-    
-      <nav className="min-w-[60px] shrink-0 dark:bg-primary-800 flex flex-col justify-between items-center py-6 px-4">
+    <aside>
+      <nav className="h-screen dark:bg-primary-800 flex flex-col justify-between items-center py-6 px-4">
           <NvButton 
             handleClick={() => setTap("profile")} 
             tap={tap} 
@@ -45,8 +44,9 @@ function Sidebar() {
         img={logout} 
         btnTap="logout"
         />
-    </nav>
+      </nav>
+    </aside>
   )
 }
 
-export default Sidebar
+export default memo(Sidebar)
