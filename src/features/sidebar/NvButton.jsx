@@ -1,6 +1,8 @@
 import { memo } from "react"
 import PropTypes from "prop-types"
 
+import { defaultAvatar } from "imgs"
+
 const NvButton = ({ handleClick, tap, img, btnTap, userName }) => {
 
     const buttonStyle = 
@@ -21,7 +23,7 @@ const NvButton = ({ handleClick, tap, img, btnTap, userName }) => {
                 className={`transition-colors transition-shadow group peer active:scale-[0.97] ${buttonStyle}`}
             >
                 <img 
-                    src={img} 
+                    src={img ?? (btnTap === "profile" && defaultAvatar)} 
                     alt={btnTap === "profile" ? `${userName} photo` : `${btnTap} icon`} 
                     className={`${imgStyle}`}
                 />
