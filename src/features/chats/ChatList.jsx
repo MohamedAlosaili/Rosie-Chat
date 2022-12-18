@@ -1,3 +1,5 @@
+
+import Chat from "./chat"
 import { search } from "imgs"
 
 function ChatList() {
@@ -19,7 +21,14 @@ function ChatList() {
         />
       </form>
       <ul>
-        
+        <Chat 
+          chatImg="https://lh3.googleusercontent.com/a/AEdFTp4ump6-jkdHxj4z110nZxqaZ-TVTN-2TdlVU3919w=s96-c"
+          chatName="Mohamed"
+          lastMsgTime="1:20 PM"
+          lastMsg="Hi, how are you?"
+          unreadMsgs={3}
+          selected={true}
+        />
       </ul>
     </section>
   );
