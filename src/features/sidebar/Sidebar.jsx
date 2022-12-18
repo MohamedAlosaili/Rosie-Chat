@@ -9,7 +9,7 @@ import NvButton from "./NvButton"
 function Sidebar({tap, setTap}) {
 
   return (
-    <aside>
+    <aside className="min-w-[60px] shrink-0">
       <nav className="h-screen dark:bg-primary-800 flex flex-col justify-between items-center py-6 px-4">
           <NvButton 
             handleClick={() => setTap("profile")} 
