@@ -3,6 +3,7 @@ import checked from "./auth/checkmark-checked.svg";
 import notChecked from "./auth/checkmark-not-checked.svg";
 import verifyEmail from "./auth/verify-email.svg";
 
+import defaultAvatar from "./sidebar/default-avatar.png";
 import chat from "./sidebar/nav-chat.svg";
 import contacts from "./sidebar/nav-contacts.svg";
 import setting from "./sidebar/nav-setting.svg";
@@ -16,6 +17,7 @@ export {
   checked,
   notChecked,
   verifyEmail,
+  defaultAvatar,
   chat,
   contacts,
   setting,
