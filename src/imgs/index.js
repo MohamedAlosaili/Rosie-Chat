@@ -7,8 +7,9 @@ import chat from "./sidebar/nav-chat.svg";
 import contacts from "./sidebar/nav-contacts.svg";
 import setting from "./sidebar/nav-setting.svg";
 import logout from "./sidebar/logout.svg";
-
 import search from "./search.svg";
+
+import send from "./conversation/send.svg";
 
 export {
   googleLogo,
@@ -20,4 +21,5 @@ export {
   setting,
   logout,
   search,
+  send,
 };
