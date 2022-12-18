@@ -8,6 +8,8 @@ import contacts from "./sidebar/nav-contacts.svg";
 import setting from "./sidebar/nav-setting.svg";
 import logout from "./sidebar/logout.svg";
 
+import search from "./search.svg";
+
 export {
   googleLogo,
   checked,
@@ -17,4 +19,5 @@ export {
   contacts,
   setting,
   logout,
+  search,
 };
