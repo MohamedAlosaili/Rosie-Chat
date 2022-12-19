@@ -24,5 +24,6 @@ export {
   setting,
   logout,
   search,
+  selectChat,
   send,
 };
