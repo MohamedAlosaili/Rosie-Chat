@@ -26,11 +26,12 @@ const NvButton = ({ handleClick, tap, img, btnTap, userName }) => {
                     src={img ?? (btnTap === "profile" && defaultAvatar)} 
                     alt={btnTap === "profile" ? `${userName} photo` : `${btnTap} icon`} 
                     className={`${imgStyle}`}
+                    onError={(e) => e.target.src = defaultAvatar}
                 />
             </button>
             <span 
                 className={`absolute left-[150%] top-1/2 -translate-y-1/2 block bg-primary-200 text-primary-700 font-medium py-1 px-4 rounded-lg 
-                            invisible peer-hover:visible opacity-0 peer-hover:opacity-100 translate-x-[15%] peer-hover:translate-x-0 transition`
+                            invisible peer-hover:visible opacity-0 peer-hover:opacity-100 translate-x-[15%] peer-hover:translate-x-0 transition z-10`
                 }
             >
                 {btnTap[0].toUpperCase() + btnTap.slice(1)}
