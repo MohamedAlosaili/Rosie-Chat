@@ -10,6 +10,7 @@ import setting from "./sidebar/nav-setting.svg";
 import logout from "./sidebar/logout.svg";
 import search from "./search.svg";
 
+import selectChat from "./conversation/select-chat.svg";
 import send from "./conversation/send.svg";
 
 export {
