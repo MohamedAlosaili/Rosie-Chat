@@ -16,17 +16,17 @@ function ChatBox() {
           
         </div>
       </main>
-      <footer className="w-full max-w-2xl mx-auto py-2 border-t dark:border-primary-800">
+      <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800">
         <form 
           onSubmit={(e) => e.preventDefault()}
-          className="flex items-center rounded-full border dark:bg-primary-900 dark:border-primary-700"
+          className="flex items-center rounded-full border p-2 dark:bg-primary-900 dark:border-primary-700"
         >
           <input 
             type="text" 
             placeholder="Type a message"
-            className="flex-1 text-primary-200 py-4 px-6 focus:outline-none bg-transparent"
+            className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
           />
-          <button className="w-13 p-2 mr-2 rounded-50 aspect-square bg-accent hover:bg-accent-600">
+          <button className="w-10 aspect-square grid place-items-center rounded-50 bg-accent hover:bg-accent-600">
             <img src={send} className="invert" />
           </button>
         </form>
