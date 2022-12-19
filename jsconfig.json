@@ -10,5 +10,6 @@
       "imgs/*": ["./src/imgs/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/rosie-firebase"]
 }
