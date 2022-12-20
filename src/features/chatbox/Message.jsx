@@ -3,7 +3,15 @@ import PropTypes from "prop-types"
 import { auth } from "rosie-firebase"
 import { defaultAvatar } from "imgs"
 
-const Message = ({ uid, message, time, photoURL, isGroup }) => {
+const Message = ({ type, uid, message, time, photoURL, isGroup }) => {
+
+    if(type === "announce") {
+        return (
+            <div className="bg-primary-700 w-fit mx-auto p-2 leading-none text-xs rounded-lg my-2">
+                {message}
+            </div>
+        )
+    }
 
     const userMsg = auth.currentUser.uid === uid
 
@@ -19,9 +27,9 @@ const Message = ({ uid, message, time, photoURL, isGroup }) => {
 }
 
 Message.propTypes = {
-    uid: PropTypes.string.isRequired,
+    uid: PropTypes.string,
     message: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
+    time: PropTypes.string,
     photoURL: PropTypes.string,
     isGroup: PropTypes.bool
 }
