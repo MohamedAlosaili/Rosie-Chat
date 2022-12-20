@@ -1,8 +1,18 @@
 
-import Chat from "./chat"
+import Chat from "./Chat"
 import { search } from "imgs"
 
-function ChatList() {
+function ChatList({ chats, selectedChat, setSelectedChat }) {
+  console.log("<ChatList />")
+  const userChats = chats.map(chat => (
+    <Chat 
+      key={chat.id}
+      {...chat}
+      selected={chat.id == selectedChat.id}
+      setSelectedChat={setSelectedChat.bind(this, chat)}
+    />
+  ))
+
   return (
     <section className="flex flex-col gap-4">
       <h1 className="dark:text-primary-200 text-2xl font-semibold">Chats</h1>
@@ -21,14 +31,7 @@ function ChatList() {
         />
       </form>
       <ul>
-        <Chat 
-          chatImg="https://lh3.googleusercontent.com/a/AEdFTp4ump6-jkdHxj4z110nZxqaZ-TVTN-2TdlVU3919w=s96-c"
-          chatName="Mohamed"
-          lastMsgTime="1:20 PM"
-          lastMsg="Hi, how are you?"
-          unreadMsgs={3}
-          selected={true}
-        />
+        { userChats }
       </ul>
     </section>
   );
