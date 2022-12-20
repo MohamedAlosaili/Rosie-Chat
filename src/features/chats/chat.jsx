@@ -2,23 +2,33 @@ import { memo } from "react"
 import PropTypes from "prop-types"
 
 
-const Chat = ({ chatImg, chatName, lastMsgTime, lastMsg, unreadMsgs, selected}) => {
+const Chat = ({ 
+  photoURL, 
+  name, 
+  lastMsgTime, 
+  lastMsg, 
+  unreadMsgs, 
+  setSelectedChat, 
+  selected
+}) => {
 
+    console.log("<Chat />")  
     return (
         <li 
-            className={`grid grid-cols-[auto_1fr] text-sm rounded-xl gap-4 p-4 mb-2 last:mb-0 cursor-pointer transition-colors overflow-hidden select-none 
-                        relative z-10 before:absolute before:inset-0 before:opacity-50 before:-z-10 before:transition-colors 
-                        dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${selected ? "dark:bg-primary-800" : ""}`
-            }
+          onClick={setSelectedChat}
+          className={`grid grid-cols-[auto_1fr] text-sm rounded-xl gap-4 p-4 mb-2 last:mb-0 cursor-pointer transition-colors overflow-hidden select-none 
+                      relative z-10 before:absolute before:inset-0 before:opacity-50 before:-z-10 before:transition-colors 
+                      dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${selected ? "dark:bg-primary-800" : ""}`
+          }
         >
           <img 
-            src={chatImg} 
+            src={photoURL} 
             alt="chat image" 
             className="w-14 h-14 object-cover rounded-50"
           />
           <div className="min-w-0 flex-1">
             <div className="flex justify-between items-center gap-2 mb-2">
-              <h3 className="text-base font-medium dark:text-primary-200 truncate">{chatName}</h3>
+              <h3 className="text-base font-medium dark:text-primary-200 truncate">{name}</h3>
               <time className="whitespace-nowrap">{lastMsgTime}</time>
             </div>   
             <div className="flex justify-between items-center gap-2">
