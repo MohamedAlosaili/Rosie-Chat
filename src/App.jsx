@@ -12,7 +12,7 @@ function App() {
   }
 
   if(loading) {
-    return <StatusMessage message="loading..." type="loading" />
+    return <StatusMessage message="Loading..." type="loading" />
   }
 
   return (
