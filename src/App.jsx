@@ -5,7 +5,6 @@ import { Home, UserAuth } from "pages"
 import { StatusMessage } from "components"
 
 function App() {
-  console.log("<App /> Rendered")
   const [user, loading, error] = useAuthState(auth)
 
   if(error) {
@@ -19,7 +18,7 @@ function App() {
   return (
     <main>
       {
-        user?.emailVerified ? <Home /> : <UserAuth user={user} />
+        user?.emailVerified ? <Home user={user} /> : <UserAuth user={user} />
       }
     </main>
   )
