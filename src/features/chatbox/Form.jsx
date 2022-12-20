@@ -13,22 +13,23 @@ function Form({ selectedChat }) {
     
     async function sendMessage(e) {
         e.preventDefault()
-        console.log(message)
 
-        const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
+        if(message !== "") {
+            const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
 
-        const { uid, photoURL } = auth.currentUser
+            const { uid, photoURL } = auth.currentUser
 
-        await addDoc(messagesRef, {
-            id: nanoid(),
-            uid,
-            photoURL,
-            message,
-            createdAt: serverTimestamp()
-        })
-        setMessage("")
+            await addDoc(messagesRef, {
+                id: nanoid(),
+                uid,
+                photoURL,
+                message,
+                createdAt: serverTimestamp()
+            })
+            setMessage("")
+        }
     }
-
+    console.log("message", message)
     return (
         <form 
             onSubmit={sendMessage}
@@ -38,10 +39,13 @@ function Form({ selectedChat }) {
                 type="text" 
                 placeholder="Type a message"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => e.target.value.trim() && setMessage(e.target.value.trim())}
                 className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
             />
-            <button className="w-10 aspect-square grid place-items-center rounded-50 bg-accent hover:bg-accent-600">
+            <button
+                disabled={message === ""} 
+                className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent ${message !== "" ? "hover:bg-accent-600" : ""}`}
+            >
                 <img src={send} className="invert" />
             </button>
         </form>
