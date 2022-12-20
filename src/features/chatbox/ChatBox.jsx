@@ -1,13 +1,13 @@
 import Conversation from "./Conversation"
 import { selectChat } from "imgs"
 
-function ChatBox({ chatId }) {
+function ChatBox({ selectedChat }) {
   return (
     <div className="basis-[30rem] grow shrink">
       {
-        chatId 
+        selectedChat.id 
         ? (
-          <Conversation chatId={chatId} />
+          <Conversation selectedChat={selectedChat} />
         ) 
         : (
           <div className="h-full flex flex-col justify-center items-center p-8">
