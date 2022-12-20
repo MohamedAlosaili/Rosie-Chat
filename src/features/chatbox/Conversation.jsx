@@ -35,13 +35,13 @@ function Conversation({ selectedChat }) {
                 <div className="max-w-2xl mx-auto">
                     {
                         messages?.map(msg => (
-                            <Message key={msg} {...msg} isGroup={selectedChat.isGroup} />
+                            <Message key={msg.id} {...msg} isGroup={selectedChat.isGroup} />
                         ))
                     }
                 </div>
             </main>
             <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800">
-                <Form />
+                <Form selectedChat={selectedChat} />
             </footer>
         </div>
     )
