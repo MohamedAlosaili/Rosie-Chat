@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { useSendEmailVerification } from "react-firebase-hooks/auth";
 
 import { auth } from "rosie-firebase";
 import { Button, StatusMessage } from "components";
-import { verifyEmail } from "imgs";
+import { verifyEmail, defaultAvatar } from "imgs";
 
 
 const VerifyEmail = ({ user, selectedTap, setSelectedTap }) => {
-  const [sendEmailVerification, sending, error] =
-    useSendEmailVerification(auth);
+  const [sendEmailVerification, sending, error] = useSendEmailVerification(auth);
   const [timer, setTimer] = useState(() => {
     const sessionTimer = JSON.parse(sessionStorage.getItem("timer"));
     const verify = JSON.parse(sessionStorage.getItem("email-verify"));
@@ -28,19 +27,25 @@ const VerifyEmail = ({ user, selectedTap, setSelectedTap }) => {
     return newTimer;
   });
 
+  // Update user info ( displayName & photoURL ) & send verification email
   let interval;
   useEffect(() => {
     interval = setInterval(countDown, 1000);
 
-    const verify = JSON.parse(sessionStorage.getItem("email-verify"));
+    const userInfo = JSON.parse(sessionStorage.getItem("user-info"))
+    if(userInfo && !user.displayName) {
+      const { email, name } = userInfo
 
-    if (!verify?.isSend || verify?.email !== user.email) {
-      sendVerificationEmail();
-      sessionStorage.setItem(
-        "email-verify",
-        JSON.stringify({ isSend: true, email: user.email })
-      );
+      if(email.toLowerCase() === user.email.toLowerCase()) {
+        updateProfile(user, { displayName: name, photoURL: defaultAvatar })
+          .then(() => {
+            sendVerificationEmail();
+            sessionStorage.setItem("email-verify", JSON.stringify({ isSend: true, email: user.email })
+            );
+          }).catch(error => console.log(error))
+      }
     }
+    
 
     return () => clearInterval(interval);
   }, []);
@@ -54,16 +59,10 @@ const VerifyEmail = ({ user, selectedTap, setSelectedTap }) => {
   // change the email-verify state depending on the timer or if rsend clicked
   useEffect(() => {
     timer.isFinished &&
-      sessionStorage.setItem(
-        "email-verify",
-        JSON.stringify({ isSend: false, email: user.email })
-      );
+      sessionStorage.setItem("email-verify", JSON.stringify({ isSend: false, email: user.email }));
 
     if (+timer.seconds > 0 && !timer.isFinished)
-      sessionStorage.setItem(
-        "email-verify",
-        JSON.stringify({ isSend: true, email: user.email })
-      );
+      sessionStorage.setItem("email-verify", JSON.stringify({ isSend: true, email: user.email }));
   }, [timer.isFinished]);
 
   async function sendVerificationEmail() {
