@@ -10,11 +10,28 @@ import { send } from "imgs"
 function Form({ selectedChat }) {
 
     const [message, setMessage] = useState("")
+    
+    async function sendMessage(e) {
+        e.preventDefault()
+        console.log(message)
 
+        const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
+
+        const { uid, photoURL } = auth.currentUser
+
+        await addDoc(messagesRef, {
+            id: nanoid(),
+            uid,
+            photoURL,
+            message,
+            createdAt: serverTimestamp()
+        })
+        setMessage("")
+    }
 
     return (
         <form 
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={sendMessage}
             className="flex items-center rounded-full border p-2 dark:bg-primary-900 dark:border-primary-700"
         >
             <input 
