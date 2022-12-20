@@ -17,8 +17,7 @@ function SignUp() {
     email: "",
     password: "",
   });
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
   const [passwordStrength, setPasswordStrength] = useState({
     lowercase: false,
     uppercase: false,
@@ -56,10 +55,19 @@ function SignUp() {
   async function signUserIn(e) {
     e.preventDefault();
     setSubmitForm(true);
-    const { email, password } = signUpValue;
+    const { name, email, password } = signUpValue;
 
-    if (regex["email"].test(email) && regex["password"].test(password))
-      await createUserWithEmailAndPassword(email, password);
+    if (regex["email"].test(email) && regex["password"].test(password)) {
+
+      try {
+        await createUserWithEmailAndPassword(email, password)
+
+        sessionStorage.setItem("user-info", JSON.stringify({ name, email }))
+      } catch(e) {
+        console.log(e)
+      }
+    }
+      
   }
 
   return (
