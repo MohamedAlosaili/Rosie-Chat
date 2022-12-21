@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 
 import { collection, query, orderBy } from "firebase/firestore"
@@ -17,6 +18,7 @@ function Conversation({ selectedChat }) {
     )
 
     const [messages, loading, error] = useCollectionData(q)    
+    const bottomChat = useRef()
 
     return (
         <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain">
@@ -38,10 +40,11 @@ function Conversation({ selectedChat }) {
                             <Message key={msg.id} {...msg} isGroup={selectedChat.isGroup} />
                         ))
                     }
+                    <div ref={bottomChat}></div>
                 </div>
             </main>
             <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800">
-                <Form selectedChat={selectedChat} />
+                <Form selectedChat={selectedChat} bottomChat={bottomChat} />
             </footer>
         </div>
     )
