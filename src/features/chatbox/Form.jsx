@@ -12,27 +12,33 @@ function Form({ selectedChat, bottomChat }) {
     const [message, setMessage] = useState("")
     const [loading, setLoading] = useState(false)
 
-    console.log("loading", loading)
     function sendMessage(e) {
         e.preventDefault()
 
         if(message !== "") {
             setLoading(true)
+
             const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
-            
-            const { uid, photoURL } = auth.currentUser
-            
-            addDoc(messagesRef, {
-                id: nanoid(),
-                uid,
-                photoURL,
-                message,
-                createdAt: serverTimestamp()
-            }).then(() => {
-                setMessage("")
-                setLoading(false)
-                bottomChat.current.scrollIntoView({ behavior: "smooth" })
-            }).catch(e => console.log(e))
+
+            // Removing 'semicolon' causes this error 'Uncaught TypeError: auth.currentUser is not a function'
+            const { uid, photoURL } = auth.currentUser; 
+
+            (async function() {
+                try {
+                    await addDoc(messagesRef, {
+                        id: nanoid(),
+                        uid,
+                        photoURL,
+                        message,
+                        createdAt: serverTimestamp()
+                    })
+                    setMessage("")
+                    setLoading(false)
+                    bottomChat.current.scrollIntoView({ behavior: "smooth" })
+                } catch(e) {
+                    console.log(e)
+                }
+            })()
         }
     }
     console.log("message", message)
@@ -50,7 +56,9 @@ function Form({ selectedChat, bottomChat }) {
             />
             <button
                 disabled={message === "" || loading}
-                className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent ${message !== "" ? "hover:bg-accent-600" : ""}`}
+                className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent 
+                            ${message !== "" && !loading ? "hover:bg-accent-600 active:scale-[0.98]" : ""}`
+                }
             >
                 <img src={send} className="invert" />
             </button>
