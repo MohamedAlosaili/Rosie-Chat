@@ -7,26 +7,32 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import { db, auth } from "rosie-firebase"
 import { send } from "imgs"
 
-function Form({ selectedChat }) {
+function Form({ selectedChat, bottomChat }) {
 
     const [message, setMessage] = useState("")
-    
-    async function sendMessage(e) {
+    const [loading, setLoading] = useState(false)
+
+    console.log("loading", loading)
+    function sendMessage(e) {
         e.preventDefault()
 
         if(message !== "") {
+            setLoading(true)
             const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
-
+            
             const { uid, photoURL } = auth.currentUser
-
-            await addDoc(messagesRef, {
+            
+            addDoc(messagesRef, {
                 id: nanoid(),
                 uid,
                 photoURL,
                 message,
                 createdAt: serverTimestamp()
-            })
-            setMessage("")
+            }).then(() => {
+                setMessage("")
+                setLoading(false)
+                bottomChat.current.scrollIntoView({ behavior: "smooth" })
+            }).catch(e => console.log(e))
         }
     }
     console.log("message", message)
@@ -43,7 +49,7 @@ function Form({ selectedChat }) {
                 className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
             />
             <button
-                disabled={message === ""} 
+                disabled={message === "" || loading}
                 className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent ${message !== "" ? "hover:bg-accent-600" : ""}`}
             >
                 <img src={send} className="invert" />
