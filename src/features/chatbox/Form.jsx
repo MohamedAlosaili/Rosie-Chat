@@ -39,7 +39,7 @@ function Form({ selectedChat }) {
                 type="text" 
                 placeholder="Type a message"
                 value={message}
-                onChange={(e) => e.target.value.trim() && setMessage(e.target.value.trim())}
+                onChange={(e) => setMessage(e.target.value.trimStart())}
                 className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
             />
             <button
