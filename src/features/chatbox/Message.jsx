@@ -26,13 +26,19 @@ const Message = ({ type, uid, message, createdAt, photoURL, isGroup }) => {
     } else { console.log("error", type, uid, message, createdAt, photoURL, isGroup) }
 
     const userMsg = auth.currentUser.uid === uid
-    console.log(userMsg)
+
     return (
         <div className={`flex justify-start gap-2 ${userMsg ? "flex-row-reverse" : ""} my-2`}>
             {isGroup && <img src={photoURL} alt="user message" className="w-8 h-8 object-cover" />}
-            <div className={`max-w-[70%] py-2 px-4 rounded-xl dark:bg-${userMsg ? "accent" : "primary-800"} dark:text-primary-200`}>
+            <div 
+                className={`max-w-[70%] py-2 px-4 rounded-xl 
+                        ${userMsg ? "dark:bg-accent" : "dark:bg-primary-800"} dark:text-primary-200
+                `}
+            >
               <p>{message}</p>
-              <time className={`block text-${!userMsg ? "right" : ""} text-xs mt-2 text-primary-300`}>{messageTime ?? "--:--"}</time>
+              <time className={`block ${!userMsg ? "text-right" : ""} text-[0.65rem] mt-2 opacity-60`}>
+                {messageTime ?? "--:--"}
+              </time>
             </div>
         </div>
     )
