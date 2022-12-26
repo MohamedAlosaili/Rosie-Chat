@@ -56,17 +56,15 @@ function SignUp() {
     email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
   };
+  
+  const isEmailValid = regex.email.test(signUpValue.email)
+  const isPasswordValid = regex.password.test(signUpValue.password)
 
   async function signUserIn(e) {
     e.preventDefault();
     setSubmitForm(true);
     const { name, email, password } = signUpValue;
-    console.log("SignUp clicked")
-    console.log('regex["email"].test(email) && regex["password"].test(password) && isPasswordMatched')
-    console.log(regex["email"].test(email), regex["password"].test(password), isPasswordMatched)
-    if (regex.email.test(email) && regex.password.test(password) && isPasswordMatched) {
-      console.log("SignUp entered right zoon")
-
+    if (isEmailValid && isPasswordValid && isPasswordMatched) {
       try {
         await createUserWithEmailAndPassword(email, password)
 
@@ -103,7 +101,7 @@ function SignUp() {
           placeholder="example@gmail.com"
           required={true}
           validateValue={true}
-          valid={regex.email.test(signUpValue.email)}
+          valid={isEmailValid}
           submitForm={submitForm}
           setSubmitForm={setSubmitForm}
         />
@@ -118,7 +116,7 @@ function SignUp() {
             placeholder="●●●●●●●●"
             required={true}
             validateValue={true}
-            valid={regex.password.test(signUpValue.password)}
+            valid={isPasswordValid}
             submitForm={submitForm}
             setSubmitForm={setSubmitForm}
           />
