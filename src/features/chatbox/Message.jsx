@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { auth } from "rosie-firebase"
 import { defaultAvatar } from "imgs"
 
-const Message = ({ type, uid, message, createdAt, photoURL, isGroup }) => {
+const Message = ({ type, uid, message, createdAt, displayName, photoURL, isGroup }) => {
 
     if(type === "announce") {
         return (
@@ -25,18 +25,19 @@ const Message = ({ type, uid, message, createdAt, photoURL, isGroup }) => {
         messageTime = `${hours}:${minutes} ${period}`
     } else { console.log("error", type, uid, message, createdAt, photoURL, isGroup) }
 
-    const userMsg = auth.currentUser.uid === uid
+    const currentUserMsg = auth.currentUser.uid === uid
 
     return (
-        <div className={`flex justify-start gap-2 ${userMsg ? "flex-row-reverse" : ""} my-2`}>
+        <div className={`flex justify-start gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}>
             {isGroup && <img src={photoURL} alt="user message" className="w-8 h-8 object-cover" />}
             <div 
                 className={`max-w-[70%] py-2 px-4 rounded-xl 
-                        ${userMsg ? "dark:bg-accent" : "dark:bg-primary-800"} dark:text-primary-200
+                        ${currentUserMsg ? "dark:bg-accent" : "dark:bg-primary-800"} dark:text-primary-200
                 `}
             >
+              {isGroup && <h3 className="font-medium">{displayName}</h3>}  
               <p>{message}</p>
-              <time className={`block ${!userMsg ? "text-right" : ""} text-[0.65rem] mt-2 opacity-60`}>
+              <time className={`block ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] mt-2 opacity-60`}>
                 {messageTime ?? "--:--"}
               </time>
             </div>
