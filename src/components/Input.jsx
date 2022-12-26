@@ -26,6 +26,18 @@ function Input({
         submitForm && setSubmitForm(false)
     }
     
+    function invalidMessage() {
+        switch(name) {
+            case "email":
+                return "Invalid email"
+            case "password":
+                return "Invalid password"
+            case "confirmPassword":
+                return "Password doesn't match"
+            default:
+                return ""       
+        }
+    }
 
     const validFocus = "focus:ring-success focus:text-success dark:focus:text-success"
     const invalidFocus = "focus:ring-error-400 focus:text-error-400 dark:focus:text-error-400"
@@ -65,7 +77,7 @@ function Input({
             {
                 submitForm && !valid 
                 && <span className="absolute top-1 right-2 text-pink-500 text-xs">{
-                    type === "email" ? "Invalid email" : "Invalid password"
+                    invalidMessage()
                 }</span>
             }
         </label>
