@@ -6,18 +6,7 @@ import { auth } from "rosie-firebase";
 import { Input, StatusMessage, Button } from "components";
 import Check from "./Check";
 
-function SignUp() {
-  const regex = {
-    email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-    password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
-  };
-
-  const [signUpValue, setSignUpValue] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+function usePasswordStrength(password) {
   const [passwordStrength, setPasswordStrength] = useState({
     lowercase: false,
     uppercase: false,
@@ -25,32 +14,40 @@ function SignUp() {
     number: false,
     eightCharacters: false,
   });
-  const [submitForm, setSubmitForm] = useState(false);
 
   useEffect(() => {
-    checkPassword();
-  }, [signUpValue.password]);
-
-  function checkPassword() {
     const passwordReqex = {
       lowercase: /[a-z]+/g,
       uppercase: /[A-Z]+/g,
       specialCharacter: /\W+/g,
       number: /\d+/g,
     };
-
+  
     const matches = {
-      lowercase: passwordReqex.lowercase.test(signUpValue.password),
-      uppercase: passwordReqex.uppercase.test(signUpValue.password),
-      specialCharacter: passwordReqex.specialCharacter.test(
-        signUpValue.password
-      ),
-      number: passwordReqex.number.test(signUpValue.password),
-      eightCharacters: signUpValue.password.length >= 8,
+      lowercase: passwordReqex.lowercase.test(password),
+      uppercase: passwordReqex.uppercase.test(password),
+      specialCharacter: passwordReqex.specialCharacter.test(password),
+      number: passwordReqex.number.test(password),
+      eightCharacters: password.length >= 8,
     };
-
+  
     setPasswordStrength(matches);
-  }
+  }, [password]);
+
+  return passwordStrength
+} 
+
+function SignUp() {
+  const regex = {
+    email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+    password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
+  };
+
+  const [signUpValue, setSignUpValue] = useState({name: "", email: "", password: ""});
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+  const [submitForm, setSubmitForm] = useState(false);
+  const passwordStrength = usePasswordStrength(signUpValue.password)
+  
 
   async function signUserIn(e) {
     e.preventDefault();
