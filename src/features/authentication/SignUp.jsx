@@ -6,7 +6,7 @@ import { auth } from "rosie-firebase";
 import { Input, StatusMessage, Button } from "components";
 import Check from "./Check";
 
-function usePasswordStrength(password) {
+function usePasswordStrength(password, confirmPassword) {
   const [passwordStrength, setPasswordStrength] = useState({
     lowercase: false,
     uppercase: false,
@@ -14,6 +14,7 @@ function usePasswordStrength(password) {
     number: false,
     eightCharacters: false,
   });
+  const [isPasswordMatched, setIsPasswordMatched] = useState(false)
 
   useEffect(() => {
     const passwordReqex = {
@@ -34,27 +35,37 @@ function usePasswordStrength(password) {
     setPasswordStrength(matches);
   }, [password]);
 
-  return passwordStrength
+  useEffect(() => {
+      if(password !== "")
+        setIsPasswordMatched(password === confirmPassword)
+  }, [confirmPassword, password])
+
+  return [passwordStrength, isPasswordMatched]
 } 
 
 function SignUp() {
+
+  const [signUpValue, setSignUpValue] = useState({name: "", email: "", password: "", confirmPassword: ""});
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+  const [submitForm, setSubmitForm] = useState(false);
+
+  const {password, confirmPassword} = signUpValue
+  const [passwordStrength, isPasswordMatched] = usePasswordStrength(password, confirmPassword)
+
   const regex = {
     email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
   };
 
-  const [signUpValue, setSignUpValue] = useState({name: "", email: "", password: ""});
-  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
-  const [submitForm, setSubmitForm] = useState(false);
-  const passwordStrength = usePasswordStrength(signUpValue.password)
-  
-
   async function signUserIn(e) {
     e.preventDefault();
     setSubmitForm(true);
     const { name, email, password } = signUpValue;
-
-    if (regex["email"].test(email) && regex["password"].test(password)) {
+    console.log("SignUp clicked")
+    console.log('regex["email"].test(email) && regex["password"].test(password) && isPasswordMatched')
+    console.log(regex["email"].test(email), regex["password"].test(password), isPasswordMatched)
+    if (regex.email.test(email) && regex.password.test(password) && isPasswordMatched) {
+      console.log("SignUp entered right zoon")
 
       try {
         await createUserWithEmailAndPassword(email, password)
@@ -94,7 +105,7 @@ function SignUp() {
           placeholder="example@gmail.com"
           required={true}
           validateValue={true}
-          regex={regex.email}
+          valid={regex.email.test(signUpValue.email)}
           submitForm={submitForm}
           setSubmitForm={setSubmitForm}
         />
@@ -109,11 +120,11 @@ function SignUp() {
             placeholder="●●●●●●●●"
             required={true}
             validateValue={true}
-            regex={regex.password}
+            valid={regex.password.test(signUpValue.password)}
             submitForm={submitForm}
             setSubmitForm={setSubmitForm}
           />
-          <div className="flex flex-wrap mt-4">
+          <div className="flex flex-wrap">
             <Check
               condition="One lowercase character"
               passed={passwordStrength.lowercase}
@@ -132,6 +143,26 @@ function SignUp() {
               passed={passwordStrength.eightCharacters}
             />
           </div>
+        </div>
+        <div>
+        <Input
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            value={signUpValue.confirmPassword}
+            setValue={setSignUpValue}
+            placeholder="●●●●●●●●"
+            required={true}
+            validateValue={true}
+            valid={isPasswordMatched}
+            submitForm={submitForm}
+            setSubmitForm={setSubmitForm}
+          />
+          <Check
+              condition="Password matched"
+              passed={isPasswordMatched}
+            />
         </div>
         <Button disabled={loading}>
           {loading ? "Creating account..." : "Create account"}
