@@ -17,13 +17,12 @@ function Conversation({ selectedChat }) {
         orderBy("createdAt")
     )
 
-    const [messages, loading, error] = useCollectionData(q)    
+    const [messages, isMessagesLoading, messagesError] = useCollectionData(q)    
     const bottomChat = useRef()
 
     return (
         <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain">
-            { loading && <StatusMessage message="Loading..." type="loading" /> }
-            { error && <StatusMessage message={error?.code} type="error" /> }
+            { messagesError && <StatusMessage message={messagesError?.code} type="error" /> }
             <header className="flex items-center gap-4 p-4 pt-6 border-b border-primary-800 dark:bg-primary-900">
                 <img 
                     src={selectedChat.photoURL} 
@@ -33,7 +32,8 @@ function Conversation({ selectedChat }) {
                 />
                 <h3 className="font-medium dark:text-primary-200">{ selectedChat.name }</h3>
             </header>
-            <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar">
+            <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar relative">
+                {isMessagesLoading && <StatusMessage message="Loading..." type="loading" position="absolute" /> }
                 <div className="max-w-2xl mx-auto">
                     {
                         messages?.map(msg => (
