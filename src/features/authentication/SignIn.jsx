@@ -7,7 +7,7 @@ import { auth } from "rosie-firebase";
 
 function SignIn() {
   const [signInValue, setSignInValue] = useState({ email: "", password: "" });
-  const [signInWithEmailAndPassword, , loading, error] =
+  const [signInWithEmailAndPassword, , signInLoading, signInError] =
     useSignInWithEmailAndPassword(auth);
 
   async function signUserIn(e) {
@@ -19,8 +19,8 @@ function SignIn() {
 
   return (
     <>
-      {loading && <StatusMessage message="Signing in..." type="loading" />}
-      {error && <StatusMessage message={error?.code} type="error" />}
+      {signInLoading && <StatusMessage message="Signing in..." type="loading" />}
+      {signInError && <StatusMessage message={signInError?.code} type="error" />}
       <form onSubmit={signUserIn} className="flex flex-col gap-6">
         <Input
           label="Email"
@@ -42,8 +42,8 @@ function SignIn() {
           placeholder="●●●●●●●●"
           required={true}
         />
-        <Button disabled={loading}>
-          {loading ? "Signing in..." : "Sign in"}
+        <Button disabled={signInLoading}>
+          {signInLoading ? "Signing in..." : "Sign in"}
         </Button>
       </form>
     </>

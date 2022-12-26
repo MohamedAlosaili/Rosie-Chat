@@ -46,7 +46,7 @@ function usePasswordStrength(password, confirmPassword) {
 function SignUp() {
 
   const [signUpValue, setSignUpValue] = useState({name: "", email: "", password: "", confirmPassword: ""});
-  const [createUserWithEmailAndPassword, user, signingUp, signUpError] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, singUpLoading, signUpError] = useCreateUserWithEmailAndPassword(auth);
   const [submitForm, setSubmitForm] = useState(false);
 
   const {password, confirmPassword} = signUpValue
@@ -78,7 +78,7 @@ function SignUp() {
 
   return (
     <>
-      {signingUp && <StatusMessage message="Creating account..." type="loading" />}
+      {singUpLoading && <StatusMessage message="Creating account..." type="loading" />}
       {signUpError && <StatusMessage message={signUpError?.code} type="error" />}
       <form onSubmit={signUserIn} className="flex flex-col gap-6">
         <Input
@@ -160,8 +160,8 @@ function SignUp() {
               passed={isPasswordMatched}
             />
         </div>
-        <Button disabled={signingUp}>
-          {signingUp ? "Creating account..." : "Create account"}
+        <Button disabled={singUpLoading}>
+          {singUpLoading ? "Creating account..." : "Create account"}
         </Button>
       </form>
     </>
