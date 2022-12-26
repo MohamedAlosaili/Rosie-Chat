@@ -1,18 +1,20 @@
 import PropTypes from "prop-types"
 
-const StatusMessage = ({message, type}) => {
+const StatusMessage = ({message, type, position}) => {
     const msgColor = 
             (type === "loading") 
             ? "bg-loading-light dark:bg-loading-dark text-primary-200 dark:text-primary-900" 
             : "text-white bg-error"
 
-    let errorMsg = message.slice(message.includes("auth/") ? 5 : 0).replaceAll("-", " ")
-    errorMsg = errorMsg[0].toUpperCase() + errorMsg.slice(1)
+    if(type === "error") {
+        let errorMsg = message.slice(message.includes("auth/") ? 5 : 0).replaceAll("-", " ")
+        errorMsg = errorMsg[0].toUpperCase() + errorMsg.slice(1)
+    }
 
     return (
         <div 
             className={
-                `fixed top-4 left-0 w-full`
+                `${position} top-4 left-0 w-full`
             }
         >
             
@@ -51,10 +53,12 @@ const LoadingSpinner = () => (
 StatusMessage.propTypes = {
     type: PropTypes.string.isRequired,
     message: PropTypes.string,
+    position: PropTypes.string
 }
 
 StatusMessage.defaultProps = {
-    message: "Some thing went wrong!"
+    message: "Some thing went wrong!",
+    position: "fixed"
 }
 
 export default StatusMessage
