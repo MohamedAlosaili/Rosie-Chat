@@ -10,30 +10,34 @@ import { send } from "imgs"
 function Form({ selectedChat, bottomChat }) {
 
     const [message, setMessage] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [sending, setSending] = useState(false)
 
     function sendMessage(e) {
         e.preventDefault()
 
         if(message !== "") {
-            setLoading(true)
+            setSending(true)
 
             const messagesRef = collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`)
 
             // Removing 'semicolon' causes this error 'Uncaught TypeError: auth.currentUser is not a function'
-            const { uid, photoURL } = auth.currentUser; 
+            const { uid, photoURL, displayName } = auth.currentUser; 
 
             (async function() {
                 try {
+                    // setState handled asynchronously
+                    setMessage("")
+                    setSending(false)
+
                     await addDoc(messagesRef, {
                         id: nanoid(),
                         uid,
+                        displayName,
                         photoURL,
-                        message,
+                        message: message.trim(),
                         createdAt: serverTimestamp()
                     })
-                    setMessage("")
-                    setLoading(false)
+
                     bottomChat.current.scrollIntoView({ behavior: "smooth" })
                 } catch(e) {
                     console.log(e)
@@ -41,7 +45,7 @@ function Form({ selectedChat, bottomChat }) {
             })()
         }
     }
-    console.log("message", message)
+
     return (
         <form 
             onSubmit={sendMessage}
@@ -51,13 +55,13 @@ function Form({ selectedChat, bottomChat }) {
                 type="text" 
                 placeholder="Type a message"
                 value={message}
-                onChange={(e) => setMessage(e.target.value.trimStart())}
+                onChange={(e) => setMessage(e.target.value)}
                 className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
             />
             <button
-                disabled={message === "" || loading}
+                disabled={message.trim() === "" || sending}
                 className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent 
-                            ${message !== "" && !loading ? "hover:bg-accent-600 active:scale-[0.98]" : ""}`
+                            ${message.trim() !== "" && !sending ? "hover:bg-accent-600 active:scale-[0.98]" : ""}`
                 }
             >
                 <img src={send} className="invert" />
