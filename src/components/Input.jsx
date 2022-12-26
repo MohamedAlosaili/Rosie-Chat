@@ -1,5 +1,7 @@
-import { useState, useEffect, memo } from "react"
+import { useState, memo } from "react"
 import PropTypes from "prop-types"
+
+import { hidePassword, showPassword } from "imgs"
 
 function Input({
     label, 
@@ -15,6 +17,9 @@ function Input({
     submitForm, 
     setSubmitForm
 }) {
+
+    const [inputType, setInputType] = useState(type)
+
     function changeValue(e) {
         const {name, value} = e.target
     
@@ -24,6 +29,20 @@ function Input({
         }))
 
         submitForm && setSubmitForm(false)
+    }
+
+    function changePasswordState(e) {
+        e.preventDefault()
+        const src = e.target.src
+
+        if(src.includes("hide-password")) {
+            e.target.src = showPassword
+            setInputType("text")
+        }
+        else {
+            e.target.src = hidePassword
+            setInputType("password")
+        }
     }
     
     function invalidMessage() {
@@ -60,13 +79,21 @@ function Input({
         >
             <div>
                 {label} {required && <span className="text-error">*</span>}    
+                {type === "password" && 
+                    <img 
+                        onClick={changePasswordState}
+                        src={hidePassword} 
+                        alt="hide/show password" 
+                        className="inline-block w-4 ml-3 invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] w-6 dark:group-[.active]:invert cursor-pointer"
+                    />
+                }
             </div>
             <input 
                 className={
                     `p-3 text-sm rounded-xl border-2 ring-2 focus:outline-none focus:border-1 
                     ${light} ${dark} ${focusColors} ${invalidInputColors}`
                 }
-                type={type}
+                type={inputType}
                 name={name}
                 id={id}
                 value={value}
