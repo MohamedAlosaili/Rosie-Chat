@@ -84,7 +84,7 @@ function Input({
                         onClick={changePasswordState}
                         src={hidePassword} 
                         alt="hide/show password" 
-                        className="inline-block w-4 ml-3 invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] w-6 dark:group-[.active]:invert cursor-pointer"
+                        className="inline-block w-4 ml-3 invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] dark:group-[.active]:invert cursor-pointer"
                     />
                 }
             </div>
