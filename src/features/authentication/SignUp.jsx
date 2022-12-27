@@ -57,6 +57,8 @@ function SignUp() {
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
   };
   
+  // calling .test() multiple times with the flag g or y will cause different results
+  // Read: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test#specifications 
   const isEmailValid = regex.email.test(signUpValue.email)
   const isPasswordValid = regex.password.test(signUpValue.password)
 
