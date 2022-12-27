@@ -6,9 +6,11 @@ const StatusMessage = ({message, type, position}) => {
             ? "bg-loading-light dark:bg-loading-dark text-primary-200 dark:text-primary-900" 
             : "text-white bg-error"
 
+    let errorMsg
     if(type === "error") {
-        let errorMsg = message.slice(message.includes("auth/") ? 5 : 0).replaceAll("-", " ")
-        errorMsg = errorMsg[0].toUpperCase() + errorMsg.slice(1)
+        const cleanedErrorMsg = message.slice(message.includes("auth/") ? 5 : 0).replaceAll("-", " ")
+        const capitalizedMsg = cleanedErrorMsg[0].toUpperCase() + cleanedErrorMsg.slice(1)
+        errorMsg = capitalizedMsg
     }
 
     return (
