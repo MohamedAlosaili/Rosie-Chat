@@ -25,7 +25,7 @@ function Form({ selectedChat, bottomChat }) {
 
             (async function() {
                 try {
-                    // setState handled asynchronously
+                    // setState is handled asynchronously
                     setMessage("")
                     setSending(false)
 
