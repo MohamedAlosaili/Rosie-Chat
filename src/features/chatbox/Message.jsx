@@ -3,7 +3,16 @@ import PropTypes from "prop-types"
 import { auth } from "rosie-firebase"
 import { defaultAvatar } from "imgs"
 
-const Message = ({ type, uid, message, createdAt, displayName, photoURL, isGroup }) => {
+const Message = ({ 
+    type, 
+    uid, 
+    message, 
+    createdAt, 
+    displayName, 
+    photoURL, 
+    isGroup,
+    memberColor 
+}) => {
 
     if(type === "announce") {
         return (
@@ -35,7 +44,7 @@ const Message = ({ type, uid, message, createdAt, displayName, photoURL, isGroup
                         ${currentUserMsg ? "dark:bg-accent" : "dark:bg-primary-800"} dark:text-primary-200
                 `}
             >
-              {isGroup && <h3 className="font-medium">{displayName}</h3>}  
+              {isGroup && !currentUserMsg && <h3 className={`font-medium text-[${memberColor}] truncate`}>{displayName}</h3>}  
               <p>{message}</p>
               <time className={`block ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] mt-2 opacity-60`}>
                 {messageTime ?? "--:--"}
