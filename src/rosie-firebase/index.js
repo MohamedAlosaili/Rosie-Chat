@@ -10,7 +10,7 @@ import { getFirestore, collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import firebaseConfig from "../firebaseConfig";
+import firebaseConfig from "./firebaseConfig";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
