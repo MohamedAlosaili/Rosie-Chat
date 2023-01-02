@@ -12,6 +12,7 @@ export default defineConfig({
       "rosie-firebase": path.resolve(__dirname, "./src/rosie-firebase"),
       pages: path.resolve(__dirname, "./src/pages"),
       imgs: path.resolve(__dirname, "./src/imgs"),
+      util: path.resolve(__dirname, "./src/util"),
     },
   },
   plugins: [react()],
