@@ -19,8 +19,12 @@ function SignIn() {
 
   return (
     <>
-      {signInLoading && <StatusMessage message="Signing in..." type="loading" />}
-      {signInError && <StatusMessage message={signInError?.code} type="error" />}
+      {signInLoading && (
+        <StatusMessage message="Signing in..." type="loading" />
+      )}
+      {signInError && (
+        <StatusMessage message={signInError?.code} type="error" />
+      )}
       <form onSubmit={signUserIn} className="flex flex-col gap-6">
         <Input
           label="Email"

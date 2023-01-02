@@ -12,7 +12,7 @@ export const selectedChatObj = {
   isGroup: false, // "boolean"
   lastMsg: {
     message: null, // "string"
-    createdAt: null // "timestamp"
+    createdAt: null, // "timestamp"
   },
   name: null, // "string"
   photoURL: null, // "string"

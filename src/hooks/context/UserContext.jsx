@@ -32,7 +32,7 @@ function UserContextProvider({ children }) {
             `groups/${chatId}/messages`
           );
           const usersRef = collection(db, "users");
-          
+
           await setDoc(doc(usersRef, uid), {
             displayName,
             email,

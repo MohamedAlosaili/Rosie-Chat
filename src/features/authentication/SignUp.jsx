@@ -14,7 +14,7 @@ function usePasswordStrength(password, confirmPassword) {
     number: false,
     eightCharacters: false,
   });
-  const [isPasswordMatched, setIsPasswordMatched] = useState(false)
+  const [isPasswordMatched, setIsPasswordMatched] = useState(false);
 
   useEffect(() => {
     const passwordReqex = {
@@ -23,7 +23,7 @@ function usePasswordStrength(password, confirmPassword) {
       specialCharacter: /\W+/g,
       number: /\d+/g,
     };
-  
+
     const matches = {
       lowercase: passwordReqex.lowercase.test(password),
       uppercase: passwordReqex.uppercase.test(password),
@@ -31,36 +31,43 @@ function usePasswordStrength(password, confirmPassword) {
       number: passwordReqex.number.test(password),
       eightCharacters: password.length >= 8,
     };
-  
+
     setPasswordStrength(matches);
   }, [password]);
 
   useEffect(() => {
-      if(password !== "")
-        setIsPasswordMatched(password === confirmPassword)
-  }, [confirmPassword, password])
+    if (password !== "") setIsPasswordMatched(password === confirmPassword);
+  }, [confirmPassword, password]);
 
-  return [passwordStrength, isPasswordMatched]
-} 
+  return [passwordStrength, isPasswordMatched];
+}
 
 function SignUp() {
-
-  const [signUpValue, setSignUpValue] = useState({name: "", email: "", password: "", confirmPassword: ""});
-  const [createUserWithEmailAndPassword, user, singUpLoading, signUpError] = useCreateUserWithEmailAndPassword(auth);
+  const [signUpValue, setSignUpValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [createUserWithEmailAndPassword, user, singUpLoading, signUpError] =
+    useCreateUserWithEmailAndPassword(auth);
   const [submitForm, setSubmitForm] = useState(false);
 
-  const {password, confirmPassword} = signUpValue
-  const [passwordStrength, isPasswordMatched] = usePasswordStrength(password, confirmPassword)
+  const { password, confirmPassword } = signUpValue;
+  const [passwordStrength, isPasswordMatched] = usePasswordStrength(
+    password,
+    confirmPassword
+  );
 
   const regex = {
     email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}$/g,
   };
-  
+
   // calling .test() multiple times with the flag g or y will cause different results
-  // Read: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test#specifications 
-  const isEmailValid = regex.email.test(signUpValue.email)
-  const isPasswordValid = regex.password.test(signUpValue.password)
+  // Read: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test#specifications
+  const isEmailValid = regex.email.test(signUpValue.email);
+  const isPasswordValid = regex.password.test(signUpValue.password);
 
   async function signUserIn(e) {
     e.preventDefault();
@@ -68,20 +75,23 @@ function SignUp() {
     const { name, email, password } = signUpValue;
     if (isEmailValid && isPasswordValid && isPasswordMatched) {
       try {
-        await createUserWithEmailAndPassword(email, password)
+        await createUserWithEmailAndPassword(email, password);
 
-        sessionStorage.setItem("user-info", JSON.stringify({ name, email }))
-      } catch(e) {
-        console.log(e)
+        sessionStorage.setItem("user-info", JSON.stringify({ name, email }));
+      } catch (e) {
+        console.log(e);
       }
     }
-      
   }
 
   return (
     <>
-      {singUpLoading && <StatusMessage message="Creating account..." type="loading" />}
-      {signUpError && <StatusMessage message={signUpError?.code} type="error" />}
+      {singUpLoading && (
+        <StatusMessage message="Creating account..." type="loading" />
+      )}
+      {signUpError && (
+        <StatusMessage message={signUpError?.code} type="error" />
+      )}
       <form onSubmit={signUserIn} className="flex flex-col gap-6">
         <Input
           label="Name"
@@ -143,7 +153,7 @@ function SignUp() {
           </div>
         </div>
         <div>
-        <Input
+          <Input
             label="Confirm Password"
             type="password"
             name="confirmPassword"
@@ -157,10 +167,7 @@ function SignUp() {
             submitForm={submitForm}
             setSubmitForm={setSubmitForm}
           />
-          <Check
-              condition="Password matched"
-              passed={isPasswordMatched}
-            />
+          <Check condition="Password matched" passed={isPasswordMatched} />
         </div>
         <Button disabled={singUpLoading}>
           {singUpLoading ? "Creating account..." : "Create account"}
