@@ -21,20 +21,9 @@ const Message = ({
             </div>
         )
     }
-    // Convert firebase timestamp into readable time
-    let messageTime
-    if(createdAt) {
-        const date = `${createdAt.toDate()}`
-        const extractedTime = date.match(/\d\d:\d\d/g)[0].split(":")
-        
-        const period = +extractedTime[0] >= "12" ? "PM" : "AM"
-        const minutes = extractedTime[1]
-        const hours = extractedTime[0] % 12 || 12
 
-        messageTime = `${hours}:${minutes} ${period}`
-    } else { console.log("error", type, uid, message, createdAt, photoURL, isGroup) }
-
-    const currentUserMsg = auth.currentUser.uid === uid
+    const currentUserMsg = auth.currentUser.uid === uid 
+    const dateFormater = new Intl.DateTimeFormat("en-US", {hour: 'numeric', minute: 'numeric'})
 
     return (
         <div className={`flex justify-start gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}>
@@ -47,7 +36,7 @@ const Message = ({
               {isGroup && !currentUserMsg && <h3 className={`font-medium text-[${memberColor}] truncate`}>{displayName}</h3>}  
               <p>{message}</p>
               <time className={`block ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] mt-2 opacity-60`}>
-                {messageTime ?? "--:--"}
+                {dateFormater.format(createdAt?.toDate()) ?? "--:--"}
               </time>
             </div>
         </div>
