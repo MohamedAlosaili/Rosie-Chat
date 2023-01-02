@@ -5,6 +5,7 @@
     "paths": {
       "components/*": ["./src/components/*"],
       "features/*": ["./src/features/*"],
+      "hooks/*": ["./src/hooks/*"],
       "rosie-firebase/*": ["./src/rosie-firebase/*"],
       "pages/*": ["./src/pages/*"],
       "imgs/*": ["./src/imgs/*"]
