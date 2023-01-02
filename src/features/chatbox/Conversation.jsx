@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react"
+import { useRef, useContext } from "react"
 import PropTypes from "prop-types"
 
+import uniqolor from "uniqolor"
 import { collection, query, orderBy } from "firebase/firestore"
 import { useCollectionData } from "react-firebase-hooks/firestore"
 
@@ -8,9 +9,12 @@ import { db } from "rosie-firebase"
 import { defaultAvatar } from "imgs" 
 import Message from "./Message"
 import Form from "./Form"
-import { StatusMessage } from "../../components"
+import { StatusMessage } from "components"
+import { ChatContext } from "hooks/context"
 
-function Conversation({ selectedChat }) {
+function Conversation() {
+
+    const { selectedChat } = useContext(ChatContext)
 
     const q = query(
         collection(db, `${selectedChat.isGroup ? "groups" : "direct"}/${selectedChat.id}/messages`), 
@@ -37,7 +41,7 @@ function Conversation({ selectedChat }) {
                 <div className="max-w-2xl mx-auto">
                     {
                         messages?.map(msg => (
-                            <Message key={msg.id} {...msg} isGroup={selectedChat.isGroup} />
+                            <Message key={msg.id} messageObject={msg} selectedChat={selectedChat} />
                         ))
                     }
                     <div ref={bottomChat}></div>
