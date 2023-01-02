@@ -1,7 +1,7 @@
 import { useContext } from "react"
 
 import { UserContext, ChatContext } from "hooks/context"
-import Chat from "./chat"
+import Chat from "./Chat"
 import { search } from "imgs"
 
 function ChatList() {
