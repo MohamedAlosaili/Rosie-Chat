@@ -1,15 +1,19 @@
+import { useContext } from "react"
 
-import Chat from "./Chat"
+import { UserContext, ChatContext } from "hooks/context"
+import Chat from "./chat"
 import { search } from "imgs"
 
-function ChatList({ chats, selectedChat, setSelectedChat }) {
-  console.log("<ChatList />")
-  const userChats = chats.map(chat => (
+function ChatList() {
+  
+  const [ userDoc ] = useContext(UserContext)
+  const { selectedChat } = useContext(ChatContext)
+
+  const userChats = userDoc.chats.map(chat => (
     <Chat 
       key={chat.id}
-      {...chat}
-      selected={chat.id == selectedChat.id}
-      setSelectedChat={setSelectedChat.bind(this, chat)}
+      chat={chat}
+      isSelected={chat.id === selectedChat.id}
     />
   ))
 
