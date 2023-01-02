@@ -1,13 +1,18 @@
+import { useContext } from "react"
+
 import Conversation from "./Conversation"
 import { selectChat } from "imgs"
+import { ChatContext } from "hooks/context"
 
-function ChatBox({ selectedChat }) {
+function ChatBox() {
+  const { selectedChat } = useContext(ChatContext)
+
   return (
     <div className="basis-[30rem] grow shrink">
       {
         selectedChat.id 
         ? (
-          <Conversation selectedChat={selectedChat} />
+          <Conversation />
         ) 
         : (
           <div className="h-full flex flex-col justify-center items-center p-8">
