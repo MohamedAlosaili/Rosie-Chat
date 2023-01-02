@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       components: path.resolve(__dirname, "./src/components"),
       features: path.resolve(__dirname, "./src/features"),
+      hooks: path.resolve(__dirname, "./src/hooks"),
       "rosie-firebase": path.resolve(__dirname, "./src/rosie-firebase"),
       pages: path.resolve(__dirname, "./src/pages"),
       imgs: path.resolve(__dirname, "./src/imgs"),
