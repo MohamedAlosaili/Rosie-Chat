@@ -1,7 +1,5 @@
-import { useRef, useContext } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useRef, useContext } from "react";
 
-import uniqolor from "uniqolor";
 import { collection, query, orderBy } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -27,6 +25,16 @@ function Conversation() {
 
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
   const bottomChat = useRef();
+  const firstScrollDone = useRef(false);
+
+  // Scroll down if use enter the chat after loading messages
+  // # needs some improvments #
+  useEffect(() => {
+    if (messages && !firstScrollDone.current) {
+      bottomChat.current.scrollIntoView();
+      firstScrollDone.current = true;
+    }
+  }, [messages]);
 
   return (
     <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain">
@@ -53,9 +61,10 @@ function Conversation() {
           />
         )}
         <div className="max-w-2xl mx-auto">
-          {messages?.map((msg) => (
+          {messages?.map((msg, idx, msgs) => (
             <Message
               key={msg.id}
+              prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
               messageObject={msg}
               selectedChat={selectedChat}
             />
@@ -69,7 +78,5 @@ function Conversation() {
     </div>
   );
 }
-
-Conversation.propTypes = {};
 
 export default Conversation;
