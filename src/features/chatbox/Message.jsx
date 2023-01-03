@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import PropTypes from "prop-types";
 
 import { auth } from "rosie-firebase";
@@ -79,16 +81,19 @@ const Message = ({ messageObject, selectedChat }) => {
 };
 
 Message.propTypes = {
-  uid: PropTypes.string,
-  message: PropTypes.string.isRequired,
-  time: PropTypes.string,
-  photoURL: PropTypes.string,
-  isGroup: PropTypes.bool,
+  messageObject: PropTypes.shape({
+    type: PropTypes.string,
+    uid: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
+    displayName: PropTypes.string,
+    photoURL: PropTypes.string,
+  }),
+  selectedChat: PropTypes.shape({
+    id: PropTypes.string,
+    isGroup: PropTypes.bool,
+  }),
 };
 
-Message.defaultProps = {
-  photoURL: defaultAvatar,
-  isGroup: false,
-};
-
-export default Message;
+// memo() Prevents unnecessary re-render
+export default memo(Message);
