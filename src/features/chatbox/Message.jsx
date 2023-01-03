@@ -6,7 +6,7 @@ import { auth } from "rosie-firebase";
 import { defaultAvatar } from "imgs";
 import uniqolor from "uniqolor";
 
-const Message = ({ messageObject, selectedChat }) => {
+const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
   const { type, uid, message, createdAt, displayName, photoURL } =
     messageObject;
   const { id: chatId, isGroup } = selectedChat;
@@ -28,7 +28,9 @@ const Message = ({ messageObject, selectedChat }) => {
   // With that I can generate different colors for the same user + I don't have to save it in the database
 
   const currentUserMsg = auth.currentUser.uid === uid;
-  const groupDetail = isGroup && !currentUserMsg;
+  const isTheSameSender = prevMsgSender?.uid === uid;
+  const groupDetail = isGroup && !currentUserMsg && !isTheSameSender;
+
   const dateFormater = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "numeric",
@@ -40,15 +42,19 @@ const Message = ({ messageObject, selectedChat }) => {
         currentUserMsg ? "flex-row-reverse" : ""
       } my-2`}
     >
-      {groupDetail && (
-        <img
-          src={photoURL}
-          alt="Sender avatar"
-          className={`w-8 h-8 object-cover ${
-            photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
-          } rounded-50 p-px`}
-          style={userColor}
-        />
+      {isGroup && (
+        <div className="w-8 h-8">
+          {groupDetail && (
+            <img
+              src={photoURL}
+              alt={`${displayName} avatar`}
+              className={`w-full object-cover ${
+                photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
+              } rounded-50 p-px`}
+              style={userColor}
+            />
+          )}
+        </div>
       )}
       <div
         className={`max-w-[70%] py-2 px-4 rounded-xl 
@@ -83,9 +89,9 @@ const Message = ({ messageObject, selectedChat }) => {
 Message.propTypes = {
   messageObject: PropTypes.shape({
     type: PropTypes.string,
-    uid: PropTypes.string.isRequired,
+    uid: PropTypes.string,
     message: PropTypes.string.isRequired,
-    createdAt: PropTypes.string,
+    createdAt: PropTypes.object,
     displayName: PropTypes.string,
     photoURL: PropTypes.string,
   }),
