@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import { nanoid } from "nanoid";
 import {
   collection,
   setDoc,
@@ -41,6 +42,7 @@ function UserContextProvider({ children }) {
           });
           // Alert if user has been added
           await addDoc(publicChatMessages, {
+            id: nanoid(),
             type: "announce",
             message: `${displayName} joined`,
             createdAt: serverTimestamp(),
