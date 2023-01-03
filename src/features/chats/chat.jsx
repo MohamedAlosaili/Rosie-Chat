@@ -2,6 +2,7 @@ import { memo, useContext } from "react";
 import PropTypes from "prop-types";
 
 import { ChatContext } from "hooks/context";
+import { selectedChatObj } from "util";
 
 const Chat = ({ chat, isSelected }) => {
   const { changeChat } = useContext(ChatContext);
@@ -56,16 +57,21 @@ const Chat = ({ chat, isSelected }) => {
 };
 
 Chat.proptypes = {
-  chatImg: PropTypes.string,
-  chatName: PropTypes.string.isRequired,
-  lastMsgTime: PropTypes.string,
-  lastMsg: PropTypes.string,
-  unreadMsg: PropTypes.number,
+  chat: PropTypes.shape({
+    photoURL: PropTypes.string,
+    isGroup: PropTypes.bool,
+    unreadMsgs: PropTypes.number,
+    name: PropTypes.string,
+    id: PropTypes.string,
+    lastMsg: PropTypes.shape({
+      message: PropTypes.string,
+      createdAt: PropTypes.object,
+    }),
+  }),
   isSelected: PropTypes.bool,
 };
 
 Chat.defaultProps = {
-  chatImg: "", // placeholder image
   unreadMsg: 0,
   isSelected: false,
 };
