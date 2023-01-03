@@ -41,8 +41,10 @@ const Message = ({ messageObject, selectedChat }) => {
       {groupDetail && (
         <img
           src={photoURL}
-          alt="user message"
-          className={`w-8 h-8 object-cover bg-[var(--color)] rounded-50 p-px`}
+          alt="Sender avatar"
+          className={`w-8 h-8 object-cover ${
+            photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
+          } rounded-50 p-px`}
           style={userColor}
         />
       )}
