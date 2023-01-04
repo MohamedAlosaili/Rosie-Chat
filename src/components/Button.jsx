@@ -8,6 +8,7 @@ const Button = ({
   padding,
   additionClasses,
   disabled,
+  type,
 }) => {
   const bgColor =
     bg === "full"
@@ -18,6 +19,7 @@ const Button = ({
 
   return (
     <button
+      type={type}
       disabled={disabled}
       onClick={handleClick}
       className={`flex gap-3 items-center justify-center rounded-xl font-medium ring-1 
@@ -41,6 +43,7 @@ Button.propTypes = {
   padding: PropTypes.string,
   additionClasses: PropTypes.string,
   disabled: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -48,6 +51,7 @@ Button.defaultProps = {
   padding: "p-2",
   additionClasses: "",
   disabled: false,
+  type: "",
 };
 
 export default memo(Button);
