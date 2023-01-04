@@ -9,9 +9,10 @@ import Message from "./Message";
 import Form from "./Form";
 import { StatusMessage } from "components";
 import { ChatContext } from "hooks/context";
+import { selectedChatTemplate } from "util";
 
 function Conversation() {
-  const { selectedChat } = useContext(ChatContext);
+  const { selectedChat, changeChat } = useContext(ChatContext);
 
   const q = query(
     collection(
@@ -24,17 +25,32 @@ function Conversation() {
   );
 
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
-  const bottomChat = useRef();
+  const mostRecentMsgs = useRef();
   const firstScrollDone = useRef(false);
 
-  // Scroll down if use enter the chat after loading messages
-  // # needs some improvments #
+  useEffect(() => {
+    window.addEventListener("keydown", closeConversation);
+
+    return () => window.removeEventListener("keydown", closeConversation);
+  }, []);
+
+  // TODO: needs some improvments (There is a better way)
   useEffect(() => {
     if (messages && !firstScrollDone.current) {
-      bottomChat.current.scrollIntoView();
+      scrollToBottom("auto");
       firstScrollDone.current = true;
     }
   }, [messages]);
+
+  function closeConversation(e) {
+    if (e.key === "Escape") {
+      changeChat(selectedChatTemplate());
+    }
+  }
+
+  function scrollToBottom(behavior = "smooth") {
+    mostRecentMsgs.current.scrollIntoView({ behavior });
+  }
 
   return (
     <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain">
@@ -69,11 +85,11 @@ function Conversation() {
               selectedChat={selectedChat}
             />
           ))}
-          <div ref={bottomChat}></div>
+          <div ref={mostRecentMsgs}></div>
         </div>
       </main>
       <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800">
-        <Form selectedChat={selectedChat} bottomChat={bottomChat} />
+        <Form selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
       </footer>
     </div>
   );
