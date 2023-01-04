@@ -6,6 +6,7 @@ import {
   signInWithRedirect,
 } from "firebase/auth";
 import { getFirestore, collection } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -15,6 +16,7 @@ import firebaseConfig from "./firebaseConfig";
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+const storage = getStorage();
 
 export async function signWithProviders(providerType = "google") {
   const windowWidth = window.innerWidth;
@@ -32,4 +34,4 @@ export async function signWithProviders(providerType = "google") {
   }
 }
 
-export { auth, db, collection, useAuthState, useCollectionData };
+export { auth, db, collection, storage, ref, useAuthState, useCollectionData };
