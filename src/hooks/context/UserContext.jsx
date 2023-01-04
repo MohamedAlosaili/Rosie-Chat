@@ -13,6 +13,7 @@ import {
 
 import { auth, db } from "rosie-firebase";
 import { StatusMessage } from "components";
+import { userDocTemplate, messageDocTemplate } from "util";
 
 const UserContext = React.createContext();
 
@@ -34,19 +35,32 @@ function UserContextProvider({ children }) {
           );
           const usersRef = collection(db, "users");
 
-          await setDoc(doc(usersRef, uid), {
-            displayName,
-            email,
-            photoURL,
-            chats: [publicChat],
-          });
+          await setDoc(
+            doc(usersRef, uid),
+            userDocTemplate({
+              uid,
+              displayName,
+              email,
+              photoURL,
+              chats: [publicChat],
+            })
+          );
           // Alert if user has been added
-          await addDoc(publicChatMessages, {
-            id: nanoid(),
-            type: "announce",
-            message: `${displayName} joined`,
-            createdAt: serverTimestamp(),
-          });
+          await addDoc(
+            publicChatMessages,
+            messageDocTemplate({
+              id: nanoid(),
+              type: "announce",
+              message: {
+                text: `${displayName} joined`,
+                file: {
+                  name: null,
+                  text: null,
+                },
+              },
+              createdAt: serverTimestamp(),
+            })
+          );
         } catch (e) {
           console.log(e);
         }
