@@ -3,7 +3,6 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { auth } from "rosie-firebase";
-import { defaultAvatar } from "imgs";
 import uniqolor from "uniqolor";
 
 const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
@@ -15,7 +14,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
   if (type === "announce") {
     return (
       <div className="bg-primary-700 w-fit mx-auto p-2 leading-none text-xs rounded-lg my-2">
-        {message}
+        {message.text}
       </div>
     );
   }
@@ -73,7 +72,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
             {displayName}
           </h3>
         )}
-        <p>{message}</p>
+        <p>{message.text}</p>
         <time
           className={`block ${
             !currentUserMsg ? "text-right" : ""
@@ -90,7 +89,13 @@ Message.propTypes = {
   messageObject: PropTypes.shape({
     type: PropTypes.string,
     uid: PropTypes.string,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.shape({
+      text: PropTypes.string,
+      file: PropTypes.shape({
+        name: PropTypes.string,
+        url: PropTypes.string,
+      }),
+    }).isRequired,
     createdAt: PropTypes.object,
     displayName: PropTypes.string,
     photoURL: PropTypes.string,
