@@ -2,7 +2,6 @@ import { memo, useContext } from "react";
 import PropTypes from "prop-types";
 
 import { ChatContext } from "hooks/context";
-import { selectedChatObj } from "util";
 
 const Chat = ({ chat, isSelected }) => {
   const { changeChat } = useContext(ChatContext);
