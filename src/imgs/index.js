@@ -14,6 +14,7 @@ import search from "./search.svg";
 
 import selectChat from "./chat/select-chat.svg";
 import send from "./chat/send.svg";
+import fileIcon from "./chat/clip-files.svg";
 
 export {
   googleLogo,
@@ -30,4 +31,5 @@ export {
   search,
   selectChat,
   send,
+  fileIcon,
 };
