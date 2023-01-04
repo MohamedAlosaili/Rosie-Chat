@@ -1,3 +1,7 @@
-import { selectedChatObj } from "./objectsTemplate";
-
-export { selectedChatObj };
+export {
+  userDocTemplate,
+  selectedChatTemplate,
+  messageDocTemplate,
+  groupDocTemplate,
+  directDocTemplate,
+} from "./objectsTemplate";

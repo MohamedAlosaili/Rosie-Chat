@@ -1,55 +1,75 @@
 // Get userDoc by auth.currentUser.uid
-const userDoc = {
-  displayName: null, // string
-  email: null, // string
-  photoURL: null, // string
-  isOnline: false, // boolean
-  chats: [], // array
-  friends: [], // array
+const userDocTemplate = (userDocInfo) => {
+  const defaultValues = {
+    uid: null,
+    displayName: null,
+    email: null,
+    photoURL: null,
+    isOnline: false,
+    chats: [],
+    friends: [],
+  };
+  return { ...defaultValues, ...userDocInfo };
 };
 
 // Individual chat object of ChatList
-const selectedChatObj = {
-  id: null, // "string"
-  isGroup: false, // "boolean"
-  lastMsg: {
-    message: null, // "string"
-    createdAt: null, // "timestamp"
-  },
-  name: null, // "string"
-  photoURL: null, // "string"
-  unreadMsgs: 0, // "number"
+const selectedChatTemplate = (chatInfo) => {
+  const defaultValues = {
+    id: null,
+    isGroup: false,
+    lastMsg: { message: null, createdAt: null },
+    name: null,
+    photoURL: null,
+    unreadMsgs: 0,
+  };
+  return { ...defaultValues, chatInfo };
 };
 
-const messageDoc = {
-  id: null, // string
-  uid: null, // string
-  displayName: null, // string
-  photoURL: null, // string
-  message: null, // string
-  createdAt: null, // timestamp
+const messageDocTemplate = (messageDocInfo) => {
+  const defaultValues = {
+    type: "text",
+    id: null,
+    uid: null,
+    displayName: null,
+    photoURL: null,
+    message: {
+      text: "",
+      file: {
+        name: null,
+        url: null,
+      },
+    },
+    createdAt: null,
+  };
+  return { ...defaultValues, ...messageDocInfo };
 };
 
-const groupDoc = {
-  id: null, // string
-  isGroup: true, // boolean
-  name: null, // string
-  photoURL: null, // string
-  lastMsg: {
-    message: null, // string
-    createdAt: null, // timestamp
-  },
+const groupDocTemplate = (groupDocInfo) => {
+  const defaultValues = {
+    id: null,
+    isGroup: true,
+    name: null,
+    photoURL: null,
+    lastMsg: { message: null, createdAt: null },
+  };
+  return { ...defaultValues, ...groupDocInfo };
 };
 
-const directDoc = {
-  id: null, // string
-  isGroup: false, // boolean
-  name: null, // string
-  photoURL: null, // string
-  lastMsg: {
-    message: null, // string
-    createdAt: null, // timestamp
-  },
+const directDocTemplate = (directDocInfo) => {
+  const defaultValues = {
+    id: null,
+    isGroup: false,
+    name: null,
+    photoURL: null,
+    lastMsg: { message: null, createdAt: null },
+  };
+  return { ...defaultValues, ...directDocInfo };
 };
 
-export { userDoc, selectedChatObj, messageDoc, groupDoc, directDoc };
+export {
+  userDocTemplate,
+  selectedChatTemplate,
+  messageDocTemplate,
+  groupDocTemplate,
+  directDocTemplate,
+};
