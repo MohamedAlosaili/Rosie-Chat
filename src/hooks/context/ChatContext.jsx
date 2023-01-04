@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 
-import { selectedChatObj } from "util";
+import { selectedChatTemplate } from "util";
 
 const ChatContext = React.createContext();
 
 function ChatContextProvider({ children }) {
-  const [selectedChat, setSelectedChat] = useState(selectedChatObj);
+  const [selectedChat, setSelectedChat] = useState(selectedChatTemplate());
 
   function changeChat(chat) {
     setSelectedChat(chat);
   }
-  console.log(selectedChat);
+
   const contextValue = {
     selectedChat,
     changeChat,
