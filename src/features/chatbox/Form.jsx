@@ -1,72 +1,34 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import { nanoid } from "nanoid";
 
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useSendMessage } from "hooks";
 
-import { db, auth } from "rosie-firebase";
+import FileInput from "./FileInput";
 import { send } from "imgs";
 
-function Form({ selectedChat, bottomChat }) {
-  const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
-
-  function sendMessage(e) {
-    e.preventDefault();
-
-    if (message !== "") {
-      setSending(true);
-
-      const messagesRef = collection(
-        db,
-        `${selectedChat.isGroup ? "groups" : "direct"}/${
-          selectedChat.id
-        }/messages`
-      );
-
-      // Removing 'semicolon' causes this error 'Uncaught TypeError: auth.currentUser is not a function'
-      const { uid, photoURL, displayName } = auth.currentUser;
-
-      (async function () {
-        try {
-          // setState is handled asynchronously
-          setMessage("");
-          setSending(false);
-
-          await addDoc(messagesRef, {
-            id: nanoid(),
-            uid,
-            displayName,
-            photoURL,
-            message: message.trim(),
-            createdAt: serverTimestamp(),
-          });
-
-          bottomChat.current.scrollIntoView({ behavior: "smooth" });
-        } catch (e) {
-          console.log(e);
-        }
-      })();
-    }
-  }
+function Form(props) {
+  const [message, setMessage, sendMessage, sending] = useSendMessage("text", {
+    ...props,
+  });
 
   return (
     <form
       onSubmit={sendMessage}
       className="flex items-center rounded-full border p-2 dark:bg-primary-900 dark:border-primary-700"
     >
+      <FileInput {...props} />
       <input
         type="text"
         placeholder="Type a message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        value={message.text}
+        onChange={(e) => setMessage({ text: e.target.value })}
         className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
       />
       <button
-        disabled={message.trim() === "" || sending}
+        disabled={message.text.trim() === "" || sending}
         className={`w-10 aspect-square grid place-items-center rounded-50 bg-accent 
                             ${
-                              message.trim() !== "" && !sending
+                              message.text.trim() !== "" && !sending
                                 ? "hover:bg-accent-600 active:scale-[0.98]"
                                 : ""
                             }`}
