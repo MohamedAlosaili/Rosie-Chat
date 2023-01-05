@@ -28,7 +28,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
 
   const currentUserMsg = auth.currentUser.uid === uid;
   const isTheSameSender = prevMsgSender?.uid === uid;
-  const groupDetail = isGroup && !currentUserMsg && !isTheSameSender;
+  const otherMebmerMsgs = isGroup && !currentUserMsg;
 
   const dateFormater = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
@@ -41,9 +41,9 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
         currentUserMsg ? "flex-row-reverse" : ""
       } my-2`}
     >
-      {isGroup && (
+      {otherMebmerMsgs && (
         <div className="w-8 h-8">
-          {groupDetail && (
+          {!isTheSameSender && (
             <img
               src={photoURL}
               alt={`${displayName} avatar`}
@@ -56,7 +56,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
         </div>
       )}
       <div
-        className={`max-w-[70%] py-2 px-4 rounded-xl 
+        className={`max-w-[70%] p-2 rounded-xl 
                         ${
                           currentUserMsg
                             ? "dark:bg-accent"
@@ -64,19 +64,34 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
                         } dark:text-primary-200
                 `}
       >
-        {groupDetail && (
+        {otherMebmerMsgs && !isTheSameSender && (
           <h3
-            className={`font-medium text-[var(--color)] truncate`}
+            className={`font-medium text-[var(--color)] truncate mb-1`}
             style={userColor}
           >
             {displayName}
           </h3>
         )}
-        <p>{message.text}</p>
+        <div className="flex flex-col gap-2">
+          {message.file?.url && (
+            <div
+              className={`rounded-xl overflow-hidden bg-primary-100 ${
+                message.text === "" ? "mb-1" : ""
+              }`}
+            >
+              <img
+                src={message.file.url}
+                alt={`Image from ${displayName}`}
+                className="max-w-full md:min-w-[15rem] block"
+              />
+            </div>
+          )}
+          {message.text && <p>{message.text}</p>}
+        </div>
         <time
-          className={`block ${
+          className={`block mt-1 leading-none ${
             !currentUserMsg ? "text-right" : ""
-          } text-[0.65rem] mt-2 opacity-60`}
+          } text-[0.65rem] opacity-60`}
         >
           {dateFormater.format(createdAt?.toDate()) ?? "--:--"}
         </time>
