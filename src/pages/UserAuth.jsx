@@ -1,12 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import {
-  Authentication,
-  SignIn,
-  SignUp,
-  VerifyEmail,
-} from "features/authentication";
+import { AnimatePresence } from "framer-motion";
+
+import { SignIn, SignUp, VerifyEmail } from "features/authentication";
 
 function UserAuth({ user }) {
   const [selectedTap, setSelectedTap] = useState("signin");
@@ -20,28 +17,20 @@ function UserAuth({ user }) {
             selectedTap={selectedTap}
             setSelectedTap={setSelectedTap}
           />
-        ) : selectedTap === "signin" ? (
-          <Authentication
-            title="Sign in."
-            greeting={
-              <span>
-                Welcome back! 👋 <br /> Please enter your details.
-              </span>
-            }
-            selectedTap={selectedTap}
-            setSelectedTap={setSelectedTap}
-          >
-            <SignIn />
-          </Authentication>
         ) : (
-          <Authentication
-            title="Sign up."
-            greeting="We are excited ✨ that you will be one of us."
-            selectedTap={selectedTap}
-            setSelectedTap={setSelectedTap}
-          >
-            <SignUp />
-          </Authentication>
+          <AnimatePresence initial={false} mode="wait">
+            {selectedTap === "signin" ? (
+              <SignIn
+                selectedTap={selectedTap}
+                setSelectedTap={setSelectedTap}
+              />
+            ) : (
+              <SignUp
+                selectedTap={selectedTap}
+                setSelectedTap={setSelectedTap}
+              />
+            )}
+          </AnimatePresence>
         )}
       </div>
     </div>
