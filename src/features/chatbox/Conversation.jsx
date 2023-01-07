@@ -1,6 +1,6 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
 
-import { collection, query, orderBy } from "firebase/firestore";
+import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { db } from "rosie-firebase";
@@ -13,6 +13,10 @@ import { selectedChatTemplate } from "util";
 
 function Conversation() {
   const { selectedChat, changeChat } = useContext(ChatContext);
+  const [messagesLimit, setMessagesLimit] = useState({
+    prevMessagesLength: 25,
+    limit: 25,
+  });
 
   const q = query(
     collection(
@@ -21,15 +25,15 @@ function Conversation() {
         selectedChat.id
       }/messages`
     ),
-    orderBy("createdAt")
+    orderBy("createdAt"),
+    limitToLast(messagesLimit.limit)
   );
-
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
   const mostRecentMsgs = useRef();
+  console.log(messages);
 
   useEffect(() => {
     window.addEventListener("keydown", closeConversation);
-
     return () => window.removeEventListener("keydown", closeConversation);
   }, []);
 
@@ -41,6 +45,19 @@ function Conversation() {
   function closeConversation(e) {
     if (e.key === "Escape") {
       changeChat(selectedChatTemplate());
+    }
+  }
+
+  function changeMessagesLimit(e) {
+    const scrollTop = e.target.scrollTop;
+    if (
+      scrollTop === 0 &&
+      messagesLimit.prevMessagesLength <= messages.length
+    ) {
+      setMessagesLimit((prevLimit) => ({
+        prevMessagesLength: prevLimit.limit + 25,
+        limit: prevLimit.limit + 25,
+      }));
     }
   }
 
@@ -72,7 +89,10 @@ function Conversation() {
           {selectedChat.name}
         </h3>
       </header>
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar">
+      <main
+        onScroll={changeMessagesLimit}
+        className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar"
+      >
         <div className="max-w-2xl mx-auto">
           {messages?.map((msg, idx, msgs) => (
             <Message
