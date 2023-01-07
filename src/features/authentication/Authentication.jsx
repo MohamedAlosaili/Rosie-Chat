@@ -1,8 +1,20 @@
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
 import { signWithProviders } from "rosie-firebase";
 import { Button } from "components";
 import { googleLogo } from "imgs";
+
+const variants = {
+  hidden: {
+    x: "-25%",
+    opacity: 0,
+  },
+  visible: {
+    x: "0%",
+    opacity: 1,
+  },
+};
 
 const Authentication = ({
   title,
@@ -18,7 +30,13 @@ const Authentication = ({
   }
 
   return (
-    <section className="flex flex-col gap-6">
+    <motion.section
+      variants={variants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      className="flex flex-col gap-6"
+    >
       <h1 className="text-[2.5rem] font-bold text-center text-primary-900 dark:text-primary-200">
         {title}
       </h1>
@@ -48,7 +66,7 @@ const Authentication = ({
           {selectedTap === "signin" ? "Sign up" : "Sign in"}
         </a>
       </p>
-    </section>
+    </motion.section>
   );
 };
 
