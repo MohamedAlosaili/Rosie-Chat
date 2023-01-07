@@ -4,6 +4,7 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 import { auth } from "rosie-firebase";
 import { Input, StatusMessage, Button } from "components";
+import Authentication from "./Authentication";
 import Check from "./Check";
 
 function usePasswordStrength(password, confirmPassword) {
@@ -42,7 +43,7 @@ function usePasswordStrength(password, confirmPassword) {
   return [passwordStrength, isPasswordMatched];
 }
 
-function SignUp() {
+function SignUp({ selectedTap, setSelectedTap }) {
   const [signUpValue, setSignUpValue] = useState({
     name: "",
     email: "",
@@ -96,87 +97,94 @@ function SignUp() {
         type="error"
         active={signUpError !== undefined}
       />
-      <form onSubmit={signUserIn} className="flex flex-col gap-6">
-        <Input
-          label="Name"
-          type="text"
-          name="name"
-          id="name"
-          value={signUpValue.name}
-          setValue={setSignUpValue}
-          placeholder="Your name"
-          required={true}
-        />
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          id="email"
-          value={signUpValue.email}
-          setValue={setSignUpValue}
-          placeholder="example@gmail.com"
-          required={true}
-          validateValue={true}
-          valid={isEmailValid}
-          submitForm={submitForm}
-          setSubmitForm={setSubmitForm}
-        />
-        <div>
+      <Authentication
+        title="Sign up."
+        greeting="We are excited ✨ that you will be one of us."
+        selectedTap={selectedTap}
+        setSelectedTap={setSelectedTap}
+      >
+        <form onSubmit={signUserIn} className="flex flex-col gap-6">
           <Input
-            label="Password"
-            type="password"
-            name="password"
-            id="password"
-            value={signUpValue.password}
+            label="Name"
+            type="text"
+            name="name"
+            id="name"
+            value={signUpValue.name}
             setValue={setSignUpValue}
-            placeholder="●●●●●●●●"
+            placeholder="Your name"
+            required={true}
+          />
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            id="email"
+            value={signUpValue.email}
+            setValue={setSignUpValue}
+            placeholder="example@gmail.com"
             required={true}
             validateValue={true}
-            valid={isPasswordValid}
+            valid={isEmailValid}
             submitForm={submitForm}
             setSubmitForm={setSubmitForm}
           />
-          <div className="flex flex-wrap">
-            <Check
-              condition="One lowercase character"
-              passed={passwordStrength.lowercase}
+          <div>
+            <Input
+              label="Password"
+              type="password"
+              name="password"
+              id="password"
+              value={signUpValue.password}
+              setValue={setSignUpValue}
+              placeholder="●●●●●●●●"
+              required={true}
+              validateValue={true}
+              valid={isPasswordValid}
+              submitForm={submitForm}
+              setSubmitForm={setSubmitForm}
             />
-            <Check
-              condition="One uppercase character"
-              passed={passwordStrength.uppercase}
-            />
-            <Check condition="One number" passed={passwordStrength.number} />
-            <Check
-              condition="One special character"
-              passed={passwordStrength.specialCharacter}
-            />
-            <Check
-              condition="8 characters minimum"
-              passed={passwordStrength.eightCharacters}
-            />
+            <div className="flex flex-wrap">
+              <Check
+                condition="One lowercase character"
+                passed={passwordStrength.lowercase}
+              />
+              <Check
+                condition="One uppercase character"
+                passed={passwordStrength.uppercase}
+              />
+              <Check condition="One number" passed={passwordStrength.number} />
+              <Check
+                condition="One special character"
+                passed={passwordStrength.specialCharacter}
+              />
+              <Check
+                condition="8 characters minimum"
+                passed={passwordStrength.eightCharacters}
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <Input
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            value={signUpValue.confirmPassword}
-            setValue={setSignUpValue}
-            placeholder="●●●●●●●●"
-            required={true}
-            validateValue={true}
-            valid={isPasswordMatched}
-            submitForm={submitForm}
-            setSubmitForm={setSubmitForm}
-          />
-          <Check condition="Password matched" passed={isPasswordMatched} />
-        </div>
-        <Button disabled={singUpLoading}>
-          {singUpLoading ? "Creating account..." : "Create account"}
-        </Button>
-      </form>
+          <div>
+            <Input
+              label="Confirm Password"
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              value={signUpValue.confirmPassword}
+              setValue={setSignUpValue}
+              placeholder="●●●●●●●●"
+              required={true}
+              validateValue={true}
+              valid={isPasswordMatched}
+              submitForm={submitForm}
+              setSubmitForm={setSubmitForm}
+            />
+            <Check condition="Password matched" passed={isPasswordMatched} />
+          </div>
+          <Button disabled={singUpLoading}>
+            {singUpLoading ? "Creating account..." : "Create account"}
+          </Button>
+        </form>
+      </Authentication>
     </>
   );
 }
