@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
+import { AnimatePresence } from "framer-motion";
+
 import { useSendMessage } from "hooks";
 import { fileIcon } from "imgs";
 import { Button, Input, Modal } from "components";
@@ -35,36 +37,40 @@ const FileInput = (props) => {
   console.log(preview);
   return (
     <>
-      <Modal isHidden={preview === null} closeModal={closePreview}>
-        <div className="p-6 rounded-xl dark:bg-primary-800">
-          <img src={preview} className="w-80 rounded-xl mb-2" />
-          <Input
-            type="text"
-            placeholder="Caption"
-            name="caption"
-            value={message.caption}
-            setValue={setMessage}
-          />
-          <div className="flex justify-between mt-4">
-            <Button
-              disabled={loading}
-              type="button"
-              additionClasses="w-32"
-              handleClick={closePreview}
-            >
-              Cancel
-            </Button>
-            <Button
-              disabled={loading}
-              type="button"
-              additionClasses="w-32"
-              handleClick={sendMessage}
-            >
-              {loading ? "Sending..." : "Send"}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      <AnimatePresence>
+        {preview && (
+          <Modal closeModal={closePreview}>
+            <div className="p-6 rounded-xl dark:bg-primary-800">
+              <img src={preview} className="w-80 rounded-xl mb-2" />
+              <Input
+                type="text"
+                placeholder="Caption"
+                name="caption"
+                value={message.caption}
+                setValue={setMessage}
+              />
+              <div className="flex justify-between mt-4">
+                <Button
+                  disabled={loading}
+                  type="button"
+                  additionClasses="w-32"
+                  handleClick={closePreview}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  disabled={loading}
+                  type="button"
+                  additionClasses="w-32"
+                  handleClick={sendMessage}
+                >
+                  {loading ? "Sending..." : "Send"}
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        )}
+      </AnimatePresence>
       <label htmlFor="file" className="cursor-pointer px-2">
         <img
           src={fileIcon}
