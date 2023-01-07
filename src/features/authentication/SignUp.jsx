@@ -86,12 +86,16 @@ function SignUp() {
 
   return (
     <>
-      {singUpLoading && (
-        <StatusMessage message="Creating account..." type="loading" />
-      )}
-      {signUpError && (
-        <StatusMessage message={signUpError?.code} type="error" />
-      )}
+      <StatusMessage
+        message="Creating account..."
+        type="loading"
+        active={singUpLoading}
+      />
+      <StatusMessage
+        message={signUpError?.code}
+        type="error"
+        active={signUpError !== undefined}
+      />
       <form onSubmit={signUserIn} className="flex flex-col gap-6">
         <Input
           label="Name"
