@@ -13,7 +13,7 @@ function useSendMessage(
   { selectedChat, scrollToBottom },
   setPreview
 ) {
-  const [userDoc] = useContext(UserContext);
+  const userDoc = useContext(UserContext);
 
   const [text, setText] = useState({ [inputName]: "" });
   const [loading, setLoading] = useState(false);

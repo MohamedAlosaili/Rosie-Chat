@@ -5,10 +5,13 @@ import Chat from "./Chat";
 import { search } from "imgs";
 
 function ChatList() {
-  const [userDoc] = useContext(UserContext);
+  // TODO: userDoc sometimes return null
+  const userDoc = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
 
-  const userChats = userDoc.chats.map((chat) => (
+  console.log("### userDoc bug ###", userDoc);
+
+  const userChats = userDoc?.chats.map((chat) => (
     <Chat key={chat.id} chat={chat} isSelected={chat.id === selectedChat.id} />
   ));
 

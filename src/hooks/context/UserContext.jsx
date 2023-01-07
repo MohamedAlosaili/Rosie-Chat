@@ -77,9 +77,7 @@ function UserContextProvider({ children }) {
   }
 
   return (
-    <UserContext.Provider value={[userDoc, loading, error]}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={userDoc}>{children}</UserContext.Provider>
   );
 }
 
