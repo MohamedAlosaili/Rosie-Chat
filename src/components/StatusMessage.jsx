@@ -1,6 +1,12 @@
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
-const StatusMessage = ({ message, type, position }) => {
+const container = {
+  hidden: { scale: 0.8, opacity: 0, y: "-10rem" },
+  visible: { scale: 1, opacity: 1, y: 0 },
+};
+
+const StatusMessage = ({ message, type, active, location }) => {
   const msgColor =
     type === "loading"
       ? "bg-loading-light dark:bg-loading-dark text-primary-200 dark:text-primary-900"
@@ -17,7 +23,12 @@ const StatusMessage = ({ message, type, position }) => {
   }
 
   return (
-    <div className={`${position} top-4 left-0 w-full`}>
+    <motion.div
+      variants={container}
+      animate={active ? "visible" : "hidden"}
+      initial="hidden"
+      className={`${location} left-0 w-full z-10`}
+    >
       <div
         className={`${msgColor} flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto`}
       >
@@ -33,7 +44,7 @@ const StatusMessage = ({ message, type, position }) => {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -55,7 +66,7 @@ StatusMessage.propTypes = {
 
 StatusMessage.defaultProps = {
   message: "Some thing went wrong!",
-  position: "fixed",
+  location: "fixed top-4",
 };
 
 export default StatusMessage;
