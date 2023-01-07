@@ -22,7 +22,8 @@ const Modal = ({ children, closeModal }) => {
         initial="hidden"
         animate="visible"
         exit="hidden"
-        onClick={closeModal}
+        className="cursor-auto"
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
       </motion.div>
