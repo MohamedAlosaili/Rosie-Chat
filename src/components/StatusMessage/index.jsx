@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 import { motion } from "framer-motion";
+import { nanoid } from "nanoid";
 
 const container = {
   hidden: { scale: 0.8, opacity: 0, y: "-10rem" },
@@ -25,6 +26,7 @@ const StatusMessage = ({ message, type, location }) => {
 
   return (
     <motion.div
+      key={nanoid()}
       variants={container}
       initial="hidden"
       animate="visible"
