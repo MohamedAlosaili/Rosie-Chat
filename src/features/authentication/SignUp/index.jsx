@@ -4,7 +4,7 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 import { AnimatePresence } from "framer-motion";
 
-import Authentication from "./Authentication";
+import Authentication from "../Authentication";
 import Check from "./Check";
 import { auth } from "rosie-firebase";
 import { Input, StatusMessage, Button } from "components";
