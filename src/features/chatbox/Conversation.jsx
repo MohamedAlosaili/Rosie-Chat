@@ -3,6 +3,8 @@ import { useEffect, useRef, useContext, useState } from "react";
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
+import { AnimatePresence } from "framer-motion";
+
 import { db } from "rosie-firebase";
 import { defaultAvatar } from "imgs";
 import Message from "./Message";
@@ -39,7 +41,7 @@ function Conversation() {
 
   // TODO: needs some improvments (There is a better way)
   useEffect(() => {
-    scrollToBottom("auto");
+    // scrollToBottom("auto");
   }, [messages]);
 
   function closeConversation(e) {
@@ -67,17 +69,18 @@ function Conversation() {
 
   return (
     <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain relative">
-      <StatusMessage
-        message="Loading..."
-        type="loading"
-        active={isMessagesLoading}
-        location="absolute top-24"
-      />
-      <StatusMessage
-        message={messagesError?.code}
-        type="error"
-        active={messagesError !== undefined}
-      />
+      <AnimatePresence mode="wait">
+        {isMessagesLoading && (
+          <StatusMessage
+            message="Loading..."
+            type="loading"
+            location="absolute top-24"
+          />
+        )}
+        {messagesError && (
+          <StatusMessage message={messagesError?.code} type="error" />
+        )}
+      </AnimatePresence>
       <header className="flex items-center gap-4 p-4 pt-6 border-b border-primary-800 dark:bg-primary-900 relative z-20">
         <img
           src={selectedChat.photoURL}
