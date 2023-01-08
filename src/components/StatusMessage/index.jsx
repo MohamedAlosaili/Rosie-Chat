@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+
 import { motion } from "framer-motion";
 
 const container = {
@@ -6,7 +7,7 @@ const container = {
   visible: { scale: 1, opacity: 1, y: 0 },
 };
 
-const StatusMessage = ({ message, type, active, location }) => {
+const StatusMessage = ({ message, type, location }) => {
   const msgColor =
     type === "loading"
       ? "bg-loading-light dark:bg-loading-dark text-primary-200 dark:text-primary-900"
@@ -25,8 +26,9 @@ const StatusMessage = ({ message, type, active, location }) => {
   return (
     <motion.div
       variants={container}
-      animate={active ? "visible" : "hidden"}
       initial="hidden"
+      animate="visible"
+      exit="hidden"
       className={`${location} left-0 w-full z-10`}
     >
       <div
