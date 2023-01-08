@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-import { AnimatePresence } from "framer-motion";
-
 import Authentication from "../Authentication";
 import Check from "./Check";
 import { auth } from "rosie-firebase";
@@ -89,14 +87,12 @@ function SignUp({ selectedTap, setSelectedTap }) {
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        {singUpLoading && (
-          <StatusMessage message="Creating account..." type="loading" />
-        )}
-        {signUpError && (
-          <StatusMessage message={signUpError?.code} type="error" />
-        )}
-      </AnimatePresence>
+      {singUpLoading && (
+        <StatusMessage message="Creating account..." type="loading" />
+      )}
+      {signUpError && (
+        <StatusMessage message={signUpError?.code} type="error" />
+      )}
       <Authentication
         title="Sign up."
         greeting="We are excited ✨ that you will be one of us."
