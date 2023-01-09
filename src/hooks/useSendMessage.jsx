@@ -8,6 +8,14 @@ import { db, storage, ref } from "rosie-firebase";
 import { UserContext } from "hooks/context";
 import { messageDocTemplate } from "util";
 
+/**
+ * @description - Handles sending messages (text or files)
+ * @param {string} [inputName = "text"] - Text input name
+ * @param {object} selectedChat - Current chat info
+ * @param {function} scrollToBottom - Function to scroll when new document has been added
+ * @param {function} setPreview - Function to set new preview value
+ * @returns {Array} [text, setText, sendMessage, loading, error, fileRef]
+ */
 function useSendMessage(
   inputName = "text",
   { selectedChat, scrollToBottom },
@@ -43,7 +51,7 @@ function useSendMessage(
             const fileInfo = msgHasFile;
 
             const fileType = fileInfo.type.match(/(image|video)/)?.[0];
-            console.log(fileInfo.size);
+
             if (fileType) {
               // Files more than 15 MB are not allowed
               if (fileInfo.size > 15_728_640)
@@ -66,6 +74,13 @@ function useSendMessage(
     }
   }
 
+  /**
+   * @description Add new message document to the messages collection of the chat
+   * @param {string} id - A unique id for each message
+   * @param {object} messagesRef - Reference to the messages collection
+   * @param {symbol | object} file - If the message is not a file. the file will be undefined otherwise
+   * it object contains file info to be added to the message document (name, type, url)
+   */
   async function addMessageDocument(id, messagesRef, file) {
     const { uid, photoURL, displayName } = userDoc;
 
@@ -88,6 +103,12 @@ function useSendMessage(
     );
   }
 
+  /**
+   * @description - Extract file name & file url
+   * @param {object} file - Object contains all file data that comes from file input
+   * @param {string} id - Message document id
+   * @returns {object} fileObject that contains the name and url
+   */
   async function fileData(file, id) {
     const name = file.name + id;
     const url = await uploadFileToStorage(file, name);
@@ -95,6 +116,12 @@ function useSendMessage(
     return { name, url };
   }
 
+  /**
+   * @description - Uploding file to the firebase storage
+   * @param {object} file - Object contains all file data that comes from file input
+   * @param {string} fileName - File name to set a file reference path in firebase storage
+   * @returns {string} file url
+   */
   async function uploadFileToStorage(file, fileName) {
     const storageRef = ref(storage, `images/${fileName}`);
 
@@ -104,6 +131,11 @@ function useSendMessage(
     return await getDownloadURL(storageRef);
   }
 
+  /**
+   * - Set states to the default value
+   * - Scroll to the bottom of the chat
+   * - Remove the preview url of files if it exists
+   */
   function resetValues() {
     setText({ [inputName]: "" });
     setLoading(false);
