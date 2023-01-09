@@ -11,8 +11,8 @@ import { messageDocTemplate } from "util";
 /**
  * @description - Handles sending messages (text or files)
  * @param {string} [inputName = "text"] - Text input name
- * @param {object} selectedChat - Current chat info
- * @param {function} scrollToBottom - Function to scroll when new document has been added
+ * @param {object} props.selectedChat - Current chat info
+ * @param {function} props.scrollToBottom - Function to scroll when new document has been added
  * @param {function} setPreview - Function to set new preview value
  * @returns {Array} [text, setText, sendMessage, loading, error, fileRef]
  */
