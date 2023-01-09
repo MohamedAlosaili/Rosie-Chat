@@ -35,6 +35,7 @@ const messageDocTemplate = (messageDocInfo) => {
     message: {
       text: "",
       file: {
+        type: null,
         name: null,
         url: null,
       },

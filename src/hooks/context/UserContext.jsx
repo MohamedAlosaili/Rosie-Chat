@@ -54,6 +54,7 @@ function UserContextProvider({ children }) {
               message: {
                 text: `${displayName} joined`,
                 file: {
+                  type: null,
                   name: null,
                   text: null,
                 },
