@@ -32,7 +32,6 @@ function Conversation() {
   );
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
   const mostRecentMsgs = useRef();
-  console.log(messages);
 
   useEffect(() => {
     window.addEventListener("keydown", closeConversation);
@@ -64,7 +63,9 @@ function Conversation() {
   }
 
   function scrollToBottom(behavior = "smooth") {
-    mostRecentMsgs.current.scrollIntoView({ behavior });
+    // If a user closes the chat using ESC while a message
+    // is in sending state the current will be null
+    mostRecentMsgs.current?.scrollIntoView({ behavior });
   }
 
   return (
