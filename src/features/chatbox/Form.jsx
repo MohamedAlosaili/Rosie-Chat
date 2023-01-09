@@ -7,13 +7,16 @@ import FileInput from "./FileInput";
 import { send } from "imgs";
 
 function Form(props) {
-  const [message, setMessage, sendMessage, sending] = useSendMessage("text", {
-    ...props,
-  });
+  const [message, setMessage, sendMessageHandler, sending] = useSendMessage(
+    "text",
+    {
+      ...props,
+    }
+  );
 
   return (
     <form
-      onSubmit={sendMessage}
+      onSubmit={sendMessageHandler}
       className="flex items-center rounded-full border p-2 dark:bg-primary-900 dark:border-primary-700"
     >
       <FileInput {...props} />
