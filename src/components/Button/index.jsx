@@ -1,6 +1,8 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 
+import { motion } from "framer-motion";
+
 const Button = ({
   children,
   handleClick,
@@ -18,17 +20,18 @@ const Button = ({
       : `ring-slate-400 dark:ring-slate-700 hover:ring-slate-500 hover:bg-primary-100 dark:hover:bg-primary-800`;
 
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: !disabled ? 1.05 : 1 }}
+      whileTap={{ scale: !disabled ? 0.95 : 1 }}
+      transition={{ type: "spring", duration: 0.3 }}
       type={type}
       disabled={disabled}
       onClick={handleClick}
-      className={`flex gap-3 items-center justify-center rounded-xl font-medium ring-1 
-                ${bgColor} ${padding} ${!disabled && "active:scale-[0.98]"} 
-                ${additionClasses}
-                `}
+      className={`transition-colors flex gap-3 items-center justify-center rounded-xl font-medium ring-1 
+                ${bgColor} ${padding} ${additionClasses}`}
     >
       {children}
-    </button>
+    </motion.button>
   );
 };
 
