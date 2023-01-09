@@ -6,6 +6,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      transitionDuration: {
+        DEFAULT: "250ms",
+      },
       colors: {
         primary: colors.slate,
         accent: {
