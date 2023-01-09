@@ -18,6 +18,7 @@ function useSendMessage(
   const [text, setText] = useState({ [inputName]: "" });
   const [loading, setLoading] = useState(false);
   const fileRef = useRef(null);
+  const [error, setError] = useState(undefined);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -28,58 +29,76 @@ function useSendMessage(
     if (msgHasText || msgHasFile) {
       setLoading(true);
 
+      const chatType = selectedChat.isGroup ? "groups" : "direct";
       const messagesRef = collection(
         db,
-        `${selectedChat.isGroup ? "groups" : "direct"}/${
-          selectedChat.id
-        }/messages`
+        `${chatType}/${selectedChat.id}/messages`
       );
+      const msgId = nanoid();
 
-      addMessageDocument(messagesRef, msgHasFile)
-        .then(() => resetValues())
-        .catch((error) => console.log(error));
+      (async function () {
+        try {
+          let file;
+          if (msgHasFile) {
+            const fileInfo = msgHasFile;
+
+            const fileType = fileInfo.type.match(/(image|video)/)?.[0];
+            console.log(fileInfo.size);
+            if (fileType) {
+              // Files more than 15 MB are not allowed
+              if (fileInfo.size > 15_728_640)
+                throw Error("File size must be under 15MB");
+
+              const { name, url } = await fileData(fileInfo, msgId);
+              file = { type: fileType, name, url };
+            } else throw Error("File type not valid only Image/Video");
+          }
+
+          await addMessageDocument(msgId, messagesRef, file);
+
+          resetValues();
+        } catch (error) {
+          console.log(error);
+          setError(error);
+          setLoading(false);
+        }
+      })();
     }
   }
 
-  async function addMessageDocument(messagesRef, file) {
+  async function addMessageDocument(id, messagesRef, file) {
     const { uid, photoURL, displayName } = userDoc;
-    try {
-      const id = nanoid();
-      const type = file ? "file" : "text";
 
-      let fileURL = null;
-      let fileName = null;
-      if (file) {
-        // We need fileName in case we want to delete the file
-        // Using msgId with file.name to keep file name unique
-        fileName = file.name + id;
-        fileURL = await uploadFileToStorage(file, fileName);
-      }
+    const type = file ? "file" : "text";
 
-      await addDoc(
-        messagesRef,
-        messageDocTemplate({
-          id,
-          uid,
-          type,
-          displayName,
-          photoURL,
-          message: {
-            text: text[inputName].trim(),
-            file: { name: fileName, url: fileURL },
-          },
-          createdAt: serverTimestamp(),
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await addDoc(
+      messagesRef,
+      messageDocTemplate({
+        id,
+        uid,
+        type,
+        displayName,
+        photoURL,
+        message: {
+          text: text[inputName].trim(),
+          file,
+        },
+        createdAt: serverTimestamp(),
+      })
+    );
+  }
+
+  async function fileData(file, id) {
+    const name = file.name + id;
+    const url = await uploadFileToStorage(file, name);
+
+    return { name, url };
   }
 
   async function uploadFileToStorage(file, fileName) {
     const storageRef = ref(storage, `images/${fileName}`);
-    await uploadBytes(storageRef, file);
 
+    await uploadBytes(storageRef, file);
     // Instead of retrieving the URL each time.
     // I choose to retrieve it once when it uploaded
     return await getDownloadURL(storageRef);
@@ -92,7 +111,7 @@ function useSendMessage(
     setPreview && setPreview(null);
   }
 
-  return [text, setText, sendMessage, loading, fileRef];
+  return [text, setText, sendMessage, loading, error, fileRef];
 }
 
 export default useSendMessage;
