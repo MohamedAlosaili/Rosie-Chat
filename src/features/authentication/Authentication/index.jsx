@@ -53,7 +53,7 @@ const Authentication = ({
         additionClasses="w-full"
       >
         <img src={googleLogo} alt="Google logo" className="w-5" />
-        Sign {selectedTap === "signin" ? "in" : "up"} with Google
+        {selectedTap === "signin" ? "Sign in" : "Sign up"} with Google
       </Button>
       <p className="text-sm text-center">
         {selectedTap === "signin"
@@ -61,7 +61,7 @@ const Authentication = ({
           : "Already have an account? "}
         <a
           onClick={changeTap}
-          className="text-success hover:text-success-600 cursor-pointer font-medium"
+          className="transition-colors text-success hover:text-success-600 cursor-pointer font-medium"
         >
           {selectedTap === "signin" ? "Sign up" : "Sign in"}
         </a>
