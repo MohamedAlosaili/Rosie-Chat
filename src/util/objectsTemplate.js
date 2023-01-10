@@ -42,7 +42,16 @@ const messageDocTemplate = (messageDocInfo) => {
     },
     createdAt: null,
   };
-  return { ...defaultValues, ...messageDocInfo };
+
+  const message = { ...defaultValues.message, ...messageDocInfo.message };
+
+  const fullObject = {
+    ...defaultValues,
+    ...messageDocInfo,
+    message,
+  };
+
+  return fullObject;
 };
 
 const groupDocTemplate = (groupDocInfo) => {
