@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, uploadBytes } from "firebase/storage";
 
+import { useError } from "hooks";
 import { db, storage, ref } from "rosie-firebase";
 import { UserContext } from "hooks/context";
 import { messageDocTemplate } from "util";
@@ -12,62 +13,55 @@ import { messageDocTemplate } from "util";
  * @description - Handles sending messages (text or files)
  * @param {string} [inputName = "text"] - Text input name
  * @param {object} props.selectedChat - Current chat info
- * @param {function} props.scrollToBottom - Function to scroll when new document has been added
- * @param {function} setPreview - Function to set new preview value
- * @returns {Array} [text, setText, sendMessage, loading, error, fileRef]
+ * @param {function} props.scrollToBottom - Function to scroll when a new document has been added
+ * @param {function} [closePreview=() => null] - Function to set file object to default values
+ * @returns {Array} [text, setText, sendMessage, loading, error]
  */
 function useSendMessage(
   inputName = "text",
   { selectedChat, scrollToBottom },
-  setPreview
+  closePreview = () => null
 ) {
   const userDoc = useContext(UserContext);
 
   const [text, setText] = useState({ [inputName]: "" });
   const [loading, setLoading] = useState(false);
-  const fileRef = useRef(null);
-  const [error, setError] = useState(undefined);
+  const [error, setError] = useError();
 
-  function sendMessage(e) {
-    e.preventDefault();
+  const chatType = selectedChat.isGroup ? "groups" : "direct";
+  const messagesRef = collection(db, `${chatType}/${selectedChat.id}/messages`);
 
-    const msgHasFile = fileRef.current;
+  /**
+   * @description Sending handler
+   * @param {object} event - An object that contains event properties and functions
+   * @param {object} validFile - An object that contains all file data that comes from file input (name, type, etc).
+   */
+  function sendMessage(event, validFile) {
+    event.preventDefault();
+
+    const msgHasFile = validFile !== undefined;
     const msgHasText = text[inputName] !== "";
     // Messages of type file shouldn't have text but they should have a file
     if (msgHasText || msgHasFile) {
       setLoading(true);
 
-      const chatType = selectedChat.isGroup ? "groups" : "direct";
-      const messagesRef = collection(
-        db,
-        `${chatType}/${selectedChat.id}/messages`
-      );
       const msgId = nanoid();
 
       (async function () {
         try {
           let file;
           if (msgHasFile) {
-            const fileInfo = msgHasFile;
-
-            const fileType = fileInfo.type.match(/(image|video)/)?.[0];
-
-            if (fileType) {
-              // Files more than 15 MB are not allowed
-              if (fileInfo.size > 15_728_640)
-                throw Error("File size must be under 15MB");
-
-              const { name, url } = await fileData(fileInfo, msgId);
-              file = { type: fileType, name, url };
-            } else throw Error("File type not valid only Image/Video");
+            const fileType = validFile.type.slice(0, 5);
+            const { name, url } = await fileData(validFile, msgId);
+            file = { type: fileType, name, url };
           }
 
-          await addMessageDocument(msgId, messagesRef, file);
+          await addMessageDocument(msgId, file);
 
           resetValues();
         } catch (error) {
           console.log(error);
-          setError(error);
+          setError(error.message);
           setLoading(false);
         }
       })();
@@ -76,15 +70,21 @@ function useSendMessage(
 
   /**
    * @description Add new message document to the messages collection of the chat
-   * @param {string} id - A unique id for each message
-   * @param {object} messagesRef - Reference to the messages collection
-   * @param {symbol | object} file - If the message is not a file. the file will be undefined otherwise
-   * it object contains file info to be added to the message document (name, type, url)
+   * @param {string} id - Message document id
+   * @param {object} [file={type: null, name: null, url: null}] - An object that contains file info to be added to the message
+   * document (name, type, url). if the message is not a file. the file will be the default value.
    */
-  async function addMessageDocument(id, messagesRef, file) {
+  async function addMessageDocument(
+    id,
+    file = {
+      type: null,
+      name: null,
+      url: null,
+    }
+  ) {
     const { uid, photoURL, displayName } = userDoc;
 
-    const type = file ? "file" : "text";
+    const type = file.type ? "file" : "text";
 
     await addDoc(
       messagesRef,
@@ -105,7 +105,7 @@ function useSendMessage(
 
   /**
    * @description - Extract file name & file url
-   * @param {object} file - Object contains all file data that comes from file input
+   * @param {object} file - An object that contains all file data that comes from file input (name, type, etc).
    * @param {string} id - Message document id
    * @returns {object} fileObject that contains the name and url
    */
@@ -118,7 +118,7 @@ function useSendMessage(
 
   /**
    * @description - Uploding file to the firebase storage
-   * @param {object} file - Object contains all file data that comes from file input
+   * @param {object} file - An object that contains all file data that comes from file input (name, type, etc).
    * @param {string} fileName - File name to set a file reference path in firebase storage
    * @returns {string} file url
    */
@@ -139,11 +139,11 @@ function useSendMessage(
   function resetValues() {
     setText({ [inputName]: "" });
     setLoading(false);
+    closePreview();
     scrollToBottom();
-    setPreview && setPreview(null);
   }
 
-  return [text, setText, sendMessage, loading, error, fileRef];
+  return [text, setText, sendMessage, loading, error];
 }
 
 export default useSendMessage;
