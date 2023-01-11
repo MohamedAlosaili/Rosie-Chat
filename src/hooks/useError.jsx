@@ -4,12 +4,11 @@ function useError() {
   const [error, setError] = useState(undefined);
 
   useEffect(() => {
-    let timeOut;
     if (error) {
-      timeOut = setTimeout(() => setError(undefined), 5000);
-    }
+      let timeOut = setTimeout(() => setError(undefined), 5000);
 
-    return () => clearTimeout(timeOut);
+      return () => clearTimeout(timeOut);
+    }
   }, [error]);
 
   return [error, setError];
