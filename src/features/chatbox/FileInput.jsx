@@ -3,45 +3,43 @@ import PropTypes from "prop-types";
 
 import { AnimatePresence } from "framer-motion";
 
-import { useSendMessage } from "hooks";
+import { useSendMessage, useFile } from "hooks";
 import { fileIcon } from "imgs";
 import { Button, Input, Modal } from "components";
+import { StatusMessage } from "../../components";
 
 const FileInput = (props) => {
-  const inputFileRef = useRef(null);
-  const [preview, setPreview] = useState(null);
-  const [message, setMessage, sendMessage, loading, file] = useSendMessage(
-    "caption",
-    { ...props },
-    setPreview
-  );
+  const [file, changeFile, fileError, closePreview] = useFile();
+  const [message, setMessage, sendMessageHandler, sending, sendingError] =
+    useSendMessage("caption", { ...props }, closePreview);
 
-  // Note: if the user chooses the same file this handler won't run because the value isn't change
-  function changeFile(e) {
-    console.log("entered but not changed");
-    if (e.target.files.length > 0) {
-      const fileObj = e.target.files[0];
-      file.current = fileObj;
-      // Generate URL for file preview before sending it
-      setPreview(URL.createObjectURL(fileObj));
-    }
-  }
-
-  //
-  function closePreview() {
-    inputFileRef.current.value = "";
-    file.current = null;
-    setPreview(null);
-    setMessage({ caption: "" });
-  }
-  console.log(preview);
+  const { validFile } = file;
   return (
     <>
       <AnimatePresence>
-        {preview && (
-          <Modal closeModal={closePreview}>
+        {(fileError || sendingError) && (
+          <StatusMessage
+            type="error"
+            message={fileError ?? sendingError}
+            zIndex="z-[60]"
+          />
+        )}
+        {/* key="sendFileModal" to inform React that is the same component so no need to unmount on each render */}
+        {validFile && (
+          <Modal
+            key="sendFileModal"
+            closeModal={() => (sending ? null : closePreview())}
+          >
             <div className="p-6 rounded-xl dark:bg-primary-800">
-              <img src={preview} className="w-80 rounded-xl mb-2" />
+              {validFile.type.startsWith("video") ? (
+                <video
+                  autoPlay
+                  src={file.previewUrl}
+                  className="w-80 rounded-xl mb-2"
+                ></video>
+              ) : (
+                <img src={file.previewUrl} className="w-80 rounded-xl mb-2" />
+              )}
               <Input
                 type="text"
                 placeholder="Caption"
@@ -51,7 +49,7 @@ const FileInput = (props) => {
               />
               <div className="flex justify-between mt-4">
                 <Button
-                  disabled={loading}
+                  disabled={sending}
                   type="button"
                   additionClasses="w-32"
                   handleClick={closePreview}
@@ -59,12 +57,12 @@ const FileInput = (props) => {
                   Cancel
                 </Button>
                 <Button
-                  disabled={loading}
+                  disabled={sending}
                   type="button"
                   additionClasses="w-32"
-                  handleClick={sendMessage}
+                  handleClick={(e) => sendMessageHandler(e, validFile)}
                 >
-                  {loading ? "Sending..." : "Send"}
+                  {sending ? "Sending..." : "Send"}
                 </Button>
               </div>
             </div>
@@ -78,10 +76,10 @@ const FileInput = (props) => {
         />
       </label>
       <input
-        ref={inputFileRef}
         type="file"
         id="file"
         className="hidden"
+        value={file.value}
         onChange={changeFile}
       />
     </>
