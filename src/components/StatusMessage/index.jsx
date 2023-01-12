@@ -3,26 +3,17 @@ import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { nanoid } from "nanoid";
 
+import Error from "./Error";
+import Loading from "./Loading";
+
 const container = {
   hidden: { scale: 0.8, opacity: 0, y: "-10rem" },
   visible: { scale: 1, opacity: 1, y: 0 },
 };
 
-const StatusMessage = ({ message, type, location }) => {
-  const msgColor =
-    type === "loading"
-      ? "bg-loading-light dark:bg-loading-dark text-primary-200 dark:text-primary-900"
-      : "text-white bg-error";
-
-  let errorMsg;
-  if (type === "error") {
-    const cleanedErrorMsg = message
-      .slice(message.includes("auth/") ? 5 : 0)
-      .replaceAll("-", " ");
-    const capitalizedMsg =
-      cleanedErrorMsg[0].toUpperCase() + cleanedErrorMsg.slice(1);
-    errorMsg = capitalizedMsg;
-  }
+const StatusMessage = ({ message, type, location, zIndex }) => {
+  const className =
+    "flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto";
 
   return (
     <motion.div
@@ -31,46 +22,27 @@ const StatusMessage = ({ message, type, location }) => {
       initial="hidden"
       animate="visible"
       exit="hidden"
-      className={`${location} left-0 w-full z-10`}
+      className={`${location} left-0 w-full ${zIndex}`}
     >
-      <div
-        className={`${msgColor} flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto`}
-      >
-        {type === "loading" ? (
-          <>
-            <LoadingSpinner />
-            <p>{message}</p>
-          </>
-        ) : (
-          <>
-            <ExclMark />
-            <p>{errorMsg}</p>
-          </>
-        )}
-      </div>
+      {type === "loading" ? (
+        <Loading message={message} className={className} />
+      ) : (
+        <Error message={message} className={className} />
+      )}
     </motion.div>
   );
 };
 
-const ExclMark = () => (
-  <div className="border-2 border-primary-200 rounded-50 w-6 h-6 grid place-items-center font-serif text-sm">
-    !
-  </div>
-);
-
-const LoadingSpinner = () => (
-  <div className="border-2 border-primary-700 border-t-primary-200 dark:border-primary-300 dark:border-t-primary-900 rounded-50 w-6 h-6 animate-spin"></div>
-);
-
 StatusMessage.propTypes = {
   type: PropTypes.string.isRequired,
   message: PropTypes.string,
-  position: PropTypes.string,
+  location: PropTypes.string,
+  zIndex: PropTypes.string,
 };
 
 StatusMessage.defaultProps = {
-  message: "Some thing went wrong!",
   location: "fixed top-4",
+  zIndex: "z-10",
 };
 
 export default StatusMessage;
