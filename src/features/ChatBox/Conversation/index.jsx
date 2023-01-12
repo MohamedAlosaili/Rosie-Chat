@@ -7,8 +7,8 @@ import { AnimatePresence } from "framer-motion";
 
 import { db } from "rosie-firebase";
 import { defaultAvatar } from "imgs";
-import Message from "./Message";
-import Form from "./Form";
+import Message from "features/ChatBox/Message";
+import Form from "features/ChatBox/Form";
 import { StatusMessage } from "components";
 import { ChatContext } from "hooks/context";
 import { selectedChatTemplate } from "util";

@@ -1,12 +1,10 @@
-import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import { AnimatePresence } from "framer-motion";
 
 import { useSendMessage, useFile } from "hooks";
 import { fileIcon } from "imgs";
-import { Button, Input, Modal } from "components";
-import { StatusMessage } from "../../components";
+import { StatusMessage, Button, Input, Modal } from "components";
 
 const FileInput = (props) => {
   const [file, changeFile, fileError, closePreview] = useFile();

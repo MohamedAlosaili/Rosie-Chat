@@ -1,9 +1,8 @@
 import { memo } from "react";
 
-import { UserContextProvider } from "hooks/context";
-import { ChatContextProvider } from "hooks/context";
-import { SideBox } from "features/sidebox";
-import { ChatBox } from "features/chatbox";
+import { UserContextProvider, ChatContextProvider } from "hooks/context";
+import SideBox from "features/sidebox";
+import ChatBox from "features/ChatBox";
 
 function Home() {
   return (
