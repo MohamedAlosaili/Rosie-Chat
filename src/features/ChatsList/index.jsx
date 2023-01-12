@@ -4,7 +4,7 @@ import { UserContext, ChatContext } from "hooks/context";
 import Chat from "./Chat";
 import { search } from "imgs";
 
-function ChatList() {
+function ChatsList() {
   // TODO: userDoc sometimes return null
   const userDoc = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
@@ -36,4 +36,4 @@ function ChatList() {
   );
 }
 
-export default ChatList;
+export default ChatsList;

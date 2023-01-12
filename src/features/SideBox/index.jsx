@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { Sidebar } from "features/sidebar";
-import { ChatList } from "features/chats";
+import Sidebar from "features/Sidebar";
+import ChatsList from "features/ChatsList";
 
 function SideBox() {
   const [tap, setTap] = useState("chats");
@@ -10,7 +10,7 @@ function SideBox() {
     <section className="basis-[30rem] shrink border-r border-primary-800 flex">
       <Sidebar tap={tap} setTap={setTap} />
       <article className="py-6 px-4 flex-1">
-        <ChatList />
+        <ChatsList />
       </article>
     </section>
   );
