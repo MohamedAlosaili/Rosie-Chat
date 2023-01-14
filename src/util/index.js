@@ -5,3 +5,9 @@ export {
   groupDocTemplate,
   directDocTemplate,
 } from "./objectsTemplate";
+
+export {
+  opacityVariants,
+  modalVariants,
+  mediaVariants,
+} from "./motionVariants";
