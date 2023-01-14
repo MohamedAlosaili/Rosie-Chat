@@ -1,28 +1,18 @@
 import { motion } from "framer-motion";
 import Backdrop from "../Backdrop";
 
-const variants = {
-  hidden: {
-    opacity: 0,
-    scale: 1,
-    y: "-100vh",
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: "0vh",
-  },
-};
+import { modalVariants } from "util"
 
-const Modal = ({ children, closeModal }) => {
+const Modal = ({ closeModal, opacity, customVariants, className, style, children }) => {
   return (
-    <Backdrop onClick={closeModal}>
+    <Backdrop onClick={closeModal} opacity={opacity}>
       <motion.div
-        variants={variants}
+        variants={customVariants ?? modalVariants}
         initial="hidden"
         animate="visible"
         exit="hidden"
-        className="cursor-auto"
+        style={style}
+        className={`cursor-auto ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
