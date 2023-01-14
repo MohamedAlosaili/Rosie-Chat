@@ -5,7 +5,7 @@ const variants = {
   visible: { opacity: 1 },
 };
 
-const Backdrop = ({ onClick, children }) => {
+const Backdrop = ({ onClick, children, opacity }) => {
   return (
     <motion.div
       variants={variants}
@@ -13,11 +13,16 @@ const Backdrop = ({ onClick, children }) => {
       animate="visible"
       exit="hidden"
       onClick={onClick}
-      className="fixed inset-0 flex justify-center items-center bg-black/40 z-50 cursor-pointer"
+      style={{ "--bg-color": `rgba(0, 0, 0, ${opacity}%)` }}
+      className={`fixed inset-0 flex justify-center items-center bg-[var(--bg-color)] z-50 cursor-pointer`}
     >
       {children}
     </motion.div>
   );
+};
+
+Backdrop.defaultProps = {
+  opacity: 40,
 };
 
 export default Backdrop;
