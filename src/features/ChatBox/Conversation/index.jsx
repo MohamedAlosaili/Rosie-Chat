@@ -19,7 +19,6 @@ function Conversation() {
     prevMessagesLength: 25,
     limit: 25,
   });
-  const conversationRef = useRef(null)
 
   const chatType = selectedChat.isGroup ? "groups" : "direct"
   const q = query(
