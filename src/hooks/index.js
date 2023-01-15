@@ -7,6 +7,8 @@ import useSendMessage from "./useSendMessage";
 import useFile from "./useFile";
 import useError from "./useError";
 
+import useMedia from "./useMedia";
+
 export {
   useStorage,
   useTimer,
@@ -14,4 +16,5 @@ export {
   useSendMessage,
   useFile,
   useError,
+  useMedia,
 };
