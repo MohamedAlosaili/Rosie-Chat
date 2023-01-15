@@ -1,14 +1,11 @@
 import { motion } from "framer-motion";
 
-const variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
+import { opacityVariants } from "util"
 
 const Backdrop = ({ onClick, children, opacity }) => {
   return (
     <motion.div
-      variants={variants}
+      variants={opacityVariants}
       initial="hidden"
       animate="visible"
       exit="hidden"
@@ -16,6 +13,7 @@ const Backdrop = ({ onClick, children, opacity }) => {
       style={{ "--bg-color": `rgba(0, 0, 0, ${opacity}%)` }}
       className={`fixed inset-0 flex justify-center items-center bg-[var(--bg-color)] z-50 cursor-pointer`}
     >
+      <button className="fixed top-4 right-4 text-xl">✖</button>
       {children}
     </motion.div>
   );
