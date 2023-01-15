@@ -3,7 +3,7 @@ import Backdrop from "../Backdrop";
 
 import { modalVariants } from "util"
 
-const Modal = ({ closeModal, opacity, customVariants, className, style, children }) => {
+const Modal = ({ closeModal, opacity, customVariants, className, children }) => {
   return (
     <Backdrop onClick={closeModal} opacity={opacity}>
       <motion.div
@@ -11,8 +11,7 @@ const Modal = ({ closeModal, opacity, customVariants, className, style, children
         initial="hidden"
         animate="visible"
         exit="hidden"
-        style={style}
-        className={`cursor-auto ${className}`}
+        className={`cursor-auto max-w-full ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
