@@ -19,14 +19,11 @@ function Conversation() {
     prevMessagesLength: 25,
     limit: 25,
   });
+  const conversationRef = useRef(null)
 
+  const chatType = selectedChat.isGroup ? "groups" : "direct"
   const q = query(
-    collection(
-      db,
-      `${selectedChat.isGroup ? "groups" : "direct"}/${
-        selectedChat.id
-      }/messages`
-    ),
+    collection(db, `${chatType}/${selectedChat.id}/messages`),
     orderBy("createdAt"),
     limitToLast(messagesLimit.limit)
   );
