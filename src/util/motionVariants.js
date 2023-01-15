@@ -16,19 +16,23 @@ export const modalVariants = {
   },
 };
 
-export const mediaVariants = (x, y) => {
+export const mediaVariants = (top, left, width) => {
   return {
     hidden: {
-      scale: 0,
       opacity: 0,
-      x,
-      y,
+      width: width,
+      top,
+      left,
+      transform: "translate(0%, 0%)",
+      transition: { type: "ease-out" },
     },
     visible: {
-      scale: 1,
       opacity: 1,
-      x: 0,
-      y: 0,
+      width: "100%",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      transition: { type: "ease-in" },
     },
   };
 };
