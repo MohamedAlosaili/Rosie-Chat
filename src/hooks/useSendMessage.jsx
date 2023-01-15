@@ -51,9 +51,9 @@ function useSendMessage(
         try {
           let file;
           if (msgHasFile) {
-            const fileType = validFile.type.slice(0, 5);
+            const type = validFile.type;
             const { name, url } = await fileData(validFile, msgId);
-            file = { type: fileType, name, url };
+            file = { type, name, url };
           }
 
           await addMessageDocument(msgId, file);
