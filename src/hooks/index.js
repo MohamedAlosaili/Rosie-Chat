@@ -8,6 +8,7 @@ import useFile from "./useFile";
 import useError from "./useError";
 
 import useMedia from "./useMedia";
+import useEscape from "./useEscape";
 
 export {
   useStorage,
@@ -17,4 +18,5 @@ export {
   useFile,
   useError,
   useMedia,
+  useEscape,
 };
