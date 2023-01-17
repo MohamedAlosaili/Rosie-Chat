@@ -2,23 +2,27 @@ import { useEffect, useRef, useContext, useState } from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons"
+import { AnimatePresence, motion } from "framer-motion";
 
-import { AnimatePresence } from "framer-motion";
-
-import { db } from "rosie-firebase";
-import { defaultAvatar } from "imgs";
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
+import { db } from "rosie-firebase";
+import { defaultAvatar } from "imgs";
 import { StatusMessage } from "components";
 import { ChatContext } from "hooks/context";
+import { useEscape } from "hooks";
 import { selectedChatTemplate } from "util";
 
 function Conversation() {
   const { selectedChat, changeChat } = useContext(ChatContext);
-  const [messagesLimit, setMessagesLimit] = useState({
-    prevMessagesLength: 25,
-    limit: 25,
-  });
+
+  const [showScrollArrow, setShowScrollArrow] = useState(false)
+  const [messagesLimit, setMessagesLimit] = useState({ prevMessagesLength: 25, limit: 25 });
+
+  const isLimitChanged = useRef(false);
+  const mostRecentMsgs = useRef(null);
 
   const chatType = selectedChat.isGroup ? "groups" : "direct"
   const q = query(
@@ -27,26 +31,16 @@ function Conversation() {
     limitToLast(messagesLimit.limit)
   );
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
-  const mostRecentMsgs = useRef();
+
+  useEscape(() => changeChat(selectedChatTemplate()))
 
   useEffect(() => {
-    window.addEventListener("keydown", closeConversation);
-    return () => window.removeEventListener("keydown", closeConversation);
-  }, []);
-
-  // TODO: needs some improvments (There is a better way)
-  useEffect(() => {
-    // scrollToBottom("auto");
+    if (!isLimitChanged.current && !isMessagesLoading) {
+      scrollToBottom()
+    } else if (!isMessagesLoading) isLimitChanged.current = false
   }, [messages]);
 
-  function closeConversation(e) {
-    if (e.key === "Escape") {
-      changeChat(selectedChatTemplate());
-    }
-  }
-
-  function changeMessagesLimit(e) {
-    const scrollTop = e.target.scrollTop;
+  function increaseMessagesLimit(scrollTop) {
     if (
       scrollTop === 0 &&
       messagesLimit.prevMessagesLength <= messages.length
@@ -55,13 +49,26 @@ function Conversation() {
         prevMessagesLength: prevLimit.limit + 25,
         limit: prevLimit.limit + 25,
       }));
+      isLimitChanged.current = true
     }
   }
 
-  function scrollToBottom(behavior = "smooth") {
-    // If a user closes the chat using ESC while a message
-    // is in sending state the current will be null
-    mostRecentMsgs.current?.scrollIntoView({ behavior });
+  function scrollToBottom() {
+    mostRecentMsgs.current?.scrollIntoView(true)
+  }
+
+  function handleChatScroll(e) {
+    const scrollTop = e.target.scrollTop
+    const scrollHeight = e.target.scrollHeight
+    const clinetHeight = e.target.clientHeight
+
+    increaseMessagesLimit(scrollTop)
+
+    if (scrollHeight - clinetHeight > scrollTop + 200) {
+      setShowScrollArrow(true)
+    } else {
+      setShowScrollArrow(false)
+    }
   }
 
   return (
@@ -89,23 +96,36 @@ function Conversation() {
           {selectedChat.name}
         </h3>
       </header>
-      <main
-        onScroll={changeMessagesLimit}
-        className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar"
-      >
-        <div className="max-w-2xl mx-auto">
-          {messages?.map((msg, idx, msgs) => (
-            <Message
-              key={msg.id}
-              prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
-              messageObject={msg}
-              selectedChat={selectedChat}
-            />
-          ))}
-          <div ref={mostRecentMsgs}></div>
-        </div>
-      </main>
-      <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800">
+      {
+        <main onScroll={handleChatScroll} className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar">
+          <div className="max-w-2xl mx-auto">
+            {messages?.map((msg, idx, msgs) => (
+              <Message
+                key={msg.id}
+                prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
+                messageObject={msg}
+                selectedChat={selectedChat}
+              />
+            ))
+            }
+            <div ref={mostRecentMsgs} className="h-px"></div>
+          </div>
+        </main>
+      }
+      <AnimatePresence>
+        {showScrollArrow && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.5, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, x: 100 }}
+            className="fixed bottom-24 right-6 bg-primary-800 h-12 w-12 rounded-full grid place-items-center cursor-pointer"
+            onClick={scrollToBottom}
+          >
+            <FontAwesomeIcon icon={faArrowDown} size={"lg"} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+      <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800 z-10">
         <Form selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
       </footer>
     </div>
