@@ -12,7 +12,7 @@ function Image({ img }) {
     <div>
       <picture
         ref={imageRef}
-        className="cursor-pointer relative group"
+        className="cursor-pointer relative block"
         onClick={toggleOpen}
       >
         <div className="transition-all absolute inset-0 flex items-center justify-center gap-2 bg-black opacity-0 hover:opacity-30 text-2xl">
@@ -31,7 +31,7 @@ function Image({ img }) {
             customVariants={variants}
             className="fixed flex justify-center items-center max-w-3xl"
           >
-            <picture className="cursor-pointer">
+            <picture>
               <img src={img.url} alt={img.name} />
             </picture>
           </Modal >
