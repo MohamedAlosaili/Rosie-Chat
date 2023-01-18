@@ -10,4 +10,6 @@ export {
   opacityVariants,
   modalVariants,
   mediaVariants,
+  fadeInLeft,
+  buttonMotion,
 } from "./motionVariants";
