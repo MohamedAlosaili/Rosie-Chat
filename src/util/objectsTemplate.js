@@ -3,11 +3,13 @@ const userDocTemplate = (userDocInfo) => {
   const defaultValues = {
     uid: null,
     displayName: null,
+    about: "",
     email: null,
     photoURL: null,
-    isOnline: false,
+    isOnline: true,
     chats: [],
     friends: [],
+    joinedOn: null,
   };
   return { ...defaultValues, ...userDocInfo };
 };
