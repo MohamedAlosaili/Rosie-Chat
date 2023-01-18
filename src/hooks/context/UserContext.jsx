@@ -8,6 +8,7 @@ import {
   getDoc,
   doc,
   addDoc,
+  updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -21,11 +22,26 @@ function UserContextProvider({ children }) {
   const user = auth.currentUser;
   const [userDoc, loading, error] = useDocumentData(doc(db, "users", user.uid));
 
+  // TODO: this need to be moved into separate hook
   useEffect(() => {
+    const { uid } = user;
+    if (userDoc && !userDoc.isOnline) {
+      updateDoc(doc(db, "users", uid), { isOnline: true })
+    }
+
+    return () => {
+      // TODO: Firestore Rule prevent this action 
+      updateDoc(doc(db, "users", uid), { isOnline: false })
+    }
+  }, [loading])
+
+  useEffect(() => {
+    const { displayName, email, photoURL, uid } = user;
+    const userRef = doc(db, "users", uid);
+
     if (!userDoc && !loading) {
       (async function () {
         try {
-          const { displayName, email, photoURL, uid } = user;
 
           const chatId = "public_chat";
           const publicChat = (await getDoc(doc(db, "groups", chatId))).data();
@@ -33,16 +49,16 @@ function UserContextProvider({ children }) {
             db,
             `groups/${chatId}/messages`
           );
-          const usersRef = collection(db, "users");
 
           await setDoc(
-            doc(usersRef, uid),
+            userRef,
             userDocTemplate({
               uid,
               displayName,
               email,
               photoURL,
               chats: [publicChat],
+              joinedOn: serverTimestamp()
             })
           );
           // Alert if user has been added
