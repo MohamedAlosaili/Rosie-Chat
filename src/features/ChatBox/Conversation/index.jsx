@@ -85,7 +85,7 @@ function Conversation() {
           <StatusMessage message={messagesError?.code} type="error" />
         )}
       </AnimatePresence>
-      <header className="flex items-center gap-4 p-4 pt-6 border-b border-primary-800 dark:bg-primary-900 relative z-20">
+      <header className="flex items-center gap-4 p-4 pt-6 border-b border-primary-800 dark:bg-primary-900 relative z-10">
         <img
           src={selectedChat.photoURL}
           alt={`${selectedChat.name} photo`}
