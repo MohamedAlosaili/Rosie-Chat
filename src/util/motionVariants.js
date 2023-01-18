@@ -36,3 +36,19 @@ export const mediaVariants = (top, left, width) => {
     },
   };
 };
+
+export const fadeInLeft = {
+  hidden: {
+    left: "-30%",
+    opacity: 0,
+  },
+  visible: {
+    left: "0%",
+    opacity: 1,
+  },
+};
+
+export const buttonMotion = {
+  hover: { scale: 1.05 },
+  tap: { scale: 0.95 },
+};
