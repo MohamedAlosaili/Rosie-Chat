@@ -42,8 +42,8 @@ function useSendVerification(user, isTimerRunning, startTimer) {
     }
   }, []);
 
-  async function sendVerificationEmail() {
-    if (!isTimerRunning) {
+  async function sendVerificationEmail(event) {
+    if (!isTimerRunning && event) {
       startTimer();
     }
     await sendEmailVerification();
