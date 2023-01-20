@@ -1,10 +1,12 @@
+import { createPortal } from "react-dom";
+
 import { motion } from "framer-motion";
 import Backdrop from "../Backdrop";
 
 import { modalVariants } from "util"
 
 const Modal = ({ closeModal, opacity, customVariants, className, children }) => {
-  return (
+  return createPortal(
     <Backdrop onClick={closeModal} opacity={opacity}>
       <motion.div
         variants={customVariants ?? modalVariants}
@@ -16,7 +18,8 @@ const Modal = ({ closeModal, opacity, customVariants, className, children }) => 
       >
         {children}
       </motion.div>
-    </Backdrop>
+    </Backdrop>,
+    document.getElementById("modal")
   );
 };
 
