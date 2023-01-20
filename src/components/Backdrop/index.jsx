@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { opacityVariants } from "util"
 
-const Backdrop = ({ onClick, children, opacity }) => {
+const Backdrop = ({ onClick, children, bgColor }) => {
   return (
     <motion.div
       variants={opacityVariants}
@@ -10,8 +10,7 @@ const Backdrop = ({ onClick, children, opacity }) => {
       animate="visible"
       exit="hidden"
       onClick={onClick}
-      style={{ "--bg-color": `rgba(0, 0, 0, ${opacity}%)` }}
-      className={`fixed inset-0 flex justify-center items-center bg-[var(--bg-color)] z-50 cursor-pointer`}
+      className={`fixed inset-0 flex justify-center items-center ${bgColor} p-4 z-40 cursor-pointer`}
     >
       <button className="fixed top-4 right-4 text-xl">✖</button>
       {children}
@@ -20,7 +19,7 @@ const Backdrop = ({ onClick, children, opacity }) => {
 };
 
 Backdrop.defaultProps = {
-  opacity: 40,
+  bgColor: "bg-black/40",
 };
 
 export default Backdrop;
