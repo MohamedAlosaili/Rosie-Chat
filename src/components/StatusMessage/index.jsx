@@ -1,48 +1,53 @@
+import { useId } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 
 import { motion } from "framer-motion";
-import { nanoid } from "nanoid";
 
 import Error from "./Error";
 import Loading from "./Loading";
+import Success from "./Success";
 
 const container = {
   hidden: { scale: 0.8, opacity: 0, y: "-10rem" },
   visible: { scale: 1, opacity: 1, y: 0 },
 };
 
-const StatusMessage = ({ message, type, location, zIndex }) => {
-  const className =
-    "flex gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto";
+const StatusMessage = ({ message, type }) => {
+  const key = useId()
 
-  return (
+  const className =
+    "flex items-center gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto";
+
+  const statusMessage = () => {
+    switch (type) {
+      case "loading":
+        return <Loading message={message} className={className} />
+      case "error":
+        return <Error message={message} className={className} />
+      case "success":
+        return <Success message={message} className={className} />
+    }
+  }
+
+  return createPortal(
     <motion.div
-      key={nanoid()}
+      key={key}
       variants={container}
       initial="hidden"
       animate="visible"
       exit="hidden"
-      className={`${location} left-0 w-full ${zIndex}`}
+      className="fixed top-4 left-0 w-full z-50"
     >
-      {type === "loading" ? (
-        <Loading message={message} className={className} />
-      ) : (
-        <Error message={message} className={className} />
-      )}
-    </motion.div>
-  );
+      {statusMessage()}
+    </motion.div>,
+    document.getElementById("status"));
 };
 
 StatusMessage.propTypes = {
   type: PropTypes.string.isRequired,
   message: PropTypes.string,
-  location: PropTypes.string,
-  zIndex: PropTypes.string,
 };
 
-StatusMessage.defaultProps = {
-  location: "fixed top-4",
-  zIndex: "z-10",
-};
 
 export default StatusMessage;
