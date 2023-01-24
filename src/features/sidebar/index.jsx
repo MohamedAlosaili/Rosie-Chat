@@ -1,46 +1,51 @@
-import { memo } from "react";
+import { memo, useContext } from "react";
 
 import { signOut } from "firebase/auth";
 
-import { auth } from "rosie-firebase";
-import { chat, contacts, setting, logout } from "imgs";
 import NvButton from "./NvButton";
+import { UserContext } from "hooks/context"
+import { auth } from "rosie-firebase";
+import { IoMdChatbubbles, IoMdSettings } from "react-icons/Io"
+import { HiUsers } from "react-icons/hi"
+import { CiLogout } from "react-icons/ci"
 
 function Sidebar({ tap, setTap }) {
+  const userDoc = useContext(UserContext)
+
   return (
-    <aside className="min-w-[60px] shrink-0">
+    <aside className="min-w-[60px] shrink-0 z-10">
       <nav className="h-screen dark:bg-primary-800 flex flex-col justify-between items-center py-6 px-4">
         <NvButton
           handleClick={() => setTap("profile")}
           tap={tap}
-          img={auth.currentUser.photoURL}
+          img={userDoc.photoURL}
           btnTap="profile"
-          userName={auth.currentUser.displayName}
+          userName={userDoc.displayName}
         />
         <div className="flex flex-col gap-4">
           <NvButton
             handleClick={() => setTap("chats")}
             tap={tap}
-            img={chat}
+            icon={<IoMdChatbubbles size={25} />}
             btnTap="chats"
           />
           <NvButton
             handleClick={() => setTap("contacts")}
             tap={tap}
-            img={contacts}
+            icon={<HiUsers size={25} />}
             btnTap="contacts"
           />
           <NvButton
             handleClick={() => setTap("setting")}
             tap={tap}
-            img={setting}
+            icon={<IoMdSettings size={25} />}
             btnTap="setting"
           />
         </div>
         <NvButton
           handleClick={() => signOut(auth)}
           tap={tap}
-          img={logout}
+          icon={<CiLogout size={25} />}
           btnTap="logout"
         />
       </nav>
