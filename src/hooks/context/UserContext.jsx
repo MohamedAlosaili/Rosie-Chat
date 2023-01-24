@@ -5,9 +5,9 @@ import { nanoid } from "nanoid";
 import {
   collection,
   setDoc,
-  getDoc,
   doc,
   addDoc,
+  getDoc,
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
@@ -43,12 +43,9 @@ function UserContextProvider({ children }) {
       (async function () {
         try {
 
-          const chatId = "public_chat";
-          const publicChat = (await getDoc(doc(db, "groups", chatId))).data();
-          const publicChatMessages = collection(
-            db,
-            `groups/${chatId}/messages`
-          );
+          const publicChatId = "public_chat";
+          const publicChat = (await getDoc(doc(db, "chats", publicChatId))).data()
+          const publicChatMessages = collection(db, `chats/${publicChatId}/messages`);
 
           await setDoc(
             userRef,
@@ -57,27 +54,28 @@ function UserContextProvider({ children }) {
               displayName,
               email,
               photoURL,
-              chats: [publicChat],
+              chats: [publicChatId],
               joinedOn: serverTimestamp()
             })
           );
           // Alert if user has been added
+          const createdAt = serverTimestamp()
+          const text = `${displayName} joined`
           await addDoc(
             publicChatMessages,
             messageDocTemplate({
               id: nanoid(),
               type: "announce",
               message: {
-                text: `${displayName} joined`,
-                file: {
-                  type: null,
-                  name: null,
-                  text: null,
-                },
+                text,
               },
-              createdAt: serverTimestamp(),
+              createdAt,
             })
           );
+          await updateDoc(doc(db, "chats", publicChatId), {
+            lastMsg: { message: text, createdAt },
+            members: [...publicChat.members, uid]
+          })
         } catch (e) {
           console.log(e);
         }
