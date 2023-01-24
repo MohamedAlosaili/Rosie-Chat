@@ -2,9 +2,8 @@ import { useEffect, useRef, useContext, useState } from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons"
 import { AnimatePresence, motion } from "framer-motion";
+import { IoIosArrowDown } from "react-icons/Io"
 
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
@@ -13,10 +12,9 @@ import { defaultAvatar } from "imgs";
 import { StatusMessage } from "components";
 import { ChatContext } from "hooks/context";
 import { useEscape } from "hooks";
-import { selectedChatTemplate } from "util";
 
 function Conversation() {
-  const { selectedChat, changeChat } = useContext(ChatContext);
+  const { selectedChat, emptyChat } = useContext(ChatContext);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false)
   const [messagesLimit, setMessagesLimit] = useState({ prevMessagesLength: 25, limit: 25 });
@@ -24,15 +22,14 @@ function Conversation() {
   const isLimitChanged = useRef(false);
   const mostRecentMsgs = useRef(null);
 
-  const chatType = selectedChat.isGroup ? "groups" : "direct"
   const q = query(
-    collection(db, `${chatType}/${selectedChat.id}/messages`),
+    collection(db, `chats/${selectedChat.id}/messages`),
     orderBy("createdAt"),
     limitToLast(messagesLimit.limit)
   );
   const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
 
-  useEscape(() => changeChat(selectedChatTemplate()))
+  useEscape(() => emptyChat())
 
   useEffect(() => {
     if (!isLimitChanged.current && !isMessagesLoading) {
@@ -118,10 +115,16 @@ function Conversation() {
             initial={{ opacity: 0, scale: 0.5, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, x: 100 }}
-            className="fixed bottom-24 right-6 bg-primary-800 h-12 w-12 rounded-full grid place-items-center cursor-pointer"
+            className={`
+              transition-colors fixed bottom-24 right-6 h-12 w-12 rounded-full grid place-items-center cursor-pointer 
+              text-primary-900 dark:text-primary-200
+              bg-primary-100 dark:bg-primary-800
+              hover:bg-primary-100/75 dark:hover:bg-primary-800/75
+              focus:bg-primary-100/75 dark:focus:bg-primary-800/75
+            `}
             onClick={scrollToBottom}
           >
-            <FontAwesomeIcon icon={faArrowDown} size={"lg"} />
+            <IoIosArrowDown size={25} />
           </motion.button>
         )}
       </AnimatePresence>
