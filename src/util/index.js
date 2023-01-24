@@ -1,9 +1,7 @@
 export {
   userDocTemplate,
-  selectedChatTemplate,
   messageDocTemplate,
-  groupDocTemplate,
-  directDocTemplate,
+  chatDocTemplate,
 } from "./objectsTemplate";
 
 export {
