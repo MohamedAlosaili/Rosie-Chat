@@ -14,19 +14,6 @@ const userDocTemplate = (userDocInfo) => {
   return { ...defaultValues, ...userDocInfo };
 };
 
-// Individual chat object of ChatList
-const selectedChatTemplate = (chatInfo) => {
-  const defaultValues = {
-    id: null,
-    isGroup: false,
-    lastMsg: { message: null, createdAt: null },
-    name: null,
-    photoURL: null,
-    unreadMsgs: 0,
-  };
-  return { ...defaultValues, chatInfo };
-};
-
 const messageDocTemplate = (messageDocInfo) => {
   const defaultValues = {
     type: "text",
@@ -56,32 +43,22 @@ const messageDocTemplate = (messageDocInfo) => {
   return fullObject;
 };
 
-const groupDocTemplate = (groupDocInfo) => {
+const chatDocTemplate = (chatDocInfo) => {
   const defaultValues = {
     id: null,
     isGroup: true,
     name: null,
     photoURL: null,
-    lastMsg: { message: null, createdAt: null },
+    lastMsg: {
+      uid: null,
+      message: null,
+      createdAt: null,
+    },
+    members: [],
   };
-  return { ...defaultValues, ...groupDocInfo };
+
+  const lastMsg = { ...defaultValues.lastMsg, ...chatDocInfo?.lastMsg };
+  return { ...defaultValues, ...chatDocInfo, lastMsg };
 };
 
-const directDocTemplate = (directDocInfo) => {
-  const defaultValues = {
-    id: null,
-    isGroup: false,
-    name: null,
-    photoURL: null,
-    lastMsg: { message: null, createdAt: null },
-  };
-  return { ...defaultValues, ...directDocInfo };
-};
-
-export {
-  userDocTemplate,
-  selectedChatTemplate,
-  messageDocTemplate,
-  groupDocTemplate,
-  directDocTemplate,
-};
+export { userDocTemplate, messageDocTemplate, chatDocTemplate };
