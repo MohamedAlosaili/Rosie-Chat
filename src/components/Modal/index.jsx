@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 
 import { motion } from "framer-motion";
-import Backdrop from "../Backdrop";
+import Backdrop from "components/Backdrop";
 
 import { modalVariants } from "util"
 
