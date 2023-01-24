@@ -7,12 +7,14 @@ export const modalVariants = {
   hidden: {
     opacity: 0,
     scale: 1,
-    y: "-100vh",
+    y: -30,
+    transition: { y: { duration: 0.25, type: "Tween" } },
   },
   visible: {
     opacity: 1,
     scale: 1,
-    y: "0vh",
+    y: 0,
+    transition: { y: { duration: 0.25, type: "Tween" } },
   },
 };
 
@@ -39,11 +41,11 @@ export const mediaVariants = (top, left, width) => {
 
 export const fadeInLeft = {
   hidden: {
-    left: "-30%",
+    x: "-30%",
     opacity: 0,
   },
   visible: {
-    left: "0%",
+    x: "0%",
     opacity: 1,
   },
 };
