@@ -1,7 +1,7 @@
 import { useState, useContext, useRef } from "react";
 import { nanoid } from "nanoid";
 
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, uploadBytes } from "firebase/storage";
 
 import { useError } from "hooks";
@@ -28,8 +28,9 @@ function useSendMessage(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useError();
 
-  const chatType = selectedChat.isGroup ? "groups" : "direct";
-  const messagesRef = collection(db, `${chatType}/${selectedChat.id}/messages`);
+  const chatPath = `chats/${selectedChat.id}`
+  const chatRef = doc(db, chatPath)
+  const messagesRef = collection(db, `${chatPath}/messages`);
 
   /**
    * @description Sending handler
@@ -85,7 +86,8 @@ function useSendMessage(
     const { uid, photoURL, displayName } = userDoc;
 
     const type = file.type ? "file" : "text";
-
+    const createdAt = serverTimestamp()
+    // TODO: Add message doc and update chat doc are used in two places (useSendMessage & UserContext) try to combined them
     await addDoc(
       messagesRef,
       messageDocTemplate({
@@ -98,9 +100,18 @@ function useSendMessage(
           text: text[inputName].trim(),
           file,
         },
-        createdAt: serverTimestamp(),
+        createdAt
       })
     );
+
+    const message = text[inputName] || file.type.slice(0, file.type.indexOf("/"))
+    await updateDoc(chatRef, {
+      lastMsg: {
+        uid,
+        message,
+        createdAt
+      }
+    })
   }
 
   /**
