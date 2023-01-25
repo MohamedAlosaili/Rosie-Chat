@@ -6,7 +6,7 @@ import { ChatContext } from "hooks/context";
 const Chat = ({ chat, isSelected }) => {
   const { changeChat } = useContext(ChatContext);
 
-  // This block needs some refactor
+  // TODO: This block needs some refactor
   const today = new Date();
   const messageDate = new Date(chat.lastMsg.createdAt?.toDate());
   const timeDiffrence = Math.round((today - messageDate) / 1000 / 60 / 60 / 24);
@@ -24,9 +24,8 @@ const Chat = ({ chat, isSelected }) => {
       onClick={() => changeChat(chat)}
       className={`grid grid-cols-[auto_1fr] text-sm rounded-xl gap-4 p-4 mb-2 last:mb-0 cursor-pointer transition-colors overflow-hidden select-none 
                       relative z-10 before:absolute before:inset-0 before:opacity-50 before:-z-10 before:transition-colors 
-                      dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${
-                        isSelected ? "dark:bg-primary-800" : ""
-                      }`}
+                      dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${isSelected ? "dark:bg-primary-800" : ""
+        }`}
     >
       <img
         src={chat.photoURL}
@@ -39,12 +38,12 @@ const Chat = ({ chat, isSelected }) => {
             {chat.name}
           </h3>
           <time className="whitespace-nowrap">
-            {timeFormater.format(chat.lastMsg.createdAt.toDate())}
+            {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
           </time>
         </div>
         <div className="flex justify-between items-center gap-2">
           <p className="truncate">{chat.lastMsg.message}</p>
-          {chat.unreadMsgs > 0 && (
+          {chat?.unreadMsgs > 0 && (
             <span className="bg-accent text-xs dark:text-primary-200 rounded-full py-[0.3rem] px-2 font-semibold leading-none">
               {chat.unreadMsgs}
             </span>
@@ -63,6 +62,7 @@ Chat.proptypes = {
     name: PropTypes.string,
     id: PropTypes.string,
     lastMsg: PropTypes.shape({
+      uid: PropTypes.oneOf([PropTypes.string, PropTypes.symbol]),
       message: PropTypes.string,
       createdAt: PropTypes.object,
     }),
