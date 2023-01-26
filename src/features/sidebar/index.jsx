@@ -12,9 +12,13 @@ import { CiLogout } from "react-icons/ci"
 function Sidebar({ tap, setTap }) {
   const userDoc = useContext(UserContext)
 
+  const windowWidth = window.innerWidth
+  console.log(windowWidth)
   return (
-    <aside className="min-w-[60px] shrink-0 z-10">
-      <nav className="h-screen dark:bg-primary-800 flex flex-col justify-between items-center py-6 px-4">
+    <aside
+      className={`absolute lg:static bottom-0 left-0 w-full z-10 dark:bg-primary-800 lg:w-auto lg:min-w-[60px] lg:shrink-0`}
+    >
+      <nav className="flex justify-between items-center max-w-md mx-auto px-4 py-2 lg:py-6 lg:flex-col lg:h-screen">
         <NvButton
           handleClick={() => setTap("profile")}
           tap={tap}
@@ -22,7 +26,7 @@ function Sidebar({ tap, setTap }) {
           btnTap="profile"
           userName={userDoc.displayName}
         />
-        <div className="flex flex-col gap-4">
+        <div className="flex gap-4 justify-between w-[70%] lg:w-auto lg:flex-col">
           <NvButton
             handleClick={() => setTap("chats")}
             tap={tap}
@@ -42,12 +46,16 @@ function Sidebar({ tap, setTap }) {
             btnTap="setting"
           />
         </div>
-        <NvButton
-          handleClick={() => signOut(auth)}
-          tap={tap}
-          icon={<CiLogout size={25} />}
-          btnTap="logout"
-        />
+        {windowWidth >= 1024 && (
+          <div className="hidden lg:block">
+            <NvButton
+              handleClick={() => signOut(auth)}
+              tap={tap}
+              icon={<CiLogout size={25} />}
+              btnTap="logout"
+            />
+          </div>
+        )}
       </nav>
     </aside>
   );
