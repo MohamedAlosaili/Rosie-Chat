@@ -6,7 +6,7 @@ import ChatBox from "features/ChatBox";
 
 function Home() {
   return (
-    <div className="absolute inset-0 overflow-hidden flex">
+    <div className={`absolute inset-0 overflow-hidden md:flex`}>
       <UserContextProvider>
         <ChatContextProvider>
           <SideBox />
