@@ -26,7 +26,7 @@ function SideBox() {
   }
 
   return (
-    <section className="basis-[30rem] shrink border-r border-primary-800 flex relative">
+    <section className={`relative h-screen border-r border-primary-800 flex md:basis-[25rem] lg:basis-[30rem] md:shrink`}>
       <Sidebar tap={tap} setTap={setTap} />
       <AnimatePresence initial={false} mode="wait">
         <article className="py-6 px-4 flex-1">
