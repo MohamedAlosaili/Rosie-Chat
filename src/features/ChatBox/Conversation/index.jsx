@@ -4,6 +4,7 @@ import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/Io"
+import { CgChevronLeft } from "react-icons/cg"
 
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
@@ -13,7 +14,7 @@ import { StatusMessage } from "components";
 import { ChatContext } from "hooks/context";
 import { useEscape } from "hooks";
 
-function Conversation() {
+function Conversation({ setIsChatOpen }) {
   const { selectedChat, emptyChat } = useContext(ChatContext);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false)
@@ -69,7 +70,20 @@ function Conversation() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain relative">
+    <motion.div
+      initial={{ left: "100%" }}
+      animate={{ left: 0 }}
+      exit={{ left: "100%" }}
+      transition={{
+        left: {
+          type: "",
+          duration: 0.3
+        },
+      }}
+      className={`fixed md:static top-0 left-0 w-full h-full flex flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain 
+                  dark:bg-primary-900`
+      }
+    >
       <AnimatePresence mode="wait">
         {isMessagesLoading && (
           <StatusMessage
@@ -83,6 +97,12 @@ function Conversation() {
         )}
       </AnimatePresence>
       <header className="flex items-center gap-4 p-4 pt-6 border-b border-primary-800 dark:bg-primary-900 relative z-10">
+        <button
+          onClick={() => setIsChatOpen(false)}
+          className="flex md:hidden items-center font-medium dark:text-primary-200 mr-2"
+        >
+          <CgChevronLeft size={25} />
+        </button>
         <img
           src={selectedChat.photoURL}
           alt={`${selectedChat.name} photo`}
@@ -131,7 +151,7 @@ function Conversation() {
       <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800 z-10">
         <Form selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
       </footer>
-    </div>
+    </motion.div>
   );
 }
 
