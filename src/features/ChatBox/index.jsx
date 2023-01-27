@@ -1,16 +1,41 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Conversation from "./Conversation";
 import { selectChat } from "imgs";
 import { ChatContext } from "hooks/context";
+import { AnimatePresence } from "framer-motion";
 
 function ChatBox() {
-  const { selectedChat } = useContext(ChatContext);
+  const { selectedChat, emptyChat } = useContext(ChatContext);
+  const [isChatOpen, setIsChatOpen] = useState(true)
+
+  useEffect(() => {
+    /* 
+      Delaying emptyChat() until framer motion finish animating, if I don't do this 
+      the chat will look empty (and the user can see that) before closing chat. 
+      To make sure to reset isChatOpen after emptyChat() I use setTimeout  
+    */
+    if (!isChatOpen) {
+      setTimeout(() => {
+        emptyChat()
+        setTimeout(() => setIsChatOpen(true), 0)
+      }, 300)
+    }
+  }, [isChatOpen])
 
   return (
-    <div className="basis-[30rem] grow shrink">
+    <div className={`absolute md:static top-0 left-full z-10 h-screen w-screen 
+                    md:basis-[30rem] md:grow md:shrink
+    `}>
       {selectedChat.id ? (
-        <Conversation />
+        <AnimatePresence mode="wait">
+          {isChatOpen && (
+            <Conversation
+              setIsChatOpen={setIsChatOpen}
+              key="conversation"
+            />
+          )}
+        </AnimatePresence>
       ) : (
         <div className="h-full flex flex-col justify-center items-center p-8">
           <img src={selectChat} alt="empty chat" className="w-full max-w-md" />
