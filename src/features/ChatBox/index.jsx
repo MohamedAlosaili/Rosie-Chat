@@ -24,7 +24,7 @@ function ChatBox() {
   }, [isChatOpen])
 
   return (
-    <div className={`absolute md:static top-0 left-full z-10 h-screen w-screen 
+    <div className={`absolute md:relative top-0 left-full md:left-0 z-10 h-screen w-screen 
                     md:basis-[30rem] md:grow md:shrink
     `}>
       {selectedChat.id ? (
