@@ -5,9 +5,9 @@ import Backdrop from "components/Backdrop";
 
 import { modalVariants } from "util"
 
-const Modal = ({ closeModal, opacity, customVariants, className, children }) => {
+const Modal = ({ closeModal, customVariants, className, children }) => {
   return createPortal(
-    <Backdrop onClick={closeModal} opacity={opacity}>
+    <Backdrop onClick={closeModal}>
       <motion.div
         variants={customVariants ?? modalVariants}
         initial="hidden"
