@@ -45,11 +45,6 @@ const NvButton = ({ handleClick, tap, img, icon: ButtonIcon, btnTap, userName })
           }
         </div>
       </motion.button>
-      {/*
-         
-          
-          
-      */}
       <span
         className={`transition-all text-xs lg:text-base font-medium ${active ? "text-accent" : ""} rounded-lg z-10
               lg:absolute lg:left-[150%] lg:top-1/2 lg:-translate-y-1/2 lg:py-1 lg:px-4 lg:invisible lg:translate-x-[15%] lg:opacity-0 
@@ -69,7 +64,8 @@ const NvButton = ({ handleClick, tap, img, icon: ButtonIcon, btnTap, userName })
 NvButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
   tap: PropTypes.string.isRequired,
-  img: PropTypes.string.isRequired,
+  img: PropTypes.string,
+  icon: PropTypes.element,
   btnTap: PropTypes.string.isRequired,
   userName: PropTypes.string,
 };
