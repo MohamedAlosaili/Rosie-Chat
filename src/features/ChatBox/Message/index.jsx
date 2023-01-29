@@ -38,8 +38,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
 
   return (
     <div
-      className={`flex justify-start gap-2 ${currentUserMsg ? "flex-row-reverse" : ""
-        } my-2`}
+      className={`flex gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}
     >
       {otherMebmerMsgs && (
         <div className="w-8 h-8">
@@ -47,15 +46,17 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
             <img
               src={photoURL}
               alt={`${displayName} avatar`}
-              className={`w-full object-cover ${photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
-                } rounded-50 p-px`}
+              className={`object-cover ${photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""} rounded-50 p-px`}
               style={userColor}
             />
           )}
         </div>
       )}
       <div
-        className={`max-w-[70%] p-2 rounded-xl ${currentUserMsg ? "dark:bg-accent" : "dark:bg-primary-800"} dark:text-primary-200`}
+        className={`max-w-[75%] lg:max-w-[65%] ${type === "file" ? "p-1 w-[75%] lg:w-[65%]" : "p-2"} rounded-xl 
+                  ${currentUserMsg ? "bg-accent" : "dark:bg-primary-800"} 
+                  dark:text-primary-200
+        `}
       >
         {otherMebmerMsgs && !isTheSameSender && (
           <h3
@@ -66,21 +67,26 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
           </h3>
         )}
         <div className="flex flex-col gap-2">
-          {message.file?.url && (
-            <div
-              className={`rounded-xl overflow-hidden bg-primary-100 ${message.text === "" ? "mb-1" : ""
-                }`}
-            >
+          {(type === "file") && (
+            <>
               {message.file?.type?.startsWith("image") ? (
-                <Image img={message.file} />
+                <div className="aspect-square">
+                  <Image img={message.file} />
+                </div>
               ) : (
-                <Video video={message.file} />
+                <div className="aspect-video">
+                  <Video video={message.file} />
+                </div>
               )}
-            </div>
+            </>
           )}
-          {message.text && <p>{message.text}</p>}
+          {message.text && <p className={`${type === "file" ? "px-1" : ""}`}>{message.text}</p>}
         </div>
-        <time className={`block mt-1 leading-none ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] opacity-60`}>
+        <time
+          className={`block mt-1 leading-none ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] opacity-60 
+                      ${type === "file" ? "mx-2" : ""}
+          `}
+        >
           {dateFormater.format(createdAt?.toDate()) ?? "--:--"}
         </time>
       </div>
