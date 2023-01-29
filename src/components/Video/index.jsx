@@ -1,58 +1,72 @@
+import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { AiFillPlayCircle } from "react-icons/ai"
 
-import { Modal } from "components";
-import { useMedia } from "hooks";
+import { Backdrop } from "components"
 
 function Video({ video }) {
-  const [isPlayed, togglePlay, videoRef, variants] = useMedia()
+  const [isPlayed, setIsPlayed] = useState(false);
+  const videoRef = useRef(null)
+
+  const togglePlay = (e) => {
+    e.stopPropagation()
+    setIsPlayed((isPlayed) => !isPlayed);
+  }
+
+  if (!isPlayed && videoRef.current) {
+    videoRef.current.pause()
+    videoRef.current.currentTime = 0
+  } else if (isPlayed && videoRef.current) {
+    videoRef.current.play()
+  }
 
   return (
     <div className="relative">
-      {!isPlayed && (
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-10">
-          <motion.div
-            onClick={togglePlay}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="cursor-pointer bg-accent p-2 rounded-full"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              className="w-8 h-8 fill-primary-200 stroke-primary-200 translate-x-[0.12rem]"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
-              />
-            </svg>
-          </motion.div>
-        </div>
-      )}
-      <video ref={videoRef}>
-        <source src={`${video.url}#t=0.5`} type={`${video.type}`} />
-        {/* Here should be fullBack video source */}
-        Your browser doesn't support video
-      </video>
       <AnimatePresence>
-        {isPlayed && (
-          <Modal
-            closeModal={togglePlay}
-            opacity={100}
-            customVariants={variants}
-            className="fixed flex justify-center items-center max-w-3xl"
+        {isPlayed && <Backdrop />}
+      </AnimatePresence>
+      <motion.div
+        layout
+        animate={isPlayed ? { zIndex: 50 } : { zIndex: 10, transition: { zIndex: { delay: 0.3 } } }}
+        data-isplayed={isPlayed}
+        className={`relative cursor-pointer grid place-items-center
+        data-[isplayed=true]:fixed data-[isplayed=true]:top-0 data-[isplayed=true]:left-0 
+        data-[isplayed=true]:h-screen data-[isplayed=true]:w-screen 
+        `}
+        onClick={togglePlay}
+      >
+        {!isPlayed && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.3 } }}
+            data-isplayed={isPlayed}
+            className={`absolute inset-0 z-10 group grid place-items-center data-[isplayed=true]:invisible`}
           >
-            <video controls autoPlay>
-              <source src={`${video.url}#t=0.5`} type={`${video.type}`} />
-              Your browser doesn't support video
-            </video >
-          </Modal >
+            <AiFillPlayCircle
+              size={50}
+              className={`transition-all text-accent group-hover:scale-125 group-active:scale-90`}
+            />
+          </motion.div>
         )}
-      </AnimatePresence >
+        <motion.video
+          ref={videoRef}
+          controls={isPlayed}
+          layout
+          animate={isPlayed ? { borderRadius: "0" } : { borderRadius: "0.75rem" }}
+          data-isplayed={isPlayed}
+          onClick={e => isPlayed && e.stopPropagation()}
+          className={`relative aspect-video rounded-xl
+          data-[isplayed=true]:w-[40rem] data-[isplayed=true]:max-h-[75vh] data-[isplayed=true]:max-w-[100vw] 
+          data-[isplayed=true]:cursor-auto 
+          `}
+        >
+          <source src={`${video.url}#t=0.5`} type={`${video.type}`} />
+          {/* Here should be fullBack video source */}
+          Your browser doesn't support video
+        </motion.video>
+      </motion.div >
     </div>
   );
 }
@@ -63,9 +77,5 @@ Video.propTypes = {
     type: PropTypes.string,
   }),
 };
-
-/* 
-      
-*/
 
 export default Video;

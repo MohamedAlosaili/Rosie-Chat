@@ -1,36 +1,43 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
-import { useMedia } from "hooks";
-import { Modal } from "components";
+import { Backdrop } from "components";
 
-function Image({ img, className }) {
-  const [isOpened, toggleOpen, imageRef, variants] = useMedia()
+function Image({ img, className, borderRadius }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => setIsOpen((isOpen) => !isOpen);
+
 
   return (
     <div>
-      <picture
-        ref={imageRef}
-        className={`cursor-pointer overflow-hidden relative block ${className ?? ""}`}
+      <AnimatePresence>
+        {isOpen && <Backdrop />}
+      </AnimatePresence>
+      <motion.picture
+        layout
+        animate={isOpen ? { zIndex: 50 } : { zIndex: 10, transition: { zIndex: { delay: 0.3 } } }}
+        data-isopen={isOpen}
+        className={`relative cursor-pointer grid place-items-center
+        data-[isopen=true]:fixed data-[isopen=true]:top-0 data-[isopen=true]:left-0 
+        data-[isopen=true]:h-screen data-[isopen=true]:w-screen 
+        `}
         onClick={toggleOpen}
       >
-        <img src={img.url} alt={img.name} />
-      </picture>
-      <AnimatePresence>
-        {isOpened && (
-          <Modal
-            closeModal={toggleOpen}
-            opacity={100}
-            customVariants={variants}
-            className="fixed flex justify-center items-center max-w-3xl"
-          >
-            <picture>
-              <img src={img.url} alt={img.name} />
-            </picture>
-          </Modal >
-        )}
-      </AnimatePresence >
+        <motion.img
+          layout
+          src={img.url}
+          alt={img.name}
+          animate={isOpen ? { borderRadius: "0" } : { borderRadius }}
+          data-isopen={isOpen}
+          onClick={e => isOpen && e.stopPropagation()}
+          className={`relative rounded-xl aspect-square object-cover bg-primary-800 dark:bg-primary-100 ${className ?? ""}
+          data-[isopen=true]:w-[30rem] data-[isopen=true]:max-h-[75vh] data-[isopen=true]:aspect-auto data-[isopen=true]:cursor-auto 
+          `}
+        />
+      </motion.picture>
     </div>
   );
 }
@@ -40,6 +47,12 @@ Image.propTypes = {
     name: PropTypes.string,
     url: PropTypes.string,
   }),
+  className: PropTypes.string,
+  borderRadius: PropTypes.string
 };
+
+Image.defaultProps = {
+  borderRadius: "0.75rem"
+}
 
 export default Image;
