@@ -11,6 +11,7 @@ const Button = ({
   additionClasses,
   disabled,
   type,
+  title
 }) => {
   let bgColor;
   if (bg === "full")
@@ -30,6 +31,7 @@ const Button = ({
       type={type}
       disabled={disabled}
       onClick={handleClick}
+      title={title}
       className={`transition-colors flex gap-3 items-center justify-center rounded-xl font-medium 
                 ${bgColor} ${padding} ${additionClasses}`}
     >
