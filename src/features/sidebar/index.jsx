@@ -13,7 +13,7 @@ function Sidebar({ tap, setTap }) {
   const userDoc = useContext(UserContext)
 
   const windowWidth = window.innerWidth
-  console.log(windowWidth)
+
   return (
     <aside
       className={`absolute lg:static bottom-0 left-0 w-full z-10 dark:bg-primary-800 lg:w-auto lg:min-w-[60px] lg:shrink-0`}
