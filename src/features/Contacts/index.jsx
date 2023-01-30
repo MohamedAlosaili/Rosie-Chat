@@ -10,12 +10,12 @@ import { db } from "rosie-firebase"
 import { UserContext } from "hooks/context"
 
 function Contacts() {
-    const currentUserDoc = useContext(UserContext)
+    const { currentUser, updateDocument } = useContext(UserContext)
     const [contactTap, setContactTap] = useState("friends")
 
     const usersQuery = query(
         collection(db, "users"),
-        where("uid", "!=", currentUserDoc.uid)
+        where("uid", "!=", currentUser.uid)
     )
 
     const [allUsers, usersLoading, usersError] = useCollectionData(usersQuery)
@@ -59,7 +59,8 @@ function Contacts() {
             )}
             {!usersLoading && !usersError && (
                 <Users
-                    currentUserDoc={currentUserDoc}
+                    currentUser={currentUser}
+                    updateDocument={updateDocument}
                     allUsers={allUsers}
                     contactTap={contactTap}
                     setContactTap={setContactTap}

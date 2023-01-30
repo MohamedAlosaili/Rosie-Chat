@@ -7,17 +7,18 @@ import UserCard from "./UserCard"
 import { SearchForm, Button } from "components"
 import { useSearch } from "hooks"
 
-function Users({ currentUserDoc, allUsers, contactTap, setContactTap }) {
+function Users({ currentUser, updateDocument, allUsers, contactTap, setContactTap }) {
 
-    const users = contactTap === "friends" ? allUsers?.filter(user => currentUserDoc.friends.includes(user.uid)) : allUsers
+    const users = contactTap === "friends" ? allUsers?.filter(user => currentUser.friends.includes(user.uid)) : allUsers
     const [searchValue, setSearchValue, searchResults] = useSearch("users", users, "displayName")
 
     const usersElements = (searchValue ? searchResults : users)?.map(user => (
         <UserCard
             key={user.uid}
             user={user}
-            isFriend={currentUserDoc.friends.includes(user.uid)}
-            currentUserDoc={currentUserDoc}
+            isFriend={currentUser.friends.includes(user.uid)}
+            currentUser={currentUser}
+            updateDocument={updateDocument}
         />
     ))
 
@@ -51,7 +52,8 @@ function Users({ currentUserDoc, allUsers, contactTap, setContactTap }) {
 }
 
 Users.propTypes = {
-    currentUserDoc: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    updateDocument: PropTypes.func,
     allUsers: PropTypes.array.isRequired,
     contactTap: PropTypes.string.isRequired,
     setContactTap: PropTypes.func

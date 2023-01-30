@@ -22,7 +22,7 @@ function useSendMessage(
   { selectedChat, scrollToBottom },
   closePreview = () => null
 ) {
-  const userDoc = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
 
   const [text, setText] = useState({ [inputName]: "" });
   const [loading, setLoading] = useState(false);
@@ -83,7 +83,7 @@ function useSendMessage(
       url: null,
     }
   ) {
-    const { uid, photoURL, displayName } = userDoc;
+    const { uid, photoURL, displayName } = currentUser;
 
     const type = file.type ? "file" : "text";
     const createdAt = serverTimestamp()

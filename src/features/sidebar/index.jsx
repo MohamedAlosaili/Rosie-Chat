@@ -10,7 +10,7 @@ import { HiUsers } from "react-icons/hi"
 import { CiLogout } from "react-icons/ci"
 
 function Sidebar({ tap, setTap }) {
-  const userDoc = useContext(UserContext)
+  const { currentUser } = useContext(UserContext)
 
   const windowWidth = window.innerWidth
 
@@ -22,9 +22,9 @@ function Sidebar({ tap, setTap }) {
         <NvButton
           handleClick={() => setTap("profile")}
           tap={tap}
-          img={userDoc.photoURL}
+          img={currentUser.photoURL}
           btnTap="profile"
-          userName={userDoc.displayName}
+          userName={currentUser.displayName}
         />
         <div className="flex gap-4 justify-between w-[70%] lg:w-auto lg:flex-col">
           <NvButton

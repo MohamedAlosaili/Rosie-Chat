@@ -14,12 +14,12 @@ import { useSearch } from "hooks";
 
 function ChatsList() {
   // TODO: userDoc sometimes return null
-  const userDoc = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
 
   const qu = query(
     collection(db, "chats"),
-    where("id", "in", userDoc.chats),
+    where("id", "in", currentUser.chats),
     orderBy("lastMsg.createdAt")
   )
   const [chats, userChatsLoading, userChatsError] = useCollectionData(qu)

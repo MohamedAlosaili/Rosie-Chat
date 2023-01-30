@@ -20,18 +20,18 @@ const UserContext = React.createContext();
 
 function UserContextProvider({ children }) {
   const user = auth.currentUser;
-  const [userDoc, loading, error] = useDocumentData(doc(db, "users", user.uid));
+  const [currentUser, loading, error] = useDocumentData(doc(db, "users", user.uid));
 
   // TODO: this need to be moved into separate hook
   useEffect(() => {
-    const { uid } = user;
-    if (userDoc && !userDoc.isOnline) {
-      updateDoc(doc(db, "users", uid), { isOnline: true })
+    if (currentUser && !currentUser.isOnline) {
+
+      updateDocument({ isOnline: true })
     }
 
     return () => {
       // TODO: Firestore Rule prevent this action 
-      updateDoc(doc(db, "users", uid), { isOnline: false })
+      updateDocument({ isOnline: false })
     }
   }, [loading])
 
@@ -39,7 +39,7 @@ function UserContextProvider({ children }) {
     const { displayName, email, photoURL, uid } = user;
     const userRef = doc(db, "users", uid);
 
-    if (!userDoc && !loading) {
+    if (!currentUser && !loading) {
       (async function () {
         try {
 
@@ -72,7 +72,7 @@ function UserContextProvider({ children }) {
               createdAt,
             })
           );
-          await updateDoc(doc(db, "chats", publicChatId), {
+          await updateDocument({
             lastMsg: { message: text, createdAt },
             members: [...publicChat.members, uid]
           })
@@ -81,9 +81,9 @@ function UserContextProvider({ children }) {
         }
       })();
     }
-  }, [userDoc, loading]);
+  }, [currentUser, loading]);
 
-  if (loading || !userDoc) {
+  if (loading || !currentUser) {
     return <StatusMessage message="Loading..." type="loading" />;
   }
 
@@ -91,8 +91,13 @@ function UserContextProvider({ children }) {
     return <StatusMessage message={error?.code} type="error" />;
   }
 
+  async function updateDocument(newValues) {
+    console.log("currentUser", currentUser)
+    await updateDoc(doc(db, "users", user.uid), newValues)
+  }
+
   return (
-    <UserContext.Provider value={userDoc}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ currentUser, updateDocument }}>{children}</UserContext.Provider>
   );
 }
 

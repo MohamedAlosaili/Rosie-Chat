@@ -10,7 +10,7 @@ import { StatusMessage, Image, Input, Button, Modal } from "components"
 import { auth } from "rosie-firebase"
 
 function Profile() {
-    const { uid, displayName, photoURL, email, about, joinedOn } = useContext(UserContext)
+    const { currentUser: { uid, displayName, photoURL, email, about, joinedOn } } = useContext(UserContext)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
     const [editValues, setEditValues] = useState({ displayName, about })
