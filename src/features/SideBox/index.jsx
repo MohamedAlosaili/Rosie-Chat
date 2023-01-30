@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import Sidebar from "features/Sidebar";
 import Profile from "features/Profile";
 import ChatsList from "features/ChatsList";
-import Users from "features/Users";
+import Contacts from "features/Contacts";
 import Setting from "features/Setting";
 import { fadeInLeft } from "util"
 
@@ -19,7 +19,7 @@ function SideBox() {
       case "chats":
         return <ChatsList />
       case "contacts":
-        return <Users />
+        return <Contacts />
       case "setting":
         return <Setting />
     }
@@ -30,7 +30,7 @@ function SideBox() {
       <Sidebar tap={tap} setTap={setTap} />
       <AnimatePresence initial={false} mode="wait">
         <article className="py-6 px-4 flex-1">
-          <motion.dev
+          <motion.div
             key={tap}
             variants={fadeInLeft}
             initial="hidden"
@@ -38,8 +38,11 @@ function SideBox() {
             exit="hidden"
             className="block"
           >
+            <h1 className="text-2xl font-semibold capitalize pb-2 mb-4 border-b-2 dark:text-primary-200 dark:border-primary-800">
+              {tap}
+            </h1>
             {currentTap()}
-          </motion.dev>
+          </motion.div>
         </article>
       </AnimatePresence>
     </section>
