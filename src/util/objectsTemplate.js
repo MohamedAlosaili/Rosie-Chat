@@ -46,16 +46,31 @@ const messageDocTemplate = (messageDocInfo) => {
 const chatDocTemplate = (chatDocInfo) => {
   const defaultValues = {
     id: null,
-    isGroup: true,
-    name: null,
-    photoURL: null,
+    isGroup: false,
     lastMsg: {
       uid: null,
       message: null,
       createdAt: null,
     },
+    admins: [],
     members: [],
   };
+
+  // TODO: endOne & endTwo have to change into clear names
+  // chatInfo: {
+  //   name: null,
+  //   photoURL: null,
+  // },
+  // endOne: {
+  //   uid: null,
+  //   name: null,
+  //   photoURL: null,
+  // },
+  // endTwo: {
+  //   uid: null,
+  //   name: null,
+  //   photoURL: null,
+  // },
 
   const lastMsg = { ...defaultValues.lastMsg, ...chatDocInfo?.lastMsg };
   return { ...defaultValues, ...chatDocInfo, lastMsg };
