@@ -11,11 +11,12 @@ import Form from "features/ChatBox/Form";
 import { db } from "rosie-firebase";
 import { defaultAvatar } from "imgs";
 import { StatusMessage } from "components";
-import { ChatContext } from "hooks/context";
+import { ChatContext, UserContext } from "hooks/context";
 import { useEscape } from "hooks";
 
 function Conversation({ setIsChatOpen }) {
   const { selectedChat, emptyChat } = useContext(ChatContext);
+  const { currentUser } = useContext(UserContext);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false)
   const [messagesLimit, setMessagesLimit] = useState({ prevMessagesLength: 25, limit: 25 });
@@ -69,6 +70,10 @@ function Conversation({ setIsChatOpen }) {
     }
   }
 
+  // TODO: endOne & endTwo have to change into clear names
+  const directChatInfo = selectedChat?.endOne?.uid === currentUser.uid ? selectedChat?.endTwo : selectedChat?.endOne
+  const chatInfo = selectedChat.isGroup ? selectedChat.chatInfo : directChatInfo
+
   return (
     <motion.div
       initial={{ left: "100%" }}
@@ -104,13 +109,13 @@ function Conversation({ setIsChatOpen }) {
           <CgChevronLeft size={25} />
         </button>
         <img
-          src={selectedChat.photoURL}
-          alt={`${selectedChat.name} photo`}
+          src={chatInfo.photoURL}
+          alt={`${chatInfo.name} photo`}
           className="h-10 aspect-square object-cover rounded-50"
           onError={(e) => (e.target.src = defaultAvatar)}
         />
         <h3 className="font-medium dark:text-primary-200">
-          {selectedChat.name}
+          {chatInfo.name}
         </h3>
       </header>
       {
