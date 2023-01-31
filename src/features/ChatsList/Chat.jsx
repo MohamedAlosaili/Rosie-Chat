@@ -1,9 +1,10 @@
 import { memo, useContext } from "react";
 import PropTypes from "prop-types";
 
-import { ChatContext } from "hooks/context";
+import { ChatContext, UserContext } from "hooks/context";
 
 const Chat = ({ chat, isSelected }) => {
+  const { currentUser } = useContext(UserContext);
   const { changeChat } = useContext(ChatContext);
 
   // TODO: This block needs some refactor
@@ -19,6 +20,10 @@ const Chat = ({ chat, isSelected }) => {
   }
   const timeFormater = new Intl.DateTimeFormat("en-US", options);
 
+  // TODO: endOne & endTwo have to change into clear names
+  const directChatInfo = chat?.endOne?.uid === currentUser.uid ? chat?.endTwo : chat?.endOne
+  const chatInfo = chat.isGroup ? chat.chatInfo : directChatInfo
+
   return (
     <li
       onClick={() => changeChat(chat)}
@@ -28,21 +33,25 @@ const Chat = ({ chat, isSelected }) => {
         }`}
     >
       <img
-        src={chat.photoURL}
+        src={chatInfo.photoURL}
         alt="chat image"
         className="w-14 h-14 object-cover rounded-50"
       />
       <div className="min-w-0 flex-1">
         <div className="flex justify-between items-center gap-2 mb-2">
           <h3 className="text-base font-medium dark:text-primary-200 truncate">
-            {chat.name}
+            {chatInfo.name}
           </h3>
           <time className="whitespace-nowrap">
             {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
           </time>
         </div>
         <div className="flex justify-between items-center gap-2">
-          <p className="truncate">{chat.lastMsg.message}</p>
+          <p className="truncate">{
+            (chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid)
+              ? chat.lastMsg.message + chatInfo.name + " 👋"
+              : chat.lastMsg.message
+          }</p>
           {chat?.unreadMsgs > 0 && (
             <span className="bg-accent text-xs dark:text-primary-200 rounded-full py-[0.3rem] px-2 font-semibold leading-none">
               {chat.unreadMsgs}
