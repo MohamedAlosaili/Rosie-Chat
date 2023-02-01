@@ -21,15 +21,19 @@ module.exports = {
           dark: "#f1f5f9",
         },
         success: {
-          600: "#0284c7",
-          DEFAULT: "#0ea5e9",
-          400: "#38bdf8",
+          600: "#14532d",
+          DEFAULT: "#166534",
+          400: "#15803d",
         },
         error: {
-          600: "#9d174d",
-          DEFAULT: "#be185d",
-          400: "#db2777",
-          300: "#ec4899",
+          600: "#7f1d1d",
+          DEFAULT: "#991b1b",
+          400: "#b91c1c",
+        },
+        info: {
+          600: "#0369a1",
+          DEFAULT: "#0284c7",
+          400: "#0ea5e9",
         },
       },
       borderRadius: {

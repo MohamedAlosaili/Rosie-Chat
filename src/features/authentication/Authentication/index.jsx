@@ -61,7 +61,7 @@ const Authentication = ({
           : "Already have an account? "}
         <a
           onClick={changeTap}
-          className="transition-colors text-success hover:text-success-600 cursor-pointer font-medium"
+          className="transition-colors text-info hover:text-info-600 cursor-pointer font-bold"
         >
           {selectedTap === "signin" ? "Sign up" : "Sign in"}
         </a>

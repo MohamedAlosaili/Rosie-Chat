@@ -83,8 +83,8 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
                         <Button title="Start chatting" handleClick={startChatting}>
                             <BsFillChatFill size={18} />
                         </Button>
-                        <Button title="Remove from friends" handleClick={removeFriend}>
-                            <FaUserMinus size={18} className="text-red-800" />
+                        <Button title="Remove from friends" handleClick={removeFriend} bg="red">
+                            <FaUserMinus size={18} />
                         </Button>
                     </div>
                 ) : (

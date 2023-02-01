@@ -57,7 +57,7 @@ function Input({
   }
 
   const validFocus =
-    "focus:ring-success focus:text-success dark:focus:text-success";
+    "focus:ring-info focus:text-info dark:focus:text-info";
   const invalidFocus =
     "focus:ring-error-400 focus:text-error-400 dark:focus:text-error-400";
 
@@ -80,7 +80,7 @@ function Input({
       className={`flex flex-col w-100 gap-2 text-sm relative font-medium`}
     >
       <div>
-        {label} {required && <span className="text-error">*</span>}
+        {label} {required && <span className="text-error-400">*</span>}
         {type === "password" && (
           <img
             onClick={changePasswordState}
@@ -102,7 +102,7 @@ function Input({
         onChange={changeValue}
       />
       {submitForm && !valid && (
-        <span className="absolute top-1 right-2 text-pink-500 text-xs">
+        <span className="absolute top-1 right-2 text-error-400 text-xs font-bold">
           {invalidMessage()}
         </span>
       )}
