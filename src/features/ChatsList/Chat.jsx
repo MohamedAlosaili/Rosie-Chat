@@ -5,7 +5,7 @@ import { ChatContext, UserContext } from "hooks/context";
 
 const Chat = ({ chat, isSelected }) => {
   const { currentUser } = useContext(UserContext);
-  const { changeChat } = useContext(ChatContext);
+  const { selectedChat, changeChat } = useContext(ChatContext);
 
   // TODO: This block needs some refactor
   const today = new Date();
@@ -26,7 +26,7 @@ const Chat = ({ chat, isSelected }) => {
 
   return (
     <li
-      onClick={() => changeChat(chat)}
+      onClick={() => selectedChat.id !== chat.id && changeChat(chat)}
       className={`grid grid-cols-[auto_1fr] text-sm rounded-xl gap-4 p-4 mb-2 last:mb-0 cursor-pointer transition-colors overflow-hidden select-none 
                       relative z-10 before:absolute before:inset-0 before:opacity-50 before:-z-10 before:transition-colors 
                       dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${isSelected ? "dark:bg-primary-800" : ""
