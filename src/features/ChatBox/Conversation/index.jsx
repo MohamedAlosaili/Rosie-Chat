@@ -1,10 +1,11 @@
-import { useEffect, useRef, useContext, useState } from "react";
+import { useEffect, useRef, useContext, useState, useId } from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/Io"
 import { CgChevronLeft } from "react-icons/cg"
+import { nanoid } from "nanoid";
 
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
@@ -20,6 +21,7 @@ function Conversation({ setIsChatOpen }) {
 
   const [showScrollArrow, setShowScrollArrow] = useState(false)
   const [messagesLimit, setMessagesLimit] = useState({ prevMessagesLength: 25, limit: 25 });
+  const [greeting, setGreeting] = useState("")
 
   const isLimitChanged = useRef(false);
   const mostRecentMsgs = useRef(null);
@@ -37,12 +39,16 @@ function Conversation({ setIsChatOpen }) {
     if (!isLimitChanged.current && !isMessagesLoading) {
       scrollToBottom()
     } else if (!isMessagesLoading) isLimitChanged.current = false
+
+    if (messages?.length > 0) {
+      setGreeting("")
+    }
   }, [messages]);
 
   function increaseMessagesLimit(scrollTop) {
     if (
       scrollTop === 0 &&
-      messagesLimit.prevMessagesLength <= messages.length
+      messagesLimit.prevMessagesLength <= messages?.length
     ) {
       setMessagesLimit((prevLimit) => ({
         prevMessagesLength: prevLimit.limit + 25,
@@ -120,18 +126,38 @@ function Conversation({ setIsChatOpen }) {
       </header>
       {
         <main onScroll={handleChatScroll} className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar">
-          <div className="max-w-2xl mx-auto">
-            {messages?.map((msg, idx, msgs) => (
-              <Message
-                key={msg.id}
-                prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
-                messageObject={msg}
-                selectedChat={selectedChat}
-              />
-            ))
-            }
-            <div ref={mostRecentMsgs} className="h-px"></div>
-          </div>
+          {messages?.length > 0
+            ? (
+              <div className="max-w-2xl mx-auto">
+                {messages?.map((msg, idx, msgs) => (
+                  <Message
+                    key={msg.id}
+                    prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
+                    messageObject={msg}
+                    selectedChat={selectedChat}
+                  />
+                ))
+                }
+                <div ref={mostRecentMsgs} className="h-px"></div>
+              </div>
+            ) : (
+              !isMessagesLoading && (
+                <div
+                  onClick={() => setGreeting(`Hi ${chatInfo.name}${selectedChat.isGroup ? " members" : ""}`)}
+                  className="transition-colors absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-max p-4 rounded-xl text-center cursor-pointer dark:text-primary-200 dark:bg-primary-800 dark:hover:bg-primary-800/75"
+                >
+                  <h3 className="font-semibold">No messages here yet...</h3>
+                  <p>Tap here to say Hi to <span className="font-semibold dark:text-primary-50">{chatInfo.name} {selectedChat.isGroup && "members"}</span></p>
+                  <img
+                    src="https://media.tenor.com/XyfkuomEwj4AAAAi/hello.gif"
+                    alt="Greeting gif"
+                    className="w-60"
+                  />
+
+                </div>
+              )
+            )
+          }
         </main>
       }
       <AnimatePresence>
@@ -154,7 +180,13 @@ function Conversation({ setIsChatOpen }) {
         )}
       </AnimatePresence>
       <footer className="w-full max-w-2xl mx-auto p-2 py-3 border-t dark:border-primary-800 z-10">
-        <Form selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
+        {/* unique key will ensure that Form re-render on every changing in ChatContext */}
+        <Form
+          key={nanoid()}
+          selectedChat={selectedChat}
+          scrollToBottom={scrollToBottom}
+          greeting={greeting}
+        />
       </footer>
     </motion.div>
   );
