@@ -1,5 +1,5 @@
-// Get userDoc by auth.currentUser.uid
 const userDocTemplate = (userDocInfo) => {
+  // Root collection(users) will contain a user document like this:
   const defaultValues = {
     uid: null,
     displayName: null,
@@ -7,20 +7,44 @@ const userDocTemplate = (userDocInfo) => {
     email: null,
     photoURL: null,
     isOnline: true,
-    chats: [],
-    friends: [],
     joinedOn: null,
+    // friends: [] If there friends
   };
+
   return { ...defaultValues, ...userDocInfo };
 };
 
+const chatDocTemplate = (chatDocInfo) => {
+  // Root collection(chats) will contain a chat document like this:
+  const defaultValues = {
+    id: null,
+    isGroup: false,
+    chatName: null, // In End-To-End chats will be null
+    chatPhotoURL: null, // In End-To-End chats will be null
+    lastMsg: {
+      uid: null,
+      message: null,
+      createdAt: null,
+    },
+    members: [],
+    // admin: null, End-To-End chats won't have admin
+  };
+  /*
+    Subcollections
+    - path: chats/chatId/messages
+  */
+
+  return { ...defaultValues, ...chatDocInfo };
+};
+
 const messageDocTemplate = (messageDocInfo) => {
+  // Subcollection(messages) of a chat document will contain documents of these properties:
   const defaultValues = {
     type: "text",
     id: null,
-    uid: null,
-    displayName: null,
-    photoURL: null,
+    senderId: null,
+    senderName: null,
+    senderPhotoURL: null,
     message: {
       text: "",
       file: {
@@ -32,48 +56,7 @@ const messageDocTemplate = (messageDocInfo) => {
     createdAt: null,
   };
 
-  const message = { ...defaultValues.message, ...messageDocInfo.message };
-
-  const fullObject = {
-    ...defaultValues,
-    ...messageDocInfo,
-    message,
-  };
-
-  return fullObject;
-};
-
-const chatDocTemplate = (chatDocInfo) => {
-  const defaultValues = {
-    id: null,
-    isGroup: false,
-    lastMsg: {
-      uid: null,
-      message: null,
-      createdAt: null,
-    },
-    admins: [],
-    members: [],
-  };
-
-  // TODO: endOne & endTwo have to change into clear names
-  // chatInfo: {
-  //   name: null,
-  //   photoURL: null,
-  // },
-  // endOne: {
-  //   uid: null,
-  //   name: null,
-  //   photoURL: null,
-  // },
-  // endTwo: {
-  //   uid: null,
-  //   name: null,
-  //   photoURL: null,
-  // },
-
-  const lastMsg = { ...defaultValues.lastMsg, ...chatDocInfo?.lastMsg };
-  return { ...defaultValues, ...chatDocInfo, lastMsg };
+  return { ...defaultValues, ...messageDocInfo };
 };
 
 export { userDocTemplate, messageDocTemplate, chatDocTemplate };
