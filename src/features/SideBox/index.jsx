@@ -36,7 +36,6 @@ function SideBox() {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="block"
           >
             <h1 className="text-2xl font-semibold capitalize pb-2 mb-4 border-b-2 dark:text-primary-200 dark:border-primary-800">
               {tap}
