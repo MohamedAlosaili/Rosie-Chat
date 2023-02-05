@@ -8,7 +8,7 @@ const userDocTemplate = (userDocInfo) => {
     photoURL: null,
     isOnline: true,
     joinedOn: null,
-    // friends: [] If there friends
+    friends: [],
   };
 
   return { ...defaultValues, ...userDocInfo };
