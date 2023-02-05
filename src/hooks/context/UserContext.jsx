@@ -7,45 +7,44 @@ import {
   setDoc,
   doc,
   addDoc,
-  getDoc,
   updateDoc,
-  serverTimestamp,
+  arrayUnion,
+  serverTimestamp
 } from "firebase/firestore";
 
 import { auth, db } from "rosie-firebase";
 import { StatusMessage } from "components";
-import { userDocTemplate, messageDocTemplate } from "util";
+import { userDocTemplate } from "util";
 
 const UserContext = React.createContext();
 
 function UserContextProvider({ children }) {
   const user = auth.currentUser;
+  const userRef = doc(db, "users", user.uid);
+
   const [currentUser, loading, error] = useDocumentData(doc(db, "users", user.uid));
 
   // TODO: this need to be moved into separate hook
   useEffect(() => {
     if (currentUser && !currentUser.isOnline) {
-
       updateDocument({ isOnline: true })
     }
 
     return () => {
       // TODO: Firestore Rule prevent this action 
-      updateDocument({ isOnline: false })
+      // updateDocument({ isOnline: false })
     }
   }, [loading])
 
   useEffect(() => {
     const { displayName, email, photoURL, uid } = user;
-    const userRef = doc(db, "users", uid);
 
     if (!currentUser && !loading) {
       (async function () {
         try {
 
           const publicChatId = "public_chat";
-          const publicChat = (await getDoc(doc(db, "chats", publicChatId))).data()
-          const publicChatMessages = collection(db, `chats/${publicChatId}/messages`);
+          const publicChatMessagesRef = collection(db, `chats/${publicChatId}/messages`);
 
           await setDoc(
             userRef,
@@ -54,7 +53,6 @@ function UserContextProvider({ children }) {
               displayName,
               email,
               photoURL,
-              chats: [publicChatId],
               joinedOn: serverTimestamp()
             })
           );
@@ -62,19 +60,17 @@ function UserContextProvider({ children }) {
           const createdAt = serverTimestamp()
           const text = `${displayName} joined`
           await addDoc(
-            publicChatMessages,
-            messageDocTemplate({
-              id: nanoid(),
-              type: "announce",
-              message: {
-                text,
-              },
-              createdAt,
-            })
+            publicChatMessagesRef, {
+            id: nanoid(),
+            type: "announce",
+            message: { text },
+            createdAt,
+          }
           );
-          await updateDocument({
-            lastMsg: { message: text, createdAt },
-            members: [...publicChat.members, uid]
+          await updateDoc(doc(db, "chats", publicChatId), {
+            "lastMsg.message": text,
+            "lastMsg.createdAt": createdAt,
+            members: arrayUnion(uid)
           })
         } catch (e) {
           console.log(e);
@@ -83,7 +79,7 @@ function UserContextProvider({ children }) {
     }
   }, [currentUser, loading]);
 
-  if (loading || !currentUser) {
+  if (loading) {
     return <StatusMessage message="Loading..." type="loading" />;
   }
 
@@ -92,13 +88,16 @@ function UserContextProvider({ children }) {
   }
 
   async function updateDocument(newValues) {
-    console.log("currentUser", currentUser)
-    await updateDoc(doc(db, "users", user.uid), newValues)
+    await updateDoc(userRef, newValues)
   }
 
-  return (
-    <UserContext.Provider value={{ currentUser, updateDocument }}>{children}</UserContext.Provider>
-  );
+  if (currentUser) {
+    return (
+      <UserContext.Provider value={{ currentUser, updateDocument }}>
+        {children}
+      </UserContext.Provider>
+    );
+  }
 }
 
 export { UserContextProvider, UserContext };
