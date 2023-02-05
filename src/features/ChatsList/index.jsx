@@ -2,14 +2,13 @@ import { useContext } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore"
 import { collection, orderBy, query, where } from "firebase/firestore";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BsExclamationCircleFill } from "react-icons/bs";
-
+import { TbEdit } from "react-icons/tb";
 
 import Chat from "./Chat";
 import { db } from "rosie-firebase"
 import { UserContext, ChatContext } from "hooks/context";
-import { SearchForm } from "components";
+import { SearchForm, Tooltip, SkeletonLoader } from "components";
 import { useSearch } from "hooks";
 
 function ChatsList() {
@@ -17,31 +16,34 @@ function ChatsList() {
   const { currentUser } = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
 
-  const qu = query(
+  const chatsQuery = query(
     collection(db, "chats"),
-    where("id", "in", currentUser.chats),
-    orderBy("lastMsg.createdAt")
+    where("members", "array-contains", currentUser.uid),
+    orderBy("lastMsg.createdAt", "desc")
   )
-  const [chats, userChatsLoading, userChatsError] = useCollectionData(qu)
+  const [chats, userChatsLoading, userChatsError] = useCollectionData(chatsQuery)
   const [searchValue, setSearchValue, searchResults] = useSearch("chats", chats, "name")
 
   const chatsElements = (searchValue ? searchResults : chats)?.map((chat) => (
     <Chat key={chat.id} chat={chat} isSelected={chat.id === selectedChat.id} />
-  ));
+  ));  
 
+  const skeletonLoaders = Array(0, 1, 2, 3, 4).map(item => (
+    <SkeletonLoader.Card key={item} isChat={true} />
+  ))
+  console.log(skeletonLoaders)
   return (
     <div className="flex flex-col gap-4">
+      <button className="absolute top-0 right-0 translate-y-2">
+        <TbEdit size={25} className="dark:text-primary-200 peer" />
+        <Tooltip text="New chat" position="right" />
+      </button>
       <SearchForm
         value={searchValue}
         setValue={setSearchValue}
         disabled={userChatsLoading}
       />
-      {userChatsLoading && (
-        <div className="flex items-center gap-2 justify-center mt-4 dark:text-primary-200">
-          <AiOutlineLoading3Quarters size={20} className="animate-spin" />
-          Loading chats...
-        </div>
-      )}
+      {userChatsLoading && skeletonLoaders}
       {userChatsError && (
         <div className="flex items-center gap-2 justify-center mt-4 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
