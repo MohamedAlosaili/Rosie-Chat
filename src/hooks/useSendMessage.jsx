@@ -72,30 +72,22 @@ function useSendMessage(
   /**
    * @description Add new message document to the messages collection of the chat
    * @param {string} id - Message document id
-   * @param {object} [file={type: null, name: null, url: null}] - An object that contains file info to be added to the message
-   * document (name, type, url). if the message is not a file. the file will be the default value.
+   * @param {object} [file = null] - An object that contains file info to be added to the message document (name, type, url).
    */
-  async function addMessageDocument(
-    id,
-    file = {
-      type: null,
-      name: null,
-      url: null,
-    }
-  ) {
+  async function addMessageDocument(id, file = null) {
     const { uid, photoURL, displayName } = currentUser;
 
-    const type = file.type ? "file" : "text";
+    const type = file?.type ? "file" : "text";
     const createdAt = serverTimestamp()
     // TODO: Add message doc and update chat doc are used in two places (useSendMessage & UserContext) try to combined them
     await addDoc(
       messagesRef,
       messageDocTemplate({
-        id,
-        uid,
         type,
-        displayName,
-        photoURL,
+        id,
+        senderId: uid,
+        senderName: displayName,
+        senderPhotoURL: photoURL,
         message: {
           text: text[inputName].trim(),
           file,
@@ -104,7 +96,7 @@ function useSendMessage(
       })
     );
 
-    const message = text[inputName] || file.type.slice(0, file.type.indexOf("/"))
+    const message = text[inputName] || file?.type?.slice(0, file?.type?.indexOf("/"))
     await updateDoc(chatRef, {
       lastMsg: {
         uid,
