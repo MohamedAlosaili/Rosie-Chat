@@ -1,11 +1,40 @@
-import { memo, useContext } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import { doc, getDoc } from "firebase/firestore";
+
 import { ChatContext, UserContext } from "hooks/context";
+import { db } from "rosie-firebase";
+import { SkeletonLoader } from "components";
 
 const Chat = ({ chat, isSelected }) => {
   const { currentUser } = useContext(UserContext);
   const { selectedChat, changeChat } = useContext(ChatContext);
+
+  const [chatInfo, setChatInfo] = useState(() => ({
+    chatName: chat.chatName,
+    chatPhotoURL: chat.chatPhotoURL,
+  }));
+
+  useEffect(() => {
+    if (!chat.isGroup) {
+      receiverInfo().then((chatInfo) => setChatInfo(chatInfo));
+    }
+  }, []);
+
+  async function receiverInfo() {
+    const receiverId = chat.members.filter(
+      (memberId) => memberId !== currentUser.uid
+    )[0];
+    const receiverRef = doc(db, "users", receiverId);
+
+    try {
+      const userInfo = (await getDoc(receiverRef)).data();
+      return { chatName: userInfo.displayName, chatPhotoURL: userInfo.photoURL };
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // TODO: This block needs some refactor
   const today = new Date();
@@ -20,9 +49,9 @@ const Chat = ({ chat, isSelected }) => {
   }
   const timeFormater = new Intl.DateTimeFormat("en-US", options);
 
-  // TODO: endOne & endTwo have to change into clear names
-  const directChatInfo = chat?.endOne?.uid === currentUser.uid ? chat?.endTwo : chat?.endOne
-  const chatInfo = chat.isGroup ? chat.chatInfo : directChatInfo
+  if (!chatInfo.chatName) {
+    return <SkeletonLoader.Card isChat={true} />
+  }
 
   return (
     <li
@@ -33,15 +62,15 @@ const Chat = ({ chat, isSelected }) => {
         }`}
     >
       <img
-        src={chatInfo.photoURL}
-        alt="chat image"
-        className="w-14 h-14 object-cover rounded-50"
+        src={chatInfo.chatPhotoURL}
+        alt={`${chatInfo.chatName} ${chat.isGroup ? "group" : ""} photo`}
+        className="w-14 aspect-square object-cover rounded-full"
       />
-      <div className="min-w-0 flex-1">
+      <div>
         <div className="flex justify-between items-center gap-2 mb-2">
           <h3 className="text-base font-medium dark:text-primary-200 truncate">
-            {chatInfo.name}
-          </h3>
+            {chatInfo.chatName}
+          </h3> 
           <time className="whitespace-nowrap">
             {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
           </time>
@@ -49,7 +78,7 @@ const Chat = ({ chat, isSelected }) => {
         <div className="flex justify-between items-center gap-2">
           <p className="truncate">{
             (chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid)
-              ? chat.lastMsg.message + chatInfo.name + " 👋"
+              ? chat.lastMsg.message + chatInfo.chatName + " 👋"
               : chat.lastMsg.message
           }</p>
           {chat?.unreadMsgs > 0 && (
