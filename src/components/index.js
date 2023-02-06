@@ -6,6 +6,8 @@ import Backdrop from "./Backdrop";
 import Image from "./Image";
 import Video from "./Video";
 import SearchForm from "./SearchForm";
+import Tooltip from "./Tooltip";
+import SkeletonLoader from "./SkeletonLoader";
 
 export {
   StatusMessage,
@@ -16,4 +18,6 @@ export {
   Image,
   Video,
   SearchForm,
+  Tooltip,
+  SkeletonLoader,
 };
