@@ -29,6 +29,7 @@ function Contacts() {
                     `}
                 ></div>
                 <button
+                    disabled={usersLoading || usersError}
                     onClick={() => setContactTap("friends")}
                     className={`transition-colors rounded-xl flex-1 p-2 font-medium focus:outline-none
                                 ${contactTap === "friends" ? "dark:text-primary-200" : "dark:hover:bg-primary-800 dark:focus:bg-primary-800"}
@@ -37,6 +38,7 @@ function Contacts() {
                     Friends
                 </button>
                 <button
+                    disabled={usersLoading || usersError}
                     onClick={() => setContactTap("allUsers")}
                     className={`transition-colors rounded-xl flex-1 p-2 font-medium focus:outline-none
                                 ${contactTap === "allUsers" ? "dark:text-primary-200" : "dark:hover:bg-primary-800 dark:focus:bg-primary-800"}
@@ -45,27 +47,13 @@ function Contacts() {
                     All users
                 </button>
             </div>
-            {usersLoading && (
-                <div className="flex items-center gap-2 justify-center mt-4 dark:text-primary-200">
-                    <AiOutlineLoading3Quarters size={20} className="animate-spin" />
-                    Loading users...
-                </div>
-            )}
-            {usersError && (
-                <div className="flex items-center gap-2 justify-center mt-4 dark:text-primary-200">
-                    <BsExclamationCircleFill size={20} className="text-red-800" />
-                    {usersError?.code ?? <span className="text-sm">Something went wrong while loading users <br /> Please try again in a minute</span>}
-                </div>
-            )}
-            {!usersLoading && !usersError && (
-                <Users
-                    currentUser={currentUser}
-                    updateDocument={updateDocument}
-                    allUsers={allUsers}
-                    contactTap={contactTap}
-                    setContactTap={setContactTap}
-                />
-            )}
+            <Users
+                currentUser={currentUser}
+                updateDocument={updateDocument}
+                results={{ allUsers, usersLoading, usersError }}
+                contactTap={contactTap}
+                setContactTap={setContactTap}
+            />
         </div>
     )
 }
