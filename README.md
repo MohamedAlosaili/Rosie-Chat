@@ -8,7 +8,7 @@ Rosie Chat is a fullstack web application that allow users to create accounts
 and send/receive messages (text, images, videos) in a group or private chats.
 
 
-### Motavation
+### Motivation
 I built this app to put the concepts that I have learned in Reactjs & Firebase into an actual project
 
 
