@@ -28,10 +28,6 @@ function ChatsList() {
     <Chat key={chat.id} chat={chat} isSelected={chat.id === selectedChat.id} />
   ));  
 
-  const skeletonLoaders = Array(0, 1, 2, 3, 4).map(item => (
-    <SkeletonLoader.Card key={item} isChat={true} />
-  ))
-  console.log(skeletonLoaders)
   return (
     <div className="flex flex-col gap-4">
       <button className="absolute top-0 right-0 translate-y-2">
@@ -43,7 +39,7 @@ function ChatsList() {
         setValue={setSearchValue}
         disabled={userChatsLoading}
       />
-      {userChatsLoading && skeletonLoaders}
+      {userChatsLoading && <SkeletonLoader.Cards />}
       {userChatsError && (
         <div className="flex items-center gap-2 justify-center mt-4 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
