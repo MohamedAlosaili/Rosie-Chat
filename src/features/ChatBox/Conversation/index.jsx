@@ -1,7 +1,7 @@
-import { useEffect, useRef, useContext, useState, useId } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useCollectionData, useDocumentOnce } from "react-firebase-hooks/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/Io"
 import { CgChevronLeft } from "react-icons/cg"
@@ -11,13 +11,12 @@ import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
 import { db } from "rosie-firebase";
 import { defaultAvatar } from "imgs";
-import { StatusMessage } from "components";
-import { ChatContext, UserContext } from "hooks/context";
+import { StatusMessage, SkeletonLoader } from "components";
+import { ChatContext } from "hooks/context";
 import { useEscape } from "hooks";
 
 function Conversation({ setIsChatOpen }) {
   const { selectedChat, emptyChat } = useContext(ChatContext);
-  const { currentUser } = useContext(UserContext);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false)
   const [messagesLimit, setMessagesLimit] = useState({ prevMessagesLength: 25, limit: 25 });
@@ -26,12 +25,12 @@ function Conversation({ setIsChatOpen }) {
   const isLimitChanged = useRef(false);
   const mostRecentMsgs = useRef(null);
 
-  const q = query(
+  const messagesQuery = query(
     collection(db, `chats/${selectedChat.id}/messages`),
     orderBy("createdAt"),
     limitToLast(messagesLimit.limit)
   );
-  const [messages, isMessagesLoading, messagesError] = useCollectionData(q);
+  const [messages, isMessagesLoading, messagesError] = useCollectionData(messagesQuery);
 
   useEscape(() => emptyChat())
 
@@ -76,10 +75,6 @@ function Conversation({ setIsChatOpen }) {
     }
   }
 
-  // TODO: endOne & endTwo have to change into clear names
-  const directChatInfo = selectedChat?.endOne?.uid === currentUser.uid ? selectedChat?.endTwo : selectedChat?.endOne
-  const chatInfo = selectedChat.isGroup ? selectedChat.chatInfo : directChatInfo
-
   return (
     <motion.div
       initial={{ left: "100%" }}
@@ -114,15 +109,30 @@ function Conversation({ setIsChatOpen }) {
         >
           <CgChevronLeft size={25} />
         </button>
-        <img
-          src={chatInfo.photoURL}
-          alt={`${chatInfo.name} photo`}
-          className="h-10 aspect-square object-cover rounded-50"
-          onError={(e) => (e.target.src = defaultAvatar)}
-        />
-        <h3 className="font-medium dark:text-primary-200">
-          {chatInfo.name}
-        </h3>
+        <div className="w-10 aspect-square rounded-50 overflow-hidden">
+          {selectedChat?.chatPhotoURL
+            ? (
+              <img
+                src={selectedChat?.chatPhotoURL}
+                alt={`${selectedChat?.chatName} photo`}
+                className="aspect-square object-cover"
+                onError={(e) => (e.target.src = defaultAvatar)}
+              />
+            ) : (
+              <SkeletonLoader.Img />
+            )}
+        </div>
+        <div>
+          {selectedChat?.chatName
+            ? (
+              <h3 className="font-medium dark:text-primary-200">
+                {selectedChat?.chatName ?? ""}
+              </h3>
+            ) : (
+              <SkeletonLoader.Div width="10rem" />
+            )
+          }
+        </div>
       </header>
       {
         <main onScroll={handleChatScroll} className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar">
@@ -143,15 +153,17 @@ function Conversation({ setIsChatOpen }) {
             ) : (
               !isMessagesLoading && (
                 <div
-                  onClick={() => setGreeting(`Hi ${chatInfo.name}${selectedChat.isGroup ? " members" : ""}`)}
+                  onClick={() => setGreeting(`Hi ${selectedChat?.chatName ?? ""}${selectedChat.isGroup ? " members" : ""}`)}
                   className="transition-colors absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-max p-4 rounded-xl text-center cursor-pointer dark:text-primary-200 dark:bg-primary-800 dark:hover:bg-primary-800/75"
                 >
                   <h3 className="font-semibold">No messages here yet...</h3>
-                  <p>Tap here to say Hi to <span className="font-semibold dark:text-primary-50">{chatInfo.name} {selectedChat.isGroup && "members"}</span></p>
+                  <p>Tap here to say Hi to <span className="font-semibold dark:text-primary-50">
+                    {selectedChat?.chatName ?? ""} {selectedChat.isGroup && "members"}</span>
+                  </p>
                   <img
                     src="https://media.tenor.com/XyfkuomEwj4AAAAi/hello.gif"
                     alt="Greeting gif"
-                    className="w-60"
+                    className="block mx-auto w-60 aspect-square drop-shadow-sm"
                   />
 
                 </div>
