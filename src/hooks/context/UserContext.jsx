@@ -9,7 +9,7 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  serverTimestamp
+  serverTimestamp,
 } from "firebase/firestore";
 
 import { auth, db } from "rosie-firebase";
@@ -22,19 +22,21 @@ function UserContextProvider({ children }) {
   const user = auth.currentUser;
   const userRef = doc(db, "users", user.uid);
 
-  const [currentUser, loading, error] = useDocumentData(doc(db, "users", user.uid));
+  const [currentUser, loading, error] = useDocumentData(
+    doc(db, "users", user.uid)
+  );
 
   // TODO: this need to be moved into separate hook
   useEffect(() => {
     if (currentUser && !currentUser.isOnline) {
-      updateDocument({ isOnline: true })
+      updateDocument({ isOnline: true });
     }
 
     return () => {
-      // TODO: Firestore Rule prevent this action 
+      // TODO: Firestore Rule prevent this action
       // updateDocument({ isOnline: false })
-    }
-  }, [loading])
+    };
+  }, [loading]);
 
   useEffect(() => {
     const { displayName, email, photoURL, uid } = user;
@@ -42,9 +44,11 @@ function UserContextProvider({ children }) {
     if (!currentUser && !loading) {
       (async function () {
         try {
-
           const publicChatId = "public_chat";
-          const publicChatMessagesRef = collection(db, `chats/${publicChatId}/messages`);
+          const publicChatMessagesRef = collection(
+            db,
+            `chats/${publicChatId}/messages`
+          );
 
           await setDoc(
             userRef,
@@ -53,25 +57,23 @@ function UserContextProvider({ children }) {
               displayName,
               email,
               photoURL,
-              joinedOn: serverTimestamp()
+              joinedOn: serverTimestamp(),
             })
           );
           // Alert if user has been added
-          const createdAt = serverTimestamp()
-          const text = `${displayName} joined`
-          await addDoc(
-            publicChatMessagesRef, {
+          const createdAt = serverTimestamp();
+          const text = `${displayName} joined`;
+          await addDoc(publicChatMessagesRef, {
             id: nanoid(),
             type: "announce",
             message: { text },
             createdAt,
-          }
-          );
+          });
           await updateDoc(doc(db, "chats", publicChatId), {
             "lastMsg.message": text,
             "lastMsg.createdAt": createdAt,
-            members: arrayUnion(uid)
-          })
+            members: arrayUnion(uid),
+          });
         } catch (e) {
           console.log(e);
         }
@@ -88,7 +90,7 @@ function UserContextProvider({ children }) {
   }
 
   async function updateDocument(newValues) {
-    await updateDoc(userRef, newValues)
+    await updateDoc(userRef, newValues);
   }
 
   if (currentUser) {

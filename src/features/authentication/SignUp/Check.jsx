@@ -5,7 +5,7 @@ import { checked, notChecked } from "imgs";
 const Check = ({ condition, passed }) => {
   return (
     <p
-      className={`flex items-center basis-2/4 text-xs gap-1 mt-2 
+      className={`mt-2 flex basis-2/4 items-center gap-1 text-xs 
             ${
               passed ? "text-slate-700 dark:text-slate-300" : "text-slate-400"
             }`}

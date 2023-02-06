@@ -28,15 +28,15 @@ const FileInput = (props) => {
             key="sendFileModal"
             closeModal={() => (sending ? null : closePreview())}
           >
-            <div className="p-6 rounded-xl dark:bg-primary-800">
+            <div className="rounded-xl p-6 dark:bg-primary-800">
               {validFile.type.startsWith("video") ? (
                 <video
                   autoPlay
                   src={file.previewUrl}
-                  className="w-80 rounded-xl mb-2"
+                  className="mb-2 w-80 rounded-xl"
                 ></video>
               ) : (
-                <img src={file.previewUrl} className="w-80 rounded-xl mb-2" />
+                <img src={file.previewUrl} className="mb-2 w-80 rounded-xl" />
               )}
               <Input
                 type="text"
@@ -45,7 +45,7 @@ const FileInput = (props) => {
                 value={message.caption}
                 setValue={setMessage}
               />
-              <div className="flex justify-between mt-4">
+              <div className="mt-4 flex justify-between">
                 <Button
                   disabled={sending}
                   type="button"
@@ -70,7 +70,7 @@ const FileInput = (props) => {
       <label htmlFor="file" className="cursor-pointer px-2">
         <img
           src={fileIcon}
-          className="transition w-6 dark:invert-[0.7] dark:hover:invert"
+          className="w-6 transition dark:invert-[0.7] dark:hover:invert"
         />
       </label>
       <input

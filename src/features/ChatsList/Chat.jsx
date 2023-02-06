@@ -30,7 +30,10 @@ const Chat = ({ chat, isSelected }) => {
 
     try {
       const userInfo = (await getDoc(receiverRef)).data();
-      return { chatName: userInfo.displayName, chatPhotoURL: userInfo.photoURL };
+      return {
+        chatName: userInfo.displayName,
+        chatPhotoURL: userInfo.photoURL,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -50,39 +53,40 @@ const Chat = ({ chat, isSelected }) => {
   const timeFormater = new Intl.DateTimeFormat("en-US", options);
 
   if (!chatInfo.chatName) {
-    return <SkeletonLoader.Card isChat={true} />
+    return <SkeletonLoader.Card isChat={true} />;
   }
 
   return (
     <li
       onClick={() => selectedChat.id !== chat.id && changeChat(chat)}
-      className={`grid grid-cols-[auto_1fr] text-sm rounded-xl gap-4 p-4 mb-2 last:mb-0 cursor-pointer transition-colors overflow-hidden select-none 
-                      relative z-10 before:absolute before:inset-0 before:opacity-50 before:-z-10 before:transition-colors 
-                      dark:active:before:bg-primary-700 dark:hover:before:bg-primary-800 ${isSelected ? "dark:bg-primary-800" : ""
-        }`}
+      className={`relative z-10 mb-2 grid cursor-pointer select-none grid-cols-[auto_1fr] gap-4 overflow-hidden rounded-xl p-4 text-sm 
+                      transition-colors before:absolute before:inset-0 before:-z-10 before:opacity-50 before:transition-colors last:mb-0 
+                      dark:hover:before:bg-primary-800 dark:active:before:bg-primary-700 ${
+                        isSelected ? "dark:bg-primary-800" : ""
+                      }`}
     >
       <img
         src={chatInfo.chatPhotoURL}
         alt={`${chatInfo.chatName} ${chat.isGroup ? "group" : ""} photo`}
-        className="w-14 aspect-square object-cover rounded-full"
+        className="aspect-square w-14 rounded-full object-cover"
       />
       <div>
-        <div className="flex justify-between items-center gap-2 mb-2">
-          <h3 className="text-base font-medium dark:text-primary-200 truncate">
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <h3 className="truncate text-base font-medium dark:text-primary-200">
             {chatInfo.chatName}
-          </h3> 
+          </h3>
           <time className="whitespace-nowrap">
             {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
           </time>
         </div>
-        <div className="flex justify-between items-center gap-2">
-          <p className="truncate">{
-            (chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid)
+        <div className="flex items-center justify-between gap-2">
+          <p className="truncate">
+            {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid
               ? chat.lastMsg.message + chatInfo.chatName + " 👋"
-              : chat.lastMsg.message
-          }</p>
+              : chat.lastMsg.message}
+          </p>
           {chat?.unreadMsgs > 0 && (
-            <span className="bg-accent text-xs dark:text-primary-200 rounded-full py-[0.3rem] px-2 font-semibold leading-none">
+            <span className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
               {chat.unreadMsgs}
             </span>
           )}

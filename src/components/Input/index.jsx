@@ -56,8 +56,7 @@ function Input({
     }
   }
 
-  const validFocus =
-    "focus:ring-info focus:text-info dark:focus:text-info";
+  const validFocus = "focus:ring-info focus:text-info dark:focus:text-info";
   const invalidFocus =
     "focus:ring-error-400 focus:text-error-400 dark:focus:text-error-400";
 
@@ -77,7 +76,7 @@ function Input({
   return (
     <label
       htmlFor={id}
-      className={`flex flex-col w-100 gap-2 text-sm relative font-medium`}
+      className={`w-100 relative flex flex-col gap-2 text-sm font-medium`}
     >
       <div>
         {label} {required && <span className="text-error-400">*</span>}
@@ -86,12 +85,12 @@ function Input({
             onClick={changePasswordState}
             src={hidePassword}
             alt="hide/show password"
-            className="inline-block w-4 ml-3 invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] dark:group-[.active]:invert cursor-pointer"
+            className="ml-3 inline-block w-4 cursor-pointer invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] dark:group-[.active]:invert"
           />
         )}
       </div>
       <input
-        className={`p-3 text-sm rounded-xl border-2 ring-2 focus:outline-none focus:border-1 
+        className={`focus:border-1 rounded-xl border-2 p-3 text-sm ring-2 focus:outline-none 
                     ${light} ${dark} ${focusColors} ${invalidInputColors}`}
         type={inputType}
         name={name}
@@ -102,7 +101,7 @@ function Input({
         onChange={changeValue}
       />
       {submitForm && !valid && (
-        <span className="absolute top-1 right-2 text-error-400 text-xs font-bold">
+        <span className="absolute top-1 right-2 text-xs font-bold text-error-400">
           {invalidMessage()}
         </span>
       )}

@@ -14,7 +14,7 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
   // Announces are messages like create a group and members joined
   if (type === "announce") {
     return (
-      <div className="bg-primary-700 w-fit mx-auto p-2 leading-none text-xs rounded-lg my-2">
+      <div className="mx-auto my-2 w-fit rounded-lg bg-primary-700 p-2 text-xs leading-none">
         {message.text}
       </div>
     );
@@ -41,33 +41,37 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
       className={`flex gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}
     >
       {otherMebmerMsgs && (
-        <div className="w-8 h-8">
+        <div className="h-8 w-8">
           {!isTheSameSender && (
             <img
               src={photoURL}
               alt={`${displayName} avatar`}
-              className={`object-cover ${photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""} rounded-50 p-px`}
+              className={`object-cover ${
+                photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
+              } rounded-50 p-px`}
               style={userColor}
             />
           )}
         </div>
       )}
       <div
-        className={`max-w-[75%] lg:max-w-[65%] ${type === "file" ? "p-1 w-[75%] lg:w-[65%]" : "p-2"} rounded-xl 
+        className={`max-w-[75%] lg:max-w-[65%] ${
+          type === "file" ? "w-[75%] p-1 lg:w-[65%]" : "p-2"
+        } rounded-xl 
                   ${currentUserMsg ? "bg-accent" : "dark:bg-primary-800"} 
                   dark:text-primary-200
         `}
       >
         {otherMebmerMsgs && !isTheSameSender && (
           <h3
-            className={`font-medium text-[var(--color)] truncate mb-1`}
+            className={`mb-1 truncate font-medium text-[var(--color)]`}
             style={userColor}
           >
             {displayName}
           </h3>
         )}
         <div className="flex flex-col gap-2">
-          {(type === "file") && (
+          {type === "file" && (
             <>
               {message.file?.type?.startsWith("image") ? (
                 <div className="aspect-square">
@@ -80,10 +84,14 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
               )}
             </>
           )}
-          {message.text && <p className={`${type === "file" ? "px-1" : ""}`}>{message.text}</p>}
+          {message.text && (
+            <p className={`${type === "file" ? "px-1" : ""}`}>{message.text}</p>
+          )}
         </div>
         <time
-          className={`block mt-1 leading-none ${!currentUserMsg ? "text-right" : ""} text-[0.65rem] opacity-60 
+          className={`mt-1 block leading-none ${
+            !currentUserMsg ? "text-right" : ""
+          } text-[0.65rem] opacity-60 
                       ${type === "file" ? "mx-2" : ""}
           `}
         >

@@ -37,13 +37,13 @@ const Authentication = ({
       exit="hidden"
       className="flex flex-col gap-6"
     >
-      <h1 className="text-[2.5rem] font-bold text-center text-primary-900 dark:text-primary-200">
+      <h1 className="text-center text-[2.5rem] font-bold text-primary-900 dark:text-primary-200">
         {title}
       </h1>
       <p className="text-center font-medium">{greeting}</p>
       {children}
       <div className="relative before:absolute before:left-0 before:top-[50%] before:-mt-px before:h-px before:w-full before:bg-primary-400 dark:before:bg-primary-700">
-        <span className="relative block h-full w-16 bg-white dark:bg-primary-900 mx-auto text-center">
+        <span className="relative mx-auto block h-full w-16 bg-white text-center dark:bg-primary-900">
           or
         </span>
       </div>
@@ -55,13 +55,13 @@ const Authentication = ({
         <img src={googleLogo} alt="Google logo" className="w-5" />
         {selectedTap === "signin" ? "Sign in" : "Sign up"} with Google
       </Button>
-      <p className="text-sm text-center">
+      <p className="text-center text-sm">
         {selectedTap === "signin"
           ? "Don't have an account? "
           : "Already have an account? "}
         <a
           onClick={changeTap}
-          className="transition-colors text-info hover:text-info-600 cursor-pointer font-bold"
+          className="cursor-pointer font-bold text-info transition-colors hover:text-info-600"
         >
           {selectedTap === "signin" ? "Sign up" : "Sign in"}
         </a>

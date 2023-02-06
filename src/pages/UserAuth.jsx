@@ -9,7 +9,7 @@ function UserAuth({ user }) {
   const [selectedTap, setSelectedTap] = useState("signin");
 
   return (
-    <div className="min-h-screen grid place-items-center">
+    <div className="grid min-h-screen place-items-center">
       <div className="w-96 max-w-full p-4">
         <AnimatePresence initial={false} mode="wait">
           {user ? (

@@ -17,14 +17,14 @@ function Form({ selectedChat, scrollToBottom, greeting }) {
 
   useEffect(() => {
     if (greeting) {
-      setMessage({ text: greeting })
+      setMessage({ text: greeting });
     }
-  }, [greeting])
+  }, [greeting]);
 
   return (
     <form
       onSubmit={sendMessageHandler}
-      className="flex items-center rounded-full border p-2 dark:bg-primary-900 dark:border-primary-700"
+      className="flex items-center rounded-full border p-2 dark:border-primary-700 dark:bg-primary-900"
     >
       <FileInput selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
       <input
@@ -32,7 +32,7 @@ function Form({ selectedChat, scrollToBottom, greeting }) {
         placeholder="Type a message"
         value={sending ? "" : message.text}
         onChange={(e) => setMessage({ text: e.target.value })}
-        className="flex-1 text-primary-200 px-4 focus:outline-none bg-transparent"
+        className="flex-1 bg-transparent px-4 text-primary-200 focus:outline-none"
       />
       <Button
         disabled={message.text.trim() === "" || sending}

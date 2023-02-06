@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion";
 
 import Sidebar from "features/Sidebar";
 import Profile from "features/Profile";
 import ChatsList from "features/ChatsList";
 import Contacts from "features/Contacts";
 import Setting from "features/Setting";
-import { fadeInLeft } from "util"
+import { fadeInLeft } from "util";
 
 function SideBox() {
   const [tap, setTap] = useState("chats");
@@ -15,21 +15,23 @@ function SideBox() {
   function currentTap() {
     switch (tap) {
       case "profile":
-        return <Profile />
+        return <Profile />;
       case "chats":
-        return <ChatsList />
+        return <ChatsList />;
       case "contacts":
-        return <Contacts />
+        return <Contacts />;
       case "setting":
-        return <Setting />
+        return <Setting />;
     }
   }
 
   return (
-    <section className={`relative h-screen border-r border-primary-800 flex md:basis-[25rem] lg:basis-[30rem] md:shrink`}>
+    <section
+      className={`relative flex h-screen border-r border-primary-800 md:shrink md:basis-[25rem] lg:basis-[30rem]`}
+    >
       <Sidebar tap={tap} setTap={setTap} />
       <AnimatePresence initial={false} mode="wait">
-        <article className="py-6 px-4 flex-1">
+        <article className="flex-1 py-6 px-4">
           <motion.div
             key={tap}
             variants={fadeInLeft}
@@ -37,7 +39,7 @@ function SideBox() {
             animate="visible"
             exit="hidden"
           >
-            <h1 className="text-2xl font-semibold capitalize pb-2 mb-4 border-b-2 dark:text-primary-200 dark:border-primary-800">
+            <h1 className="mb-4 border-b-2 pb-2 text-2xl font-semibold capitalize dark:border-primary-800 dark:text-primary-200">
               {tap}
             </h1>
             {currentTap()}

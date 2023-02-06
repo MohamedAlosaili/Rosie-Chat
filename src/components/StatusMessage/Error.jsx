@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { BsExclamationCircle } from "react-icons/bs"
+import { BsExclamationCircle } from "react-icons/bs";
 
 const Error = ({ message, className }) => {
   const cleanedErrorMsg = message.replace(/^(\w+\/)*/, "").replaceAll("-", " ");
@@ -8,7 +8,7 @@ const Error = ({ message, className }) => {
     cleanedErrorMsg[0].toUpperCase() + cleanedErrorMsg.slice(1);
 
   return (
-    <div className={`${className} text-white bg-red-800`}>
+    <div className={`${className} bg-red-800 text-white`}>
       {/* TODO: Error bg-color need to declare in tailwind config */}
       <BsExclamationCircle size={25} />
       <p>{finalErrorMsg}</p>

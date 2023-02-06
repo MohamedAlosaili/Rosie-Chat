@@ -1,5 +1,5 @@
 function Setting() {
-    return null
+  return null;
 }
 
-export default Setting
+export default Setting;

@@ -14,7 +14,7 @@ const container = {
 };
 
 const StatusMessage = ({ message, type }) => {
-  const key = useId()
+  const key = useId();
 
   const className =
     "flex items-center gap-4 items-center font-medium py-2 px-8 rounded-lg w-fit mx-auto";
@@ -22,13 +22,13 @@ const StatusMessage = ({ message, type }) => {
   const statusMessage = () => {
     switch (type) {
       case "loading":
-        return <Loading message={message} className={className} />
+        return <Loading message={message} className={className} />;
       case "error":
-        return <Error message={message} className={className} />
+        return <Error message={message} className={className} />;
       case "success":
-        return <Success message={message} className={className} />
+        return <Success message={message} className={className} />;
     }
-  }
+  };
 
   return createPortal(
     <motion.div
@@ -37,17 +37,17 @@ const StatusMessage = ({ message, type }) => {
       initial="hidden"
       animate="visible"
       exit="hidden"
-      className="fixed top-4 left-0 w-full z-50"
+      className="fixed top-4 left-0 z-50 w-full"
     >
       {statusMessage()}
     </motion.div>,
-    document.getElementById("status"));
+    document.getElementById("status")
+  );
 };
 
 StatusMessage.propTypes = {
   type: PropTypes.string.isRequired,
   message: PropTypes.string,
 };
-
 
 export default StatusMessage;

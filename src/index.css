@@ -11,28 +11,28 @@
 }
 
 @layer utilities {
-    /* style scrollbar for Chrome, Safari and Opera */
-    .scrollbar::-webkit-scrollbar {
-        width: 0.4rem;
-        opacity: 0.1;
-      }
-      
-    .scrollbar::-webkit-scrollbar-thumb {
-      background-color: ""/* light mode color */;
-      border-radius: 20rem;
-    }
+  /* style scrollbar for Chrome, Safari and Opera */
+  .scrollbar::-webkit-scrollbar {
+    width: 0.4rem;
+    opacity: 0.1;
+  }
 
-    .dark .scrollbar::-webkit-scrollbar-thumb {
-      background-color: rgb(30, 41, 59, 0.75); 
-    }
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: "" /* light mode color */;
+    border-radius: 20rem;
+  }
 
-    /* style scrollbar for IE, Edge and Firefox */
-    .scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: /* light mode color */ transparent;
-    }
+  .dark .scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(30, 41, 59, 0.75);
+  }
 
-    .dark .scrollbar {
-      scrollbar-color: rgb(30, 41, 59, 0.75) transparent;
-    }
+  /* style scrollbar for IE, Edge and Firefox */
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: /* light mode color */ transparent;
+  }
+
+  .dark .scrollbar {
+    scrollbar-color: rgb(30, 41, 59, 0.75) transparent;
+  }
 }

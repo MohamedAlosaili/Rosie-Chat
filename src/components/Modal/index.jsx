@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import Backdrop from "components/Backdrop";
 
-import { modalVariants } from "util"
+import { modalVariants } from "util";
 
 const Modal = ({ closeModal, customVariants, className, children }) => {
   return createPortal(
@@ -13,7 +13,7 @@ const Modal = ({ closeModal, customVariants, className, children }) => {
         initial="hidden"
         animate="visible"
         exit="hidden"
-        className={`cursor-auto max-w-full ${className}`}
+        className={`max-w-full cursor-auto ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

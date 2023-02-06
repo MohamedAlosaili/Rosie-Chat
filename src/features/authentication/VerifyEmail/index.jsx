@@ -26,8 +26,8 @@ function VerifyEmail({ user, selectedTap, setSelectedTap }) {
       {sendingError && (
         <StatusMessage message={sendingError?.code} type="error" />
       )}
-      <div className="bg-primary-100 dark:bg-primary-800 p-6 rounded-2xl text-center">
-        <h1 className="text-2xl font-bold mb-6 text-primary-900 dark:text-primary-200">
+      <div className="rounded-2xl bg-primary-100 p-6 text-center dark:bg-primary-800">
+        <h1 className="mb-6 text-2xl font-bold text-primary-900 dark:text-primary-200">
           Verify your email
         </h1>
         <h3 className="text-[0.9rem] text-primary-900 dark:text-primary-200">
@@ -36,7 +36,7 @@ function VerifyEmail({ user, selectedTap, setSelectedTap }) {
         <img
           src={verifyEmail}
           alt="Verify Email Image"
-          className="w-40 mx-auto my-6"
+          className="mx-auto my-6 w-40"
         />
         <p className="text-[0.9rem] ">
           An email has been sent to {user.email} check your spam folder if you

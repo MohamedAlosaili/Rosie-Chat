@@ -9,45 +9,48 @@ import { UserContext } from "hooks/context/UserContext";
 const ChatContext = React.createContext();
 
 function ChatContextProvider({ children }) {
-  const { currentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext);
   const [selectedChat, setSelectedChat] = useState(chatDocTemplate());
 
   useEffect(() => {
     if (selectedChat.id && !selectedChat.isGroup && !selectedChat.chatName) {
-      receiverInfo().then(data => {
-        console.log(data)
-        setSelectedChat(prevSelected => ({ ...prevSelected, ...data }))
-      })
+      receiverInfo().then((data) => {
+        console.log(data);
+        setSelectedChat((prevSelected) => ({ ...prevSelected, ...data }));
+      });
     }
-  }, [selectedChat])
+  }, [selectedChat]);
 
   function changeChat(chat) {
     setSelectedChat(chat);
   }
 
   async function receiverInfo() {
-    if (!selectedChat.id) return
+    if (!selectedChat.id) return;
 
-    const receiverId = selectedChat?.members.filter(memberId => memberId !== currentUser.uid)[0]
-    const receiverRef = doc(db, "users", receiverId)
+    const receiverId = selectedChat?.members.filter(
+      (memberId) => memberId !== currentUser.uid
+    )[0];
+    const receiverRef = doc(db, "users", receiverId);
 
     try {
-
-      const { displayName, photoURL, ...userInfo } = (await getDoc(receiverRef)).data()
-      return { chatName: displayName, chatPhotoURL: photoURL, ...userInfo }
+      const { displayName, photoURL, ...userInfo } = (
+        await getDoc(receiverRef)
+      ).data();
+      return { chatName: displayName, chatPhotoURL: photoURL, ...userInfo };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   function emptyChat() {
-    setSelectedChat(chatDocTemplate())
+    setSelectedChat(chatDocTemplate());
   }
 
   const contextValue = {
     selectedChat,
     changeChat,
-    emptyChat
+    emptyChat,
   };
 
   return (

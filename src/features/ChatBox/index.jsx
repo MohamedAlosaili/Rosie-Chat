@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 
 function ChatBox() {
   const { selectedChat, emptyChat } = useContext(ChatContext);
-  const [isChatOpen, setIsChatOpen] = useState(true)
+  const [isChatOpen, setIsChatOpen] = useState(true);
 
   useEffect(() => {
     /* 
@@ -17,29 +17,28 @@ function ChatBox() {
     */
     if (!isChatOpen) {
       setTimeout(() => {
-        emptyChat()
-        setTimeout(() => setIsChatOpen(true), 0)
-      }, 300)
+        emptyChat();
+        setTimeout(() => setIsChatOpen(true), 0);
+      }, 300);
     }
-  }, [isChatOpen])
+  }, [isChatOpen]);
 
   return (
-    <div className={`absolute md:relative top-0 left-full md:left-0 z-10 h-screen w-screen 
-                    md:basis-[30rem] md:grow md:shrink
-    `}>
+    <div
+      className={`absolute top-0 left-full z-10 h-screen w-screen md:relative md:left-0 
+                    md:shrink md:grow md:basis-[30rem]
+    `}
+    >
       {selectedChat.id ? (
         <AnimatePresence mode="wait">
           {isChatOpen && (
-            <Conversation
-              setIsChatOpen={setIsChatOpen}
-              key="conversation"
-            />
+            <Conversation setIsChatOpen={setIsChatOpen} key="conversation" />
           )}
         </AnimatePresence>
       ) : (
-        <div className="h-full flex flex-col justify-center items-center p-8">
+        <div className="flex h-full flex-col items-center justify-center p-8">
           <img src={selectChat} alt="empty chat" className="w-full max-w-md" />
-          <h3 className="text-lg font-medium mt-8 text-primary-300">
+          <h3 className="mt-8 text-lg font-medium text-primary-300">
             Select a chat to start messaging
           </h3>
         </div>

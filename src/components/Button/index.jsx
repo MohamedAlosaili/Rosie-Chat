@@ -11,17 +11,18 @@ const Button = ({
   additionClasses,
   disabled,
   type,
-  title
+  title,
 }) => {
   let bgColor;
   if (bg === "full")
-    bgColor = `bg-accent ${!disabled && "hover:bg-accent-600"} text-primary-200`
+    bgColor = `bg-accent ${
+      !disabled && "hover:bg-accent-600"
+    } text-primary-200`;
   else if (bg === "red") {
-    bgColor = "bg-error hover:bg-error-600 text-primary-200"
+    bgColor = "bg-error hover:bg-error-600 text-primary-200";
   } else {
     bgColor = `ring-1 ring-primary-400 dark:ring-primary-700 hover:ring-primary-500 hover:bg-primary-100 dark:hover:bg-primary-800`;
   }
-
 
   return (
     <motion.button
@@ -32,7 +33,7 @@ const Button = ({
       disabled={disabled}
       onClick={handleClick}
       title={title}
-      className={`transition-colors flex gap-3 items-center justify-center rounded-xl font-medium 
+      className={`flex items-center justify-center gap-3 rounded-xl font-medium transition-colors 
                 ${bgColor} ${padding} ${additionClasses}`}
     >
       {children}
