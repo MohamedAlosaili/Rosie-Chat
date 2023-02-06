@@ -28,7 +28,7 @@ I built this app to put the concepts that I have learned in Reactjs & Firebase i
 
 ### App Features
 - Auth users and signin/signup
-- Authinticate with Google accounts
+- Authenticate with Google accounts
 - Verify accounts using email
 - Create private and group chats
 - Send images and videos
