@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import { defaultAvatar } from "imgs";
 import { buttonMotion } from "util";
+import { Tooltip } from "components";
 
 const NvButton = ({ handleClick, tap, img, icon: ButtonIcon, btnTap, userName }) => {
   const active = tap === btnTap
@@ -20,7 +21,7 @@ const NvButton = ({ handleClick, tap, img, icon: ButtonIcon, btnTap, userName })
   const profileButtonStyle = `p-0.5 lg:p-1 rounded-50 ${active ? "ring-accent" : "dark:focus:ring-primary-700"}`
 
   return (
-    <div className="relative flex flex-col items-center gap-2">
+    <div className="relative flex flex-col items-center gap-2 dark:hover:text-primary-200">
       <motion.button
         whileHover={buttonMotion.hover}
         whileTap={buttonMotion.tap}
@@ -45,18 +46,8 @@ const NvButton = ({ handleClick, tap, img, icon: ButtonIcon, btnTap, userName })
           }
         </div>
       </motion.button>
-      <span
-        className={`transition-all text-xs lg:text-base font-medium ${active ? "text-accent" : ""} rounded-lg z-10
-              lg:absolute lg:left-[150%] lg:top-1/2 lg:-translate-y-1/2 lg:py-1 lg:px-4 lg:invisible lg:translate-x-[15%] lg:opacity-0 
-              lg:peer-hover:visible lg:peer-hover:opacity-100 lg:peer-hover:translate-x-0 
-              lg:peer-focus:visible lg:peer-focus:opacity-100 lg:peer-focus:translate-x-0 
-              lg:dark:bg-primary-200 
-              lg:dark:text-primary-700 
-             
-        `}
-      >
-        {btnTap[0].toUpperCase() + btnTap.slice(1)}
-      </span>
+      <Tooltip text={btnTap} position="right" className="capitalize" />
+      <span className={`lg:hidden transition-all text-xs lg:text-base font-medium ${active ? "text-accent" : ""} capitalize`}>{btnTap}</span>
     </div>
   );
 };
