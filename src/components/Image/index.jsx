@@ -1,61 +1,62 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import PropTypes from "prop-types";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { nanoid } from "nanoid";
+import { TbFaceIdError } from "react-icons/tb";
+import { AiOutlineReload } from "react-icons/ai";
 
-import { Backdrop } from "components";
+import { SkeletonLoader } from "components";
 
-function Image({ img, className, borderRadius }) {
-  const [isOpen, setIsOpen] = useState(false);
+function Image({ img, className }) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  const toggleOpen = () => setIsOpen((isOpen) => !isOpen);
+  const reload = () => {
+    setLoading(true);
+    setError(false);
+  };
+
+  const handleError = () => {
+    setLoading(false);
+    setError(true);
+  };
 
   return (
-    <div>
-      <AnimatePresence>{isOpen && <Backdrop />}</AnimatePresence>
-      <motion.picture
-        layout
-        animate={
-          isOpen
-            ? { zIndex: 50 }
-            : { zIndex: 10, transition: { zIndex: { delay: 0.3 } } }
-        }
-        data-isopen={isOpen}
-        className={`relative grid cursor-pointer place-items-center
-        data-[isopen=true]:fixed data-[isopen=true]:top-0 data-[isopen=true]:left-0 
-        data-[isopen=true]:h-screen data-[isopen=true]:w-screen 
-        `}
-        onClick={toggleOpen}
-      >
-        <motion.img
-          layout
-          src={img.url}
-          alt={img.name}
-          animate={isOpen ? { borderRadius: "0" } : { borderRadius }}
-          data-isopen={isOpen}
-          onClick={(e) => isOpen && e.stopPropagation()}
-          className={`relative aspect-square rounded-xl bg-primary-800 object-cover dark:bg-primary-100 ${
-            className ?? ""
-          }
-          data-[isopen=true]:aspect-auto data-[isopen=true]:max-h-[75vh] data-[isopen=true]:w-[30rem] data-[isopen=true]:cursor-auto 
-          `}
-        />
-      </motion.picture>
-    </div>
+    <picture
+      onClick={(e) => (error || loading) && e.stopPropagation()}
+      className={`block h-full overflow-hidden ${className ?? ""} ${
+        !loading ? "dark:bg-primary-700/75" : ""
+      } ${error ? "cursor-auto" : ""}`}
+    >
+      {loading && <SkeletonLoader.Img className={className ?? ""} />}
+      {error && (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-1">
+          <button onClick={reload} className="relative">
+            <TbFaceIdError className="text-[1.5em]" />
+            <AiOutlineReload className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150 transform text-[2em]" />
+          </button>
+        </div>
+      )}
+      <img
+        key={nanoid()}
+        src={img.url}
+        alt={img.name}
+        className={`h-full w-full object-cover ${
+          loading || error ? "hidden" : "block"
+        }`}
+        onLoad={() => setLoading(false)}
+        onError={handleError}
+      />
+    </picture>
   );
 }
 
 Image.propTypes = {
   img: PropTypes.shape({
-    name: PropTypes.string,
     url: PropTypes.string,
+    name: PropTypes.string,
   }),
   className: PropTypes.string,
-  borderRadius: PropTypes.string,
 };
 
-Image.defaultProps = {
-  borderRadius: "0.75rem",
-};
-
-export default Image;
+export default memo(Image);
