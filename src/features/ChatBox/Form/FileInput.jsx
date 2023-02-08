@@ -1,15 +1,19 @@
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { AnimatePresence } from "framer-motion";
+import { AiOutlinePaperClip } from "react-icons/ai";
 
-import { useSendMessage, useFile } from "hooks";
-import { fileIcon } from "imgs";
-import { StatusMessage, Button, Input, Modal } from "components";
+import { useSendMessage, useValidateFile } from "hooks";
+import { StatusMessage, Button, Input, Modal, Video, Image } from "components";
 
-const FileInput = (props) => {
-  const [file, changeFile, fileError, closePreview] = useFile();
+const FileInput = ({ scrollToBottom }) => {
+  const [file, changeFile, fileError, closePreview] = useValidateFile([
+    "image",
+    "video",
+  ]);
   const [message, setMessage, sendMessageHandler, sending, sendingError] =
-    useSendMessage("caption", { ...props }, closePreview);
+    useSendMessage("caption", scrollToBottom, closePreview);
 
   const { validFile } = file;
   return (
@@ -30,13 +34,16 @@ const FileInput = (props) => {
           >
             <div className="rounded-xl p-6 dark:bg-primary-800">
               {validFile.type.startsWith("video") ? (
-                <video
-                  autoPlay
-                  src={file.previewUrl}
+                <Video
+                  video={{ url: file.previewUrl, type: "video/mp4" }}
+                  autoPlay={true}
                   className="mb-2 w-80 rounded-xl"
-                ></video>
+                />
               ) : (
-                <img src={file.previewUrl} className="mb-2 w-80 rounded-xl" />
+                <Image
+                  img={{ url: file.previewUrl, name: "" }}
+                  className="mb-2 aspect-square w-80 rounded-xl"
+                />
               )}
               <Input
                 type="text"
@@ -68,9 +75,9 @@ const FileInput = (props) => {
         )}
       </AnimatePresence>
       <label htmlFor="file" className="cursor-pointer px-2">
-        <img
-          src={fileIcon}
-          className="w-6 transition dark:invert-[0.7] dark:hover:invert"
+        <AiOutlinePaperClip
+          size={30}
+          className="transition-colors dark:hover:text-primary-200"
         />
       </label>
       <input
@@ -84,4 +91,8 @@ const FileInput = (props) => {
   );
 };
 
-export default FileInput;
+FileInput.propTypes = {
+  scrollToBottom: PropTypes.func,
+};
+
+export default memo(FileInput);
