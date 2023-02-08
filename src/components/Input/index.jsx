@@ -1,7 +1,7 @@
 import { useState, memo } from "react";
 import PropTypes from "prop-types";
 
-import { hidePassword, showPassword } from "imgs";
+import { BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
 function Input({
   label,
@@ -32,15 +32,7 @@ function Input({
 
   function changePasswordState(e) {
     e.preventDefault();
-    const src = e.target.src;
-
-    if (src.includes("hide-password")) {
-      e.target.src = showPassword;
-      setInputType("text");
-    } else {
-      e.target.src = hidePassword;
-      setInputType("password");
-    }
+    setInputType((prevType) => (prevType === "password" ? "text" : "password"));
   }
 
   function invalidMessage() {
@@ -78,15 +70,16 @@ function Input({
       htmlFor={id}
       className={`w-100 relative flex flex-col gap-2 text-sm font-medium`}
     >
-      <div>
+      <div className="flex items-center gap-1">
         {label} {required && <span className="text-error-400">*</span>}
         {type === "password" && (
-          <img
-            onClick={changePasswordState}
-            src={hidePassword}
-            alt="hide/show password"
-            className="ml-3 inline-block w-4 cursor-pointer invert-[.7] group-hover:invert-[.3] dark:group-hover:invert-[.9] dark:group-[.active]:invert"
-          />
+          <div className="ml-2 cursor-pointer" onClick={changePasswordState}>
+            {inputType === "password" ? (
+              <BsFillEyeSlashFill size={16} />
+            ) : (
+              <BsFillEyeFill size={16} />
+            )}
+          </div>
         )}
       </div>
       <input
