@@ -1,76 +1,54 @@
-import { useRef, useState } from "react";
+import { memo, useState } from "react";
 import PropTypes from "prop-types";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { AiFillPlayCircle } from "react-icons/ai";
+import { nanoid } from "nanoid";
+import { TbFaceIdError } from "react-icons/tb";
+import { AiOutlineReload } from "react-icons/ai";
 
-import { Backdrop } from "components";
+import { SkeletonLoader } from "components";
 
-function Video({ video }) {
-  const [isPlayed, setIsPlayed] = useState(false);
-  const videoRef = useRef(null);
+function Video({ video, className, videoRef, autoPlay }) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  const togglePlay = (e) => {
-    e.stopPropagation();
-    setIsPlayed((isPlayed) => !isPlayed);
+  const reload = () => {
+    setLoading(true);
+    setError(false);
   };
 
-  if (!isPlayed && videoRef.current) {
-    videoRef.current.pause();
-    videoRef.current.currentTime = 0;
-  } else if (isPlayed && videoRef.current) {
-    videoRef.current.play();
-  }
-
+  const handleError = () => {
+    setLoading(false);
+    setError(true);
+  };
+  console.log(loading);
   return (
-    <div className="relative">
-      <AnimatePresence>{isPlayed && <Backdrop />}</AnimatePresence>
-      <motion.div
-        layout
-        animate={
-          isPlayed
-            ? { zIndex: 50 }
-            : { zIndex: 10, transition: { zIndex: { delay: 0.3 } } }
-        }
-        data-isplayed={isPlayed}
-        className={`relative grid cursor-pointer place-items-center
-        data-[isplayed=true]:fixed data-[isplayed=true]:top-0 data-[isplayed=true]:left-0 
-        data-[isplayed=true]:h-screen data-[isplayed=true]:w-screen 
-        `}
-        onClick={togglePlay}
+    <div
+      onClick={(e) => (error || loading) && e.stopPropagation()}
+      className={`aspect-video h-full overflow-hidden ${
+        error ? "cursor-auto" : ""
+      } ${className ?? ""}`}
+    >
+      {loading && <SkeletonLoader.Img className={className} />}
+      {error && (
+        <div className="relative z-50 flex h-full w-full flex-col items-center justify-center gap-1 bg-primary-700/75">
+          <button onClick={reload} className="relative">
+            <TbFaceIdError className="text-[1.5em]" />
+            <AiOutlineReload className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150 transform text-[2em]" />
+          </button>
+        </div>
+      )}
+      <video
+        key={nanoid()}
+        ref={videoRef}
+        autoPlay={autoPlay}
+        muted
+        onLoadedData={() => setLoading(false)}
+        onError={handleError}
+        className={`h-full w-full ${loading || error ? "hidden" : "block"}`}
       >
-        {!isPlayed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 0.3 } }}
-            data-isplayed={isPlayed}
-            className={`group absolute inset-0 z-10 grid place-items-center data-[isplayed=true]:invisible`}
-          >
-            <AiFillPlayCircle
-              size={50}
-              className={`text-accent transition-all group-hover:scale-125 group-active:scale-90`}
-            />
-          </motion.div>
-        )}
-        <motion.video
-          ref={videoRef}
-          controls={isPlayed}
-          layout
-          animate={
-            isPlayed ? { borderRadius: "0" } : { borderRadius: "0.75rem" }
-          }
-          data-isplayed={isPlayed}
-          onClick={(e) => isPlayed && e.stopPropagation()}
-          className={`relative aspect-video rounded-xl
-          data-[isplayed=true]:max-h-[75vh] data-[isplayed=true]:w-[40rem] data-[isplayed=true]:max-w-[100vw] 
-          data-[isplayed=true]:cursor-auto 
-          `}
-        >
-          <source src={`${video.url}#t=0.5`} type={`${video.type}`} />
-          {/* Here should be fullBack video source */}
-          Your browser doesn't support video
-        </motion.video>
-      </motion.div>
+        <source src={`${video.url}#t=0.5`} type={`${video.type}`} />
+        Your browser doesn't support video
+      </video>
     </div>
   );
 }
@@ -80,6 +58,13 @@ Video.propTypes = {
     url: PropTypes.string,
     type: PropTypes.string,
   }),
+  videoRef: PropTypes.object,
+  autoPlay: PropTypes.bool,
 };
 
-export default Video;
+Video.defaultProps = {
+  className: "w-full",
+  autoPlay: false,
+};
+
+export default memo(Video);
