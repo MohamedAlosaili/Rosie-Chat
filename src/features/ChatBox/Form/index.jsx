@@ -1,19 +1,16 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { useSendMessage } from "hooks";
+import { AnimatePresence } from "framer-motion";
+import { MdSend } from "react-icons/md";
 
 import FileInput from "./FileInput";
-import { send } from "imgs";
-import { Button } from "components";
+import { useSendMessage } from "hooks";
+import { Button, StatusMessage } from "components";
 
-function Form({ selectedChat, scrollToBottom, greeting }) {
-  const [message, setMessage, sendMessageHandler, sending] = useSendMessage(
-    "text",
-    { selectedChat, scrollToBottom },
-    () => null,
-    greeting
-  );
+function Form({ scrollToBottom, greeting }) {
+  const [message, setMessage, sendMessageHandler, sending, sendingError] =
+    useSendMessage("text", scrollToBottom);
 
   useEffect(() => {
     if (greeting) {
@@ -26,7 +23,10 @@ function Form({ selectedChat, scrollToBottom, greeting }) {
       onSubmit={sendMessageHandler}
       className="flex items-center rounded-full border p-2 dark:border-primary-700 dark:bg-primary-900"
     >
-      <FileInput selectedChat={selectedChat} scrollToBottom={scrollToBottom} />
+      <AnimatePresence>
+        {sendingError && <StatusMessage type="error" message={sendingError} />}
+      </AnimatePresence>
+      <FileInput scrollToBottom={scrollToBottom} />
       <input
         type="text"
         placeholder="Type a message"
@@ -34,19 +34,25 @@ function Form({ selectedChat, scrollToBottom, greeting }) {
         onChange={(e) => setMessage({ text: e.target.value })}
         className="flex-1 bg-transparent px-4 text-primary-200 focus:outline-none"
       />
-      <Button
-        disabled={message.text.trim() === "" || sending}
-        additionClasses="rounded-50"
+      <div
+        className={`rounded-full transition-transform ${
+          message.text.trim() === "" ? "scale-0" : "scale-100"
+        }`}
       >
-        <img src={send} className="invert" />
-      </Button>
+        <Button
+          disabled={message.text.trim() === "" || sending}
+          additionClasses="rounded-full"
+        >
+          <MdSend size={20} />
+        </Button>
+      </div>
     </form>
   );
 }
 
 Form.propTypes = {
-  selectedChat: PropTypes.object,
   scrollToBottom: PropTypes.func,
+  greeting: PropTypes.string,
 };
 
-export default Form;
+export default memo(Form);
