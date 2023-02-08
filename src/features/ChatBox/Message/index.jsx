@@ -2,34 +2,31 @@ import { memo } from "react";
 
 import PropTypes from "prop-types";
 
-import { Image, Video } from "components";
+import { MediaModal, Image, Video } from "components";
 import { auth } from "rosie-firebase";
 import uniqolor from "uniqolor";
 
-const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
-  const { type, uid, message, createdAt, displayName, photoURL } =
-    messageObject;
-  const { id: chatId, isGroup } = selectedChat;
-
+const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
   // Announces are messages like create a group and members joined
-  if (type === "announce") {
+  if (msgObj.type === "announce") {
     return (
       <div className="mx-auto my-2 w-fit rounded-lg bg-primary-700 p-2 text-xs leading-none">
-        {message.text}
+        {msgObj.message.text}
       </div>
     );
   }
 
   const userColor = {
-    "--color": uniqolor(uid + chatId, { lightness: 50 }).color,
+    "--color": uniqolor(msgObj.senderId + selectedChat.id, { lightness: 50 })
+      .color,
   };
   // "uniqolor" generates the same color for the same value.
   // I choose to set the value as a combination of userId & chatId
   // With that I can generate different colors for the same user + I don't have to save it in the database
 
-  const currentUserMsg = auth.currentUser.uid === uid;
-  const isTheSameSender = prevMsgSender?.uid === uid;
-  const otherMebmerMsgs = isGroup && !currentUserMsg;
+  const currentUserMsg = auth.currentUser.uid === msgObj.senderId;
+  const isTheSameSender = prevMsgSender?.senderId === msgObj.senderId;
+  const otherGroupMebmersMsgs = selectedChat.isGroup && !currentUserMsg;
 
   const dateFormater = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
@@ -40,14 +37,16 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
     <div
       className={`flex gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}
     >
-      {otherMebmerMsgs && (
+      {otherGroupMebmersMsgs && (
         <div className="h-8 w-8">
           {!isTheSameSender && (
             <img
-              src={photoURL}
-              alt={`${displayName} avatar`}
+              src={msgObj.senderPhotoURL}
+              alt={`${msgObj.senderName} avatar`}
               className={`object-cover ${
-                photoURL.includes("default-avatar") ? "bg-[var(--color)]" : ""
+                msgObj.senderPhotoURL?.includes("default-avatar")
+                  ? "bg-[var(--color)]"
+                  : ""
               } rounded-50 p-px`}
               style={userColor}
             />
@@ -56,46 +55,54 @@ const Message = ({ messageObject, prevMsgSender, selectedChat }) => {
       )}
       <div
         className={`max-w-[75%] lg:max-w-[65%] ${
-          type === "file" ? "w-[75%] p-1 lg:w-[65%]" : "p-2"
+          msgObj.type === "file" ? "w-[75%] p-1 lg:w-[65%]" : "p-2"
         } rounded-xl 
                   ${currentUserMsg ? "bg-accent" : "dark:bg-primary-800"} 
                   dark:text-primary-200
         `}
       >
-        {otherMebmerMsgs && !isTheSameSender && (
+        {otherGroupMebmersMsgs && !isTheSameSender && (
           <h3
             className={`mb-1 truncate font-medium text-[var(--color)]`}
             style={userColor}
           >
-            {displayName}
+            {msgObj.senderName}
           </h3>
         )}
         <div className="flex flex-col gap-2">
-          {type === "file" && (
+          {msgObj.type === "file" && (
             <>
-              {message.file?.type?.startsWith("image") ? (
+              {msgObj.message.file?.type?.startsWith("image") ? (
                 <div className="aspect-square">
-                  <Image img={message.file} />
+                  <MediaModal mediaType="image">
+                    <Image img={msgObj.message.file} />
+                  </MediaModal>
                 </div>
               ) : (
                 <div className="aspect-video">
-                  <Video video={message.file} />
+                  <MediaModal mediaType="video">
+                    {(videoRef) => (
+                      <Video video={msgObj.message.file} videoRef={videoRef} />
+                    )}
+                  </MediaModal>
                 </div>
               )}
             </>
           )}
-          {message.text && (
-            <p className={`${type === "file" ? "px-1" : ""}`}>{message.text}</p>
+          {msgObj.message.text && (
+            <p className={`${msgObj.type === "file" ? "px-1" : ""}`}>
+              {msgObj.message.text}
+            </p>
           )}
         </div>
         <time
           className={`mt-1 block leading-none ${
             !currentUserMsg ? "text-right" : ""
           } text-[0.65rem] opacity-60 
-                      ${type === "file" ? "mx-2" : ""}
+                      ${msgObj.type === "file" ? "mx-2" : ""}
           `}
         >
-          {dateFormater.format(createdAt?.toDate()) ?? "--:--"}
+          {dateFormater.format(msgObj.createdAt?.toDate()) ?? "--:--"}
         </time>
       </div>
     </div>
