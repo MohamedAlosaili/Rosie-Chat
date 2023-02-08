@@ -12,7 +12,6 @@ import { SearchForm, Tooltip, SkeletonLoader } from "components";
 import { useSearch } from "hooks";
 
 function ChatsList() {
-  // TODO: userDoc sometimes return null
   const { currentUser } = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
 
@@ -30,7 +29,12 @@ function ChatsList() {
   );
 
   const chatsElements = (searchValue ? searchResults : chats)?.map((chat) => (
-    <Chat key={chat.id} chat={chat} isSelected={chat.id === selectedChat.id} />
+    <Chat
+      key={chat.id}
+      chat={chat}
+      currentUserId={currentUser.uid}
+      isSelected={chat.id === selectedChat.id}
+    />
   ));
 
   return (
