@@ -14,7 +14,7 @@ import { BsFillPersonPlusFill, BsFillChatFill } from "react-icons/bs";
 import { FaUserMinus } from "react-icons/fa";
 
 import { db } from "rosie-firebase";
-import { Button, StatusMessage } from "components";
+import { Button, StatusMessage, Image } from "components";
 import { ChatContext } from "hooks/context";
 import { chatDocTemplate } from "util/objectsTemplate";
 
@@ -63,6 +63,14 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
               message: `Say hi to `,
               createdAt: serverTimestamp(),
             },
+            [currentUserId]: {
+              name: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+            },
+            [otherUserId]: {
+              name: user.displayName,
+              photoURL: user.photoURL,
+            },
             members: [currentUserId, otherUserId],
           })
         );
@@ -81,10 +89,9 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
     <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl p-4 transition-colors dark:hover:bg-primary-800">
       {loading && <StatusMessage type="loading" message="Opening chat..." />}
       {error && <StatusMessage type="error" message={error} />}
-      <img
-        src={user.photoURL}
-        alt={`${user.displayName} photo`}
-        className="w-14 rounded-full"
+      <Image
+        img={{ url: user.photoURL, name: user.displayName }}
+        className="aspect-square w-14 rounded-full"
       />
       <div className="w-full overflow-hidden">
         <h3 className="truncate font-semibold dark:text-primary-200">
