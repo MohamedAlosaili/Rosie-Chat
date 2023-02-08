@@ -32,7 +32,7 @@ function ChatBox() {
       {selectedChat.id ? (
         <AnimatePresence mode="wait">
           {isChatOpen && (
-            <Conversation setIsChatOpen={setIsChatOpen} key="conversation" />
+            <Conversation setIsChatOpen={setIsChatOpen} key={selectedChat.id} />
           )}
         </AnimatePresence>
       ) : (
