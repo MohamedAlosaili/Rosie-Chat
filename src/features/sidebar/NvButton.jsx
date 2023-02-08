@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 
 import { motion } from "framer-motion";
 
-import { defaultAvatar } from "imgs";
 import { buttonMotion } from "util";
-import { Tooltip } from "components";
+import { Tooltip, Image } from "components";
 
 const NvButton = ({
   handleClick,
@@ -41,11 +40,9 @@ const NvButton = ({
           }`}
         >
           {btnTap === "profile" ? (
-            <img
-              src={img ?? defaultAvatar}
-              alt={`${userName} photo`}
-              className="w-8 cursor-pointer rounded-50 lg:w-12"
-              onError={(e) => (e.target.src = defaultAvatar)}
+            <Image
+              img={{ url: img, name: userName }}
+              className="aspect-square w-8 cursor-pointer rounded-full lg:w-12"
             />
           ) : (
             ButtonIcon
