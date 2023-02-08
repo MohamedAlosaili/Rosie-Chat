@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useContext } from "react";
 import { nanoid } from "nanoid";
 
 import {
@@ -8,27 +8,28 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, uploadBytes } from "firebase/storage";
 
 import { useError } from "hooks";
-import { db, storage, ref } from "rosie-firebase";
-import { UserContext } from "hooks/context";
+import { db } from "rosie-firebase";
+import { UserContext, ChatContext } from "hooks/context";
 import { messageDocTemplate } from "util";
+import { useUploadFile } from "hooks";
 
 /**
  * @description - Handles sending messages (text or files)
  * @param {string} [inputName = "text"] - Text input name
- * @param {object} props.selectedChat - Current chat info
- * @param {function} props.scrollToBottom - Function to scroll when a new document has been added
+ * @param {function} scrollToBottom - Function to scroll when a new document has been added
  * @param {function} [closePreview=() => null] - Function to set file object to default values
- * @returns {Array} [text, setText, sendMessage, loading, error]
+ * @returns {Array}
  */
 function useSendMessage(
   inputName = "text",
-  { selectedChat, scrollToBottom },
+  scrollToBottom,
   closePreview = () => null
 ) {
   const { currentUser } = useContext(UserContext);
+  const { selectedChat } = useContext(ChatContext);
+  const [fileUploader] = useUploadFile();
 
   const [text, setText] = useState({ [inputName]: "" });
   const [loading, setLoading] = useState(false);
@@ -39,7 +40,7 @@ function useSendMessage(
   const messagesRef = collection(db, `${chatPath}/messages`);
 
   /**
-   * @description Sending handler
+   * @description Sending message handler
    * @param {object} event - An object that contains event properties and functions
    * @param {object} validFile - An object that contains all file data that comes from file input (name, type, etc).
    */
@@ -59,7 +60,7 @@ function useSendMessage(
           let file;
           if (msgHasFile) {
             const type = validFile.type;
-            const { name, url } = await fileData(validFile, msgId);
+            const { name, url } = await fileUploader(validFile, msgId);
             file = { type, name, url };
           }
 
@@ -68,7 +69,7 @@ function useSendMessage(
           resetValues();
         } catch (error) {
           console.log(error);
-          setError(error.message);
+          setError(error);
           setLoading(false);
         }
       })();
@@ -86,14 +87,20 @@ function useSendMessage(
     const type = file?.type ? "file" : "text";
     const createdAt = serverTimestamp();
     // TODO: Add message doc and update chat doc are used in two places (useSendMessage & UserContext) try to combined them
+    const additionGroupInfo = selectedChat?.isGroup
+      ? {
+          senderName: displayName,
+          senderPhotoURL: photoURL,
+        }
+      : {};
     await addDoc(
       messagesRef,
       messageDocTemplate({
         type,
         id,
+        isGroupMessage: selectedChat.isGroup,
         senderId: uid,
-        senderName: displayName,
-        senderPhotoURL: photoURL,
+        ...additionGroupInfo,
         message: {
           text: text[inputName].trim(),
           file,
@@ -111,34 +118,6 @@ function useSendMessage(
         createdAt,
       },
     });
-  }
-
-  /**
-   * @description - Extract file name & file url
-   * @param {object} file - An object that contains all file data that comes from file input (name, type, etc).
-   * @param {string} id - Message document id
-   * @returns {object} fileObject that contains the name and url
-   */
-  async function fileData(file, id) {
-    const name = file.name + id;
-    const url = await uploadFileToStorage(file, name);
-
-    return { name, url };
-  }
-
-  /**
-   * @description - Uploding file to the firebase storage
-   * @param {object} file - An object that contains all file data that comes from file input (name, type, etc).
-   * @param {string} fileName - File name to set a file reference path in firebase storage
-   * @returns {string} file url
-   */
-  async function uploadFileToStorage(file, fileName) {
-    const storageRef = ref(storage, `images/${fileName}`);
-
-    await uploadBytes(storageRef, file);
-    // Instead of retrieving the URL each time.
-    // I choose to retrieve it once when it uploaded
-    return await getDownloadURL(storageRef);
   }
 
   /**
