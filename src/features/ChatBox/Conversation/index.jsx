@@ -1,24 +1,20 @@
-import { useEffect, useRef, useContext, useState } from "react";
+import { memo, useEffect, useRef, useContext, useState } from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
-import {
-  useCollectionData,
-  useDocumentOnce,
-} from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/Io";
 import { CgChevronLeft } from "react-icons/cg";
-import { nanoid } from "nanoid";
 
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
 import { db } from "rosie-firebase";
-import { defaultAvatar } from "imgs";
-import { StatusMessage, SkeletonLoader } from "components";
-import { ChatContext } from "hooks/context";
+import { StatusMessage, SkeletonLoader, Image } from "components";
+import { ChatContext, UserContext } from "hooks/context";
 import { useEscape } from "hooks";
 
 function Conversation({ setIsChatOpen }) {
+  const { currentUser } = useContext(UserContext);
   const { selectedChat, emptyChat } = useContext(ChatContext);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false);
@@ -42,13 +38,15 @@ function Conversation({ setIsChatOpen }) {
   useEscape(() => emptyChat());
 
   useEffect(() => {
-    if (!isLimitChanged.current && !isMessagesLoading) {
-      scrollToBottom();
-    } else if (!isMessagesLoading) isLimitChanged.current = false;
-
     if (messages?.length > 0) {
       setGreeting("");
     }
+  }, []);
+
+  useEffect(() => {
+    if (!isLimitChanged.current && !isMessagesLoading) {
+      scrollToBottom();
+    } else if (!isMessagesLoading) isLimitChanged.current = false;
   }, [messages]);
 
   function increaseMessagesLimit(scrollTop) {
@@ -76,11 +74,18 @@ function Conversation({ setIsChatOpen }) {
     increaseMessagesLimit(scrollTop);
 
     if (scrollHeight - clinetHeight > scrollTop + 200) {
-      setShowScrollArrow(true);
+      !showScrollArrow && setShowScrollArrow(true);
     } else {
-      setShowScrollArrow(false);
+      showScrollArrow && setShowScrollArrow(false);
     }
   }
+
+  const receiverId = selectedChat.members
+    .filter((memberId) => memberId !== currentUser.uid)
+    .join("");
+  const chatInfo = selectedChat.isGroup
+    ? selectedChat.chatInfo
+    : selectedChat[receiverId];
 
   return (
     <motion.div
@@ -93,17 +98,17 @@ function Conversation({ setIsChatOpen }) {
           duration: 0.3,
         },
       }}
-      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-[url('/src/imgs/chat/chat-bg.png')] bg-contain dark:bg-primary-900 
+      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-[url('/src/imgs/chat-bg.png')] bg-contain dark:bg-primary-900 
                   md:static`}
     >
       <AnimatePresence mode="wait">
-        {isMessagesLoading && (
+        {/* {isMessagesLoading && (
           <StatusMessage
             message="Loading..."
             type="loading"
             location="absolute top-24"
           />
-        )}
+        )} */}
         {messagesError && (
           <StatusMessage message={messagesError?.code} type="error" />
         )}
@@ -116,21 +121,19 @@ function Conversation({ setIsChatOpen }) {
           <CgChevronLeft size={25} />
         </button>
         <div className="aspect-square w-10 overflow-hidden rounded-50">
-          {selectedChat?.chatPhotoURL ? (
-            <img
-              src={selectedChat?.chatPhotoURL}
-              alt={`${selectedChat?.chatName} photo`}
+          {chatInfo.photoURL ? (
+            <Image
+              img={{ url: chatInfo.photoURL, name: chatInfo.name }}
               className="aspect-square object-cover"
-              onError={(e) => (e.target.src = defaultAvatar)}
             />
           ) : (
             <SkeletonLoader.Img />
           )}
         </div>
         <div>
-          {selectedChat?.chatName ? (
+          {chatInfo.name ? (
             <h3 className="font-medium dark:text-primary-200">
-              {selectedChat?.chatName ?? ""}
+              {chatInfo.name ?? ""}
             </h3>
           ) : (
             <SkeletonLoader.Div width="10rem" />
@@ -148,7 +151,7 @@ function Conversation({ setIsChatOpen }) {
                 <Message
                   key={msg.id}
                   prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
-                  messageObject={msg}
+                  msgObj={msg}
                   selectedChat={selectedChat}
                 />
               ))}
@@ -159,7 +162,7 @@ function Conversation({ setIsChatOpen }) {
               <div
                 onClick={() =>
                   setGreeting(
-                    `Hi ${selectedChat?.chatName ?? ""}${
+                    `Hi ${chatInfo.name ?? ""}${
                       selectedChat.isGroup ? " members" : ""
                     }`
                   )
@@ -170,14 +173,15 @@ function Conversation({ setIsChatOpen }) {
                 <p>
                   Tap here to say Hi to{" "}
                   <span className="font-semibold dark:text-primary-50">
-                    {selectedChat?.chatName ?? ""}{" "}
-                    {selectedChat.isGroup && "members"}
+                    {chatInfo.name ?? ""} {selectedChat.isGroup && "members"}
                   </span>
                 </p>
-                <img
-                  src="https://media.tenor.com/XyfkuomEwj4AAAAi/hello.gif"
-                  alt="Greeting gif"
-                  className="mx-auto block aspect-square w-60 drop-shadow-sm"
+                <Image
+                  img={{
+                    url: "https://media.tenor.com/XyfkuomEwj4AAAAi/hello.gif",
+                    name: "Greeting gif",
+                  }}
+                  className="mx-auto block aspect-square w-60 !bg-transparent"
                 />
               </div>
             )
@@ -187,11 +191,11 @@ function Conversation({ setIsChatOpen }) {
       <AnimatePresence>
         {showScrollArrow && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.5, y: 100 }}
+            initial={{ opacity: 0, scale: 0, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, x: 100 }}
+            exit={{ opacity: 0, scale: 0, y: 10 }}
             className={`
-              fixed bottom-24 right-6 grid h-12 w-12 cursor-pointer place-items-center rounded-full bg-primary-100 
+              fixed bottom-24 right-6 z-10 grid h-12 w-12 cursor-pointer place-items-center rounded-full bg-primary-100
               text-primary-900 transition-colors
               hover:bg-primary-100/75 focus:bg-primary-100/75
               dark:bg-primary-800 dark:text-primary-200
@@ -204,10 +208,8 @@ function Conversation({ setIsChatOpen }) {
         )}
       </AnimatePresence>
       <footer className="z-10 mx-auto w-full max-w-2xl border-t p-2 py-3 dark:border-primary-800">
-        {/* unique key will ensure that Form re-render on every changing in ChatContext */}
         <Form
-          key={nanoid()}
-          selectedChat={selectedChat}
+          key={selectedChat.id}
           scrollToBottom={scrollToBottom}
           greeting={greeting}
         />
@@ -216,4 +218,4 @@ function Conversation({ setIsChatOpen }) {
   );
 }
 
-export default Conversation;
+export default memo(Conversation);
