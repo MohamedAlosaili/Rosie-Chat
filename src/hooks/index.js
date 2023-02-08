@@ -4,7 +4,8 @@ import useTimer from "./useTimer";
 import useSendVerification from "./useSendVerification";
 
 import useSendMessage from "./useSendMessage";
-import useFile from "./useFile";
+import useValidateFile from "./useValidateFile";
+import useUploadFile from "./useUploadFile";
 import useError from "./useError";
 
 import useEscape from "./useEscape";
@@ -15,7 +16,8 @@ export {
   useTimer,
   useSendVerification,
   useSendMessage,
-  useFile,
+  useValidateFile,
+  useUploadFile,
   useError,
   useEscape,
   useSearch,
