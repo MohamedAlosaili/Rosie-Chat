@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { checked, notChecked } from "imgs";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Check = ({ condition, passed }) => {
   return (
@@ -10,11 +10,7 @@ const Check = ({ condition, passed }) => {
               passed ? "text-slate-700 dark:text-slate-300" : "text-slate-400"
             }`}
     >
-      <img
-        src={passed ? checked : notChecked}
-        alt="check image"
-        className="w-3"
-      />
+      <FaCheckCircle size={12} className={passed ? "text-green-600" : ""} />
       {condition}
     </p>
   );
