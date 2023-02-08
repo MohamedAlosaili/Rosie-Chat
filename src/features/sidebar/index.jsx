@@ -10,9 +10,14 @@ import { HiUsers } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
 
 function Sidebar({ tap, setTap }) {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, updateDocument } = useContext(UserContext);
 
   const windowWidth = window.innerWidth;
+
+  async function handleSignOut() {
+    await updateDocument({ isOnline: false });
+    signOut(auth);
+  }
 
   return (
     <aside
@@ -49,7 +54,7 @@ function Sidebar({ tap, setTap }) {
         {windowWidth >= 1024 && (
           <div className="hidden lg:block">
             <NvButton
-              handleClick={() => signOut(auth)}
+              handleClick={handleSignOut}
               tap={tap}
               icon={<CiLogout size={25} />}
               btnTap="logout"
