@@ -3,6 +3,7 @@ import Input from "./Input";
 import Button from "./Button";
 import Modal from "./Modal";
 import Backdrop from "./Backdrop";
+import MediaModal from "./MediaModal";
 import Image from "./Image";
 import Video from "./Video";
 import SearchForm from "./SearchForm";
@@ -15,6 +16,7 @@ export {
   Button,
   Modal,
   Backdrop,
+  MediaModal,
   Image,
   Video,
   SearchForm,
