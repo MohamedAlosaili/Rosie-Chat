@@ -8,7 +8,12 @@ import { useError } from "hooks";
 */
 const defaultFileValues = { value: "", validFile: undefined, previewUrl: "" };
 
-function useValidateFile() {
+/**
+ * @description Validate the file that has been selected by the user
+ * @param {array} [types=["image"]] An array of valid files type.
+ * @returns [file, changeFile, error, closePreview].
+ */
+function useValidateFile(types = ["image"]) {
   const [file, setFile] = useState(defaultFileValues);
   const [error, setError] = useError();
 
@@ -35,7 +40,8 @@ function useValidateFile() {
    * @returns An object that contains checking results (valid) and error messages (error) if there are any.
    */
   function isFileValid(file) {
-    const isTypeValid = /(image|video)/.test(file.type);
+    const validTypes = new RegExp(`^(${types.join("|")})`);
+    const isTypeValid = validTypes.test(file.type);
     // Files more than 15 MB are not allowed
     const isSizeValid = file.size < 15_728_640;
 
@@ -52,7 +58,7 @@ function useValidateFile() {
   function errorMessage(type, size) {
     let errorMessage;
     if (!type) {
-      errorMessage = "File type not valid only Image/Video";
+      errorMessage = `File type not valid only ${types.join("/")}`;
     } else if (!size) {
       errorMessage = "File size must be under 15MB";
     }
