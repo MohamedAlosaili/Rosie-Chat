@@ -33,8 +33,7 @@ function UserContextProvider({ children }) {
     }
 
     return () => {
-      // TODO: Firestore Rule prevent this action
-      // updateDocument({ isOnline: false })
+      auth.currentUser && updateDocument({ isOnline: false });
     };
   }, [loading]);
 
