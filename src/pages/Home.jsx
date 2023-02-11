@@ -1,6 +1,7 @@
 import { memo } from "react";
 
-import { UserContextProvider, ChatContextProvider } from "hooks/context";
+import { UserContextProvider } from "src/context/UserContext";
+import { ChatContextProvider } from "src/context/ChatContext";
 import SideBox from "features/SideBox";
 import ChatBox from "features/ChatBox";
 
