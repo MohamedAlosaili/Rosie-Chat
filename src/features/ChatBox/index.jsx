@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { lazy, Suspense, useContext, useEffect, useState } from "react";
 
-import Conversation from "./Conversation";
-import { selectChat } from "imgs";
-import { ChatContext } from "hooks/context";
 import { AnimatePresence } from "framer-motion";
+
+const Conversation = lazy(() => import("./Conversation"));
+import selectChat from "imgs/select-chat.svg";
+import { ChatContext } from "context/ChatContext";
 
 function ChatBox() {
   const { selectedChat, emptyChat } = useContext(ChatContext);
@@ -30,11 +31,16 @@ function ChatBox() {
     `}
     >
       {selectedChat.id ? (
-        <AnimatePresence mode="wait">
-          {isChatOpen && (
-            <Conversation setIsChatOpen={setIsChatOpen} key={selectedChat.id} />
-          )}
-        </AnimatePresence>
+        <Suspense>
+          <AnimatePresence mode="wait">
+            {isChatOpen && (
+              <Conversation
+                setIsChatOpen={setIsChatOpen}
+                key={selectedChat.id}
+              />
+            )}
+          </AnimatePresence>
+        </Suspense>
       ) : (
         <div className="flex h-full flex-col items-center justify-center p-8">
           <img src={selectChat} alt="empty chat" className="w-full max-w-md" />
