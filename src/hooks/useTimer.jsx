@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-import { useStorage } from "hooks";
-import { useRef } from "react";
+import useStorage from "hooks/useStorage";
 
 function useTimer(initialValue = 90) {
   const [getStorageCounter, setStorageCounter] = useStorage(

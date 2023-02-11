@@ -3,9 +3,9 @@ import { useEffect, useRef } from "react";
 import { updateProfile } from "firebase/auth";
 import { useSendEmailVerification } from "react-firebase-hooks/auth";
 
-import { useStorage } from "hooks";
+import defaultAvatar from "imgs/default-avatar.png";
+import useStorage from "hooks/useStorage";
 import { auth } from "rosie-firebase";
-import { defaultAvatar } from "imgs";
 
 function useSendVerification(user, isTimerRunning, startTimer) {
   const [sendEmailVerification, , error] = useSendEmailVerification(auth);

@@ -9,11 +9,12 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-import { useError } from "hooks";
+import useError from "hooks/useError";
+import useUploadFile from "hooks/useUploadFile";
 import { db } from "rosie-firebase";
-import { UserContext, ChatContext } from "hooks/context";
-import { messageDocTemplate } from "util";
-import { useUploadFile } from "hooks";
+import { UserContext } from "context/UserContext";
+import { ChatContext } from "context/ChatContext";
+import { messageDocTemplate } from "util/objectsTemplate";
 
 /**
  * @description - Handles sending messages (text or files)

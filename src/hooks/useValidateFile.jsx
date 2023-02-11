@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useError } from "hooks";
+
+import useError from "hooks/useError";
 
 /* 
     value: "" will make onChange event fire every time the user opens the files window 
