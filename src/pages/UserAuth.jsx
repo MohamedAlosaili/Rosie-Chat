@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 
 import { AnimatePresence } from "framer-motion";
 
-import { SignIn, SignUp, VerifyEmail } from "features/authentication";
+const SignIn = lazy(() => import("features/authentication/SignIn"));
+const SignUp = lazy(() => import("features/authentication/SignUp"));
+const VerifyEmail = lazy(() => import("features/authentication/VerifyEmail"));
 
 function UserAuth({ user }) {
   const [selectedTap, setSelectedTap] = useState("signin");
@@ -11,19 +13,27 @@ function UserAuth({ user }) {
   return (
     <div className="grid min-h-screen place-items-center">
       <div className="w-96 max-w-full p-4">
-        <AnimatePresence initial={false} mode="wait">
-          {user ? (
-            <VerifyEmail
-              user={user}
-              selectedTap={selectedTap}
-              setSelectedTap={setSelectedTap}
-            />
-          ) : selectedTap === "signin" ? (
-            <SignIn selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
-          ) : (
-            <SignUp selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
-          )}
-        </AnimatePresence>
+        <Suspense>
+          <AnimatePresence initial={false} mode="wait">
+            {user ? (
+              <VerifyEmail
+                user={user}
+                selectedTap={selectedTap}
+                setSelectedTap={setSelectedTap}
+              />
+            ) : selectedTap === "signin" ? (
+              <SignIn
+                selectedTap={selectedTap}
+                setSelectedTap={setSelectedTap}
+              />
+            ) : (
+              <SignUp
+                selectedTap={selectedTap}
+                setSelectedTap={setSelectedTap}
+              />
+            )}
+          </AnimatePresence>
+        </Suspense>
       </div>
     </div>
   );
