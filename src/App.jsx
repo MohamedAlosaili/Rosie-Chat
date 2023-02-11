@@ -1,8 +1,12 @@
+import { lazy, Suspense } from "react";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth } from "rosie-firebase";
-import { Home, UserAuth } from "pages";
-import { StatusMessage } from "components";
+import StatusMessage from "components/StatusMessage";
+
+const Home = lazy(() => import("pages/Home"));
+const UserAuth = lazy(() => import("pages/UserAuth"));
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
@@ -17,7 +21,9 @@ function App() {
 
   return (
     <main>
-      {user?.emailVerified ? <Home user={user} /> : <UserAuth user={user} />}
+      <Suspense>
+        {user?.emailVerified ? <Home user={user} /> : <UserAuth user={user} />}
+      </Suspense>
     </main>
   );
 }
