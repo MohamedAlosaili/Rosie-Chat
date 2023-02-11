@@ -5,8 +5,8 @@ import { signOut } from "firebase/auth";
 import StatusMessage from "components/StatusMessage";
 import Button from "components/Button";
 import verifyEmail from "imgs/verify-email.svg";
-import useTimer from "hooks/useTimer";
-import useSendVerification from "hooks/useTimer";
+import useTimer from "./useTimer";
+import useSendVerification from "./useSendVerification";
 import { auth } from "rosie-firebase";
 
 function VerifyEmail({ user, selectedTap, setSelectedTap }) {
