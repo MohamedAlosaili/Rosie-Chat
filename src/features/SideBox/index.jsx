@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 
 import Sidebar from "features/Sidebar";
-import Profile from "features/Profile";
-import ChatsList from "features/ChatsList";
-import Contacts from "features/Contacts";
-import Setting from "features/Setting";
-import { fadeInLeft } from "util";
+const Profile = lazy(() => import("features/Profile"));
+const ChatsList = lazy(() => import("features/ChatsList"));
+const Contacts = lazy(() => import("features/Contacts"));
+const Setting = lazy(() => import("features/Setting"));
+import { fadeInLeft } from "util/motionVariants";
 
 function SideBox() {
   const [tap, setTap] = useState("chats");
@@ -42,7 +42,7 @@ function SideBox() {
             <h1 className="mb-4 border-b-2 pb-2 text-2xl font-semibold capitalize dark:border-primary-800 dark:text-primary-200">
               {tap}
             </h1>
-            {currentTap()}
+            <Suspense>{currentTap()}</Suspense>
           </motion.div>
         </article>
       </AnimatePresence>
