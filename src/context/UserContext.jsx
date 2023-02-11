@@ -14,7 +14,7 @@ import {
 
 import { auth, db } from "rosie-firebase";
 import StatusMessage from "components/StatusMessage";
-import { userDocTemplate } from "util";
+import { userDocTemplate } from "util/objectsTemplate";
 
 const UserContext = React.createContext();
 

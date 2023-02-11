@@ -5,8 +5,12 @@ import { BsFillExclamationCircleFill, BsFillTrashFill } from "react-icons/bs";
 import { TbEdit } from "react-icons/tb";
 import { useDeleteUser } from "react-firebase-hooks/auth";
 
-import { UserContext } from "hooks/context";
-import { StatusMessage, Image, Input, Button, Modal } from "components";
+import StatusMessage from "components/StatusMessage";
+import Image from "components/Image";
+import Input from "components/Input";
+import Button from "components/Button";
+import Modal from "components/Modal";
+import { UserContext } from "context/UserContext";
 import { auth } from "rosie-firebase";
 
 function Profile() {
@@ -32,10 +36,12 @@ function Profile() {
         )}
       </AnimatePresence>
       <div className="mt-4 flex flex-col gap-4">
-        <Image
-          img={{ url: photoURL, name: displayName }}
-          className="mx-auto mb-3 w-24 rounded-full"
-        />
+        <div className="relative">
+          <Image
+            img={{ url: photoURL, name: displayName }}
+            className="mx-auto block aspect-square w-24 rounded-full md:w-32"
+          />
+        </div>
         <h3 className="text-center font-semibold text-primary-300">
           {displayName}
         </h3>

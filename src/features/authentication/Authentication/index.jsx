@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+
 import { motion } from "framer-motion";
 
 import { signWithProviders } from "rosie-firebase";
-import { Button } from "components";
-import { googleLogo } from "imgs";
+import Button from "components/Button";
+import googleLogo from "imgs/Google_logo.svg";
 
 const variants = {
   hidden: {

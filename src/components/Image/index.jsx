@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import { TbFaceIdError } from "react-icons/tb";
 import { AiOutlineReload } from "react-icons/ai";
 
-import { SkeletonLoader } from "components";
+import SkeletonLoader from "components/SkeletonLoader";
 
 function Image({ img, className }) {
   const [loading, setLoading] = useState(true);
@@ -41,6 +41,7 @@ function Image({ img, className }) {
         key={nanoid()}
         src={img.url}
         alt={img.name}
+        loading="lazy"
         className={`h-full w-full object-cover ${
           loading || error ? "hidden" : "block"
         }`}

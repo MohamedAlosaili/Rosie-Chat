@@ -4,8 +4,14 @@ import PropTypes from "prop-types";
 import { AnimatePresence } from "framer-motion";
 import { AiOutlinePaperClip } from "react-icons/ai";
 
-import { useSendMessage, useValidateFile } from "hooks";
-import { StatusMessage, Button, Input, Modal, Video, Image } from "components";
+import useSendMessage from "hooks/useSendMessage";
+import useValidateFile from "hooks/useValidateFile";
+import StatusMessage from "components/StatusMessage";
+import Button from "components/Button";
+import Input from "components/Input";
+import Modal from "components/Modal";
+import Video from "components/Video";
+import Image from "components/Image";
 
 const FileInput = ({ scrollToBottom }) => {
   const [file, changeFile, fileError, closePreview] = useValidateFile([

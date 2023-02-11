@@ -2,10 +2,12 @@ import PropTypes from "prop-types";
 
 import { signOut } from "firebase/auth";
 
-import { useTimer, useSendVerification } from "hooks";
+import StatusMessage from "components/StatusMessage";
+import Button from "components/Button";
+import verifyEmail from "imgs/verify-email.svg";
+import useTimer from "hooks/useTimer";
+import useSendVerification from "hooks/useTimer";
 import { auth } from "rosie-firebase";
-import { Button, StatusMessage } from "components";
-import { verifyEmail } from "imgs";
 
 function VerifyEmail({ user, selectedTap, setSelectedTap }) {
   const [timer, isTimerRunning, startTimer] = useTimer(90);

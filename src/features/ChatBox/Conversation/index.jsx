@@ -8,10 +8,13 @@ import { CgChevronLeft } from "react-icons/cg";
 
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
+import useEscape from "hooks/useEscape";
+import StatusMessage from "components/StatusMessage";
+import SkeletonLoader from "components/SkeletonLoader";
+import Image from "components/Image";
 import { db } from "rosie-firebase";
-import { StatusMessage, SkeletonLoader, Image } from "components";
-import { ChatContext, UserContext } from "hooks/context";
-import { useEscape } from "hooks";
+import { UserContext } from "context/UserContext";
+import { ChatContext } from "context/ChatContext";
 
 function Conversation({ setIsChatOpen }) {
   const { currentUser } = useContext(UserContext);

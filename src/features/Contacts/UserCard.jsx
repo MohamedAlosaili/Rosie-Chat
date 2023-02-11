@@ -13,9 +13,11 @@ import {
 import { BsFillPersonPlusFill, BsFillChatFill } from "react-icons/bs";
 import { FaUserMinus } from "react-icons/fa";
 
+import Button from "components/Button";
+import StatusMessage from "components/StatusMessage";
+import Image from "components/Image";
 import { db } from "rosie-firebase";
-import { Button, StatusMessage, Image } from "components";
-import { ChatContext } from "hooks/context";
+import { ChatContext } from "context/ChatContext";
 import { chatDocTemplate } from "util/objectsTemplate";
 
 const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {

@@ -1,8 +1,8 @@
 import { memo, useContext } from "react";
 import PropTypes from "prop-types";
 
-import { ChatContext } from "hooks/context";
-import { Image } from "components";
+import Image from "components/Image";
+import { ChatContext } from "context/ChatContext";
 
 const Chat = ({ chat, currentUserId, isSelected }) => {
   const { changeChat } = useContext(ChatContext);

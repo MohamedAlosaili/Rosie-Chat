@@ -1,9 +1,9 @@
 import { createPortal } from "react-dom";
 
 import { motion } from "framer-motion";
-import Backdrop from "components/Backdrop";
 
-import { modalVariants } from "util";
+import Backdrop from "components/Backdrop";
+import { modalVariants } from "util/motionVariants";
 
 const Modal = ({ closeModal, customVariants, className, children }) => {
   return createPortal(

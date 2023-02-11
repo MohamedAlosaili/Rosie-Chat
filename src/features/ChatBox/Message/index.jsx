@@ -1,10 +1,12 @@
 import { memo } from "react";
-
 import PropTypes from "prop-types";
 
-import { MediaModal, Image, Video } from "components";
-import { auth } from "rosie-firebase";
 import uniqolor from "uniqolor";
+
+import MediaModal from "components/MediaModal";
+import Image from "components/Image";
+import Video from "components/Video";
+import { auth } from "rosie-firebase";
 
 const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
   // Announces are messages like create a group and members joined

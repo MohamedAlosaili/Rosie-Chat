@@ -1,13 +1,13 @@
 import { memo, useContext } from "react";
 
 import { signOut } from "firebase/auth";
-
-import NvButton from "./NvButton";
-import { UserContext } from "hooks/context";
-import { auth } from "rosie-firebase";
 import { IoMdChatbubbles, IoMdSettings } from "react-icons/Io";
 import { HiUsers } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
+
+import NvButton from "./NvButton";
+import { UserContext } from "context/UserContext";
+import { auth } from "rosie-firebase";
 
 function Sidebar({ tap, setTap }) {
   const { currentUser, updateDocument } = useContext(UserContext);

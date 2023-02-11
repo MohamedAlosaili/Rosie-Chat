@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import { TbFaceIdError } from "react-icons/tb";
 import { AiOutlineReload } from "react-icons/ai";
 
-import { SkeletonLoader } from "components";
+import SkeletonLoader from "components/SkeletonLoader";
 
 function Video({ video, className, videoRef, autoPlay }) {
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ function Video({ video, className, videoRef, autoPlay }) {
     setLoading(false);
     setError(true);
   };
-  console.log(loading);
+
   return (
     <div
       onClick={(e) => (error || loading) && e.stopPropagation()}
@@ -40,6 +40,7 @@ function Video({ video, className, videoRef, autoPlay }) {
       <video
         key={nanoid()}
         ref={videoRef}
+        loading="lazy"
         autoPlay={autoPlay}
         muted
         onLoadedData={() => setLoading(false)}

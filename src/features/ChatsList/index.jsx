@@ -6,10 +6,13 @@ import { BsExclamationCircleFill } from "react-icons/bs";
 import { TbEdit } from "react-icons/tb";
 
 import Chat from "./Chat";
+import SearchForm from "components/SearchForm";
+import Tooltip from "components/Tooltip";
+import SkeletonLoader from "components/SkeletonLoader";
+import useSearch from "hooks/useSearch";
 import { db } from "rosie-firebase";
-import { UserContext, ChatContext } from "hooks/context";
-import { SearchForm, Tooltip, SkeletonLoader } from "components";
-import { useSearch } from "hooks";
+import { UserContext } from "context/UserContext";
+import { ChatContext } from "context/ChatContext";
 
 function ChatsList() {
   const { currentUser } = useContext(UserContext);

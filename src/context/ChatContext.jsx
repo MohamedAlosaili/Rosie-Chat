@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { chatDocTemplate } from "util";
+import { chatDocTemplate } from "util/objectsTemplate";
 
 const ChatContext = React.createContext();
 

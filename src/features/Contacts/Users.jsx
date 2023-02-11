@@ -1,11 +1,13 @@
-import { memo, useContext } from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { BsFillPersonPlusFill } from "react-icons/bs";
 
 import UserCard from "./UserCard";
-import { SkeletonLoader, SearchForm, Button } from "components";
-import { useSearch } from "hooks";
+import SkeletonLoader from "components/SkeletonLoader";
+import SearchForm from "components/SearchForm";
+import Button from "components/Button";
+import useSearch from "hooks/useSearch";
 
 function Users({
   currentUser,
@@ -35,7 +37,7 @@ function Users({
       updateDocument={updateDocument}
     />
   ));
-  console.log(contactTap);
+
   return (
     <div className="flex flex-col gap-4">
       <SearchForm

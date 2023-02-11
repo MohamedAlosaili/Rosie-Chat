@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { AnimatePresence, motion } from "framer-motion";
 import { AiFillPlayCircle } from "react-icons/ai";
 
-import { Backdrop } from "components";
+import Backdrop from "components/Backdrop";
 
 function MediaModal({ mediaType, children }) {
   const [isOpen, setIsOpen] = useState(false);

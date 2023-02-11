@@ -7,7 +7,7 @@ import { BsExclamationCircleFill } from "react-icons/bs";
 
 import Users from "./Users";
 import { db } from "rosie-firebase";
-import { UserContext } from "hooks/context";
+import { UserContext } from "context/UserContext";
 
 function Contacts() {
   const { currentUser, updateDocument } = useContext(UserContext);

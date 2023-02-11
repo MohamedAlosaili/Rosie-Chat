@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 import Authentication from "../Authentication";
+import Input from "components/Input";
+import StatusMessage from "components/StatusMessage";
+import Button from "components/Button";
 import { auth } from "rosie-firebase";
-import { Input, StatusMessage, Button } from "components";
 
 function SignIn({ selectedTap, setSelectedTap }) {
   const [signInValue, setSignInValue] = useState({ email: "", password: "" });

@@ -5,8 +5,9 @@ import { AnimatePresence } from "framer-motion";
 import { MdSend } from "react-icons/md";
 
 import FileInput from "./FileInput";
-import { useSendMessage } from "hooks";
-import { Button, StatusMessage } from "components";
+import useSendMessage from "hooks/useSendMessage";
+import Button from "components/Button";
+import StatusMessage from "components/StatusMessage";
 
 function Form({ scrollToBottom, greeting }) {
   const [message, setMessage, sendMessageHandler, sending, sendingError] =

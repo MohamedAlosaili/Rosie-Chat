@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 
 import { motion } from "framer-motion";
 
-import { buttonMotion } from "util";
-import { Tooltip, Image } from "components";
+import Tooltip from "components/Tooltip";
+import Image from "components/Image";
+import { buttonMotion } from "util/motionVariants";
 
 const NvButton = ({
   handleClick,

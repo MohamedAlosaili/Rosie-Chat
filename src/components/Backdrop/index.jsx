@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import { opacityVariants } from "util";
+import { opacityVariants } from "util/motionVariants";
 
 const Backdrop = ({ onClick, children }) => {
   return (

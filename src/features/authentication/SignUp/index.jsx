@@ -4,8 +4,10 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 import Authentication from "../Authentication";
 import Check from "./Check";
+import Input from "components/Input";
+import StatusMessage from "components/StatusMessage";
+import Button from "components/Button";
 import { auth } from "rosie-firebase";
-import { Input, StatusMessage, Button } from "components";
 
 function usePasswordStrength(password, confirmPassword) {
   const [passwordStrength, setPasswordStrength] = useState({
