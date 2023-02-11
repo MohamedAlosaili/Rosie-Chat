@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { AnimatePresence } from "framer-motion";
 import { AiOutlinePaperClip } from "react-icons/ai";
 
-import useSendMessage from "hooks/useSendMessage";
+import useSendMessage from "./useSendMessage";
 import useValidateFile from "hooks/useValidateFile";
 import StatusMessage from "components/StatusMessage";
 import Button from "components/Button";
