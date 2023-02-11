@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getDownloadURL, uploadBytes } from "firebase/storage";
 
 import { storage, ref } from "rosie-firebase";
-import { useError } from "hooks";
+import useError from "hooks/useError";
 
 /**
  * @description - Upload files into firebase storage
