@@ -1,14 +1,23 @@
-import { memo } from "react";
+import { memo, lazy, Suspense, useState } from "react";
 import PropTypes from "prop-types";
 
 import uniqolor from "uniqolor";
+import { TbEdit } from "react-icons/tb";
+import { BsFillTrashFill } from "react-icons/bs";
+import { AnimatePresence } from "framer-motion";
 
 import MediaModal from "components/MediaModal";
 import Image from "components/Image";
 import Video from "components/Video";
 import { auth } from "rosie-firebase";
 
-const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
+const EditMessageModal = lazy(() => import("./EditMessageModal"));
+const DeleteMessagePrompt = lazy(() => import("./DeleteMessagePrompt"));
+
+const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
+  const [showDeletePrompt, setShowDeletePrompt] = useState(false);
+  const [showEditMessageModal, setShowEditMessageModal] = useState(false);
+
   // Announces are messages like create a group and members joined
   if (msgObj.type === "announce") {
     return (
@@ -27,7 +36,7 @@ const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
   // With that I can generate different colors for the same user + I don't have to save it in the database
 
   const currentUserMsg = auth.currentUser.uid === msgObj.senderId;
-  const isTheSameSender = prevMsgSender?.senderId === msgObj.senderId;
+  const isTheSameSender = prevMsgSenderId === msgObj.senderId;
   const otherGroupMebmersMsgs = selectedChat.isGroup && !currentUserMsg;
 
   const dateFormater = new Intl.DateTimeFormat("en-US", {
@@ -37,19 +46,16 @@ const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
 
   return (
     <div
-      className={`flex gap-2 ${currentUserMsg ? "flex-row-reverse" : ""} my-2`}
+      className={`flex gap-2 ${
+        currentUserMsg ? "flex-row-reverse" : ""
+      } group my-2`}
     >
       {otherGroupMebmersMsgs && (
         <div className="h-8 w-8">
           {!isTheSameSender && (
-            <img
-              src={msgObj.senderPhotoURL}
-              alt={`${msgObj.senderName} avatar`}
-              className={`object-cover ${
-                msgObj.senderPhotoURL?.includes("default-avatar")
-                  ? "bg-[var(--color)]"
-                  : ""
-              } rounded-50 p-px`}
+            <Image
+              img={{ url: msgObj.senderPhotoURL, name: msgObj.senderName }}
+              className={`aspect-square rounded-full`}
               style={userColor}
             />
           )}
@@ -58,7 +64,7 @@ const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
       <div
         className={`max-w-[75%] lg:max-w-[65%] ${
           msgObj.type === "file" ? "w-[75%] p-1 lg:w-[65%]" : "p-2"
-        } rounded-xl 
+        } relative rounded-xl 
                   ${currentUserMsg ? "bg-accent" : "dark:bg-primary-800"} 
                   dark:text-primary-200
         `}
@@ -106,30 +112,65 @@ const Message = ({ msgObj, prevMsgSender, selectedChat }) => {
         >
           {dateFormater.format(msgObj.createdAt?.toDate()) ?? "--:--"}
         </time>
+        {currentUserMsg && (
+          <div className="absolute top-1/2 right-full -translate-y-1/2 -translate-x-2">
+            <TbEdit
+              onClick={() => setShowEditMessageModal(true)}
+              className="mb-2 cursor-pointer transition-all group-hover:opacity-100 dark:text-primary-400 dark:hover:text-primary-200 md:text-lg md:opacity-0"
+            />
+            <BsFillTrashFill
+              onClick={() => setShowDeletePrompt(true)}
+              className="cursor-pointer text-red-700 transition-all hover:text-red-600 group-hover:opacity-100 md:text-lg md:opacity-0"
+            />
+          </div>
+        )}
+        <Suspense fallback={<div>Loading...</div>}>
+          <AnimatePresence>
+            {showEditMessageModal && (
+              <EditMessageModal
+                setShowEditMessageModal={setShowEditMessageModal}
+                chatId={selectedChat.id}
+                msgObj={msgObj}
+                isLastMsg={isLastMsg}
+              />
+            )}
+            {showDeletePrompt && (
+              <DeleteMessagePrompt
+                setShowDeletePrompt={setShowDeletePrompt}
+                chatId={selectedChat.id}
+                messageId={msgObj.id}
+                isLastMsg={isLastMsg}
+              />
+            )}
+          </AnimatePresence>
+        </Suspense>
       </div>
     </div>
   );
 };
 
 Message.propTypes = {
-  messageObject: PropTypes.shape({
+  msgObj: PropTypes.shape({
     type: PropTypes.string,
-    uid: PropTypes.string,
+    senderId: PropTypes.string,
     message: PropTypes.shape({
       text: PropTypes.string,
       file: PropTypes.shape({
+        type: PropTypes.string,
         name: PropTypes.string,
         url: PropTypes.string,
       }),
     }).isRequired,
     createdAt: PropTypes.object,
-    displayName: PropTypes.string,
-    photoURL: PropTypes.string,
+    senderName: PropTypes.string,
+    senderPhotoURL: PropTypes.string,
   }),
   selectedChat: PropTypes.shape({
     id: PropTypes.string,
     isGroup: PropTypes.bool,
   }),
+  prevMsgSenderId: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
+  isLastMsg: PropTypes.bool,
 };
 
 // memo() Prevents unnecessary re-render
