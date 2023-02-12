@@ -105,14 +105,14 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
         <div className="flex gap-2">
           <Button
             title="Start chatting"
-            handleClick={startChatting}
+            onClick={startChatting}
             disabled={loading}
           >
             <BsFillChatFill size={18} />
           </Button>
           <Button
             title="Remove from friends"
-            handleClick={removeFriend}
+            onClick={removeFriend}
             bg="red"
             disabled={loading}
           >
@@ -122,7 +122,7 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
       ) : (
         <Button
           title="Add to friends"
-          handleClick={addNewFriend}
+          onClick={addNewFriend}
           disabled={loading}
         >
           <BsFillPersonPlusFill size={18} />

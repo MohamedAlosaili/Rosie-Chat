@@ -71,7 +71,7 @@ function Users({
       ) : (
         !results.usersLoading &&
         (searchValue === "" && contactTap === "friends" ? (
-          <Button handleClick={() => setContactTap("allUsers")}>
+          <Button onClick={() => setContactTap("allUsers")}>
             Add firends
             <BsFillPersonPlusFill size={20} />
           </Button>

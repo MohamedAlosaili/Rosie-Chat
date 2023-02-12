@@ -49,9 +49,9 @@ const Authentication = ({
         </span>
       </div>
       <Button
-        handleClick={signWithProviders.bind(this, "google")}
+        onClick={signWithProviders.bind(this, "google")}
         bg="empty"
-        additionClasses="w-full"
+        className="w-full"
       >
         <img src={googleLogo} alt="Google logo" className="w-5" />
         {selectedTap === "signin" ? "Sign in" : "Sign up"} with Google

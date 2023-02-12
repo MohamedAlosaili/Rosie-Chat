@@ -48,17 +48,14 @@ function VerifyEmail({ user, selectedTap, setSelectedTap }) {
         <div className="flex gap-4">
           <Button
             disabled={isTimerRunning}
-            handleClick={sendVerificationEmail}
-            additionClasses={`flex-1 text-sm ${
+            onClick={sendVerificationEmail}
+            className={`flex-1 text-sm ${
               isTimerRunning ? "cursor-not-allowed opacity-30" : ""
             }`}
           >
             Resend Email
           </Button>
-          <Button
-            handleClick={backToSignInPage}
-            additionClasses="flex-1 text-sm"
-          >
+          <Button onClick={backToSignInPage} className="flex-1 text-sm">
             Sign in
           </Button>
         </div>
