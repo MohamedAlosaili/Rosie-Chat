@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 
 const Button = ({
   children,
-  handleClick,
+  onClick,
   bg,
   padding,
-  additionClasses,
+  className,
   disabled,
   type,
   title,
@@ -31,10 +31,10 @@ const Button = ({
       transition={{ type: "spring", duration: 0.3 }}
       type={type}
       disabled={disabled}
-      onClick={handleClick}
+      onClick={onClick}
       title={title}
       className={`flex items-center justify-center gap-3 rounded-xl font-medium transition-colors 
-                ${bgColor} ${padding} ${additionClasses}`}
+                ${bgColor} ${padding} ${className}`}
     >
       {children}
     </motion.button>
@@ -47,20 +47,22 @@ Button.propTypes = {
     PropTypes.node,
     PropTypes.element,
   ]).isRequired,
-  handleClick: PropTypes.func,
+  onClick: PropTypes.func,
   bg: PropTypes.string,
   padding: PropTypes.string,
-  additionClasses: PropTypes.string,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  title: PropTypes.string,
 };
 
 Button.defaultProps = {
   bg: "full",
   padding: "p-2",
-  additionClasses: "",
+  className: "",
   disabled: false,
   type: "",
+  title: "",
 };
 
 export default memo(Button);
