@@ -7,7 +7,7 @@ function Input({
   label,
   type,
   name,
-  id,
+  disabled,
   value,
   setValue,
   placeholder,
@@ -66,10 +66,7 @@ function Input({
   const light = "text-primary-900 hover:bg-primary-50 border-primary-200";
 
   return (
-    <label
-      htmlFor={id}
-      className={`w-100 relative flex flex-col gap-2 text-sm font-medium`}
-    >
+    <label className={`w-100 relative flex flex-col gap-2 text-sm font-medium`}>
       <div className="flex items-center gap-1">
         {label} {required && <span className="text-error-400">*</span>}
         {type === "password" && (
@@ -87,8 +84,8 @@ function Input({
                     ${light} ${dark} ${focusColors} ${invalidInputColors}`}
         type={inputType}
         name={name}
-        id={id}
         value={value}
+        disabled={disabled}
         required={required}
         placeholder={placeholder}
         onChange={changeValue}
@@ -106,7 +103,7 @@ Input.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  id: PropTypes.string,
+  disabled: PropTypes.bool,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -122,7 +119,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   label: "",
-  id: "",
+  disabled: false,
   placeholder: "",
   require: false,
   validateValue: false,
