@@ -3,10 +3,10 @@ import { nanoid } from "nanoid";
 
 import {
   collection,
-  addDoc,
   doc,
   serverTimestamp,
   updateDoc,
+  setDoc,
 } from "firebase/firestore";
 
 import useError from "hooks/useError";
@@ -18,21 +18,15 @@ import { messageDocTemplate } from "util/objectsTemplate";
 
 /**
  * @description - Handles sending messages (text or files)
- * @param {string} [inputName = "text"] - Text input name
  * @param {function} scrollToBottom - Function to scroll when a new document has been added
- * @param {function} [closePreview=() => null] - Function to set file object to default values
  * @returns {Array}
  */
-function useSendMessage(
-  inputName = "text",
-  scrollToBottom,
-  closePreview = () => null
-) {
+function useSendMessage(scrollToBottom) {
   const { currentUser } = useContext(UserContext);
   const { selectedChat } = useContext(ChatContext);
   const [fileUploader] = useUploadFile();
 
-  const [text, setText] = useState({ [inputName]: "" });
+  const [message, setMessage] = useState({ text: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useError();
 
@@ -45,11 +39,12 @@ function useSendMessage(
    * @param {object} event - An object that contains event properties and functions
    * @param {object} validFile - An object that contains all file data that comes from file input (name, type, etc).
    */
-  function sendMessage(event, validFile) {
+  function sendMessage(event, validFile, closePreview) {
+    console.log("sendMessage...");
     event.preventDefault();
 
     const msgHasFile = validFile !== undefined;
-    const msgHasText = text[inputName] !== "";
+    const msgHasText = message.text !== "";
     // Messages of type file shouldn't have text but they should have a file
     if (msgHasText || msgHasFile) {
       setLoading(true);
@@ -67,7 +62,7 @@ function useSendMessage(
 
           await addMessageDocument(msgId, file);
 
-          resetValues();
+          resetValues(closePreview);
         } catch (error) {
           console.log(error);
           setError(error);
@@ -94,8 +89,8 @@ function useSendMessage(
           senderPhotoURL: photoURL,
         }
       : {};
-    await addDoc(
-      messagesRef,
+    await setDoc(
+      doc(messagesRef, id),
       messageDocTemplate({
         type,
         id,
@@ -103,19 +98,21 @@ function useSendMessage(
         senderId: uid,
         ...additionGroupInfo,
         message: {
-          text: text[inputName].trim(),
+          text: message.text.trim(),
           file,
         },
         createdAt,
       })
     );
 
-    const message =
-      text[inputName] || file?.type?.slice(0, file?.type?.indexOf("/"));
+    const lastMsgText =
+      message.text || file?.type?.slice(0, file?.type?.indexOf("/"));
+    const groupInfo = selectedChat?.isGroup ? { senderName: displayName } : {};
     await updateDoc(chatRef, {
       lastMsg: {
-        uid,
-        message,
+        ...groupInfo,
+        senderId: uid,
+        message: lastMsgText,
         createdAt,
       },
     });
@@ -126,14 +123,14 @@ function useSendMessage(
    * - Scroll to the bottom of the chat
    * - Remove the preview url of files if it exists
    */
-  function resetValues() {
-    setText({ [inputName]: "" });
+  function resetValues(closePreview) {
+    setMessage({ text: "" });
     setLoading(false);
-    closePreview();
+    closePreview && closePreview();
     scrollToBottom();
   }
 
-  return [text, setText, sendMessage, loading, error];
+  return [message, setMessage, sendMessage, loading, error];
 }
 
 export default useSendMessage;
