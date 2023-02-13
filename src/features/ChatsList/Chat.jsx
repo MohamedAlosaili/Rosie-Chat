@@ -48,11 +48,23 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
           </time>
         </div>
         <div className="flex items-center justify-between gap-2">
-          <p className="truncate">
-            {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid
-              ? chat.lastMsg.message + chatInfo.name + " 👋"
-              : chat.lastMsg.message}
-          </p>
+          {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid ? (
+            <p className="truncate">
+              {chat.lastMsg.message + chatInfo.name + " 👋"}
+            </p>
+          ) : (
+            <p className="truncate">
+              {chat.lastMsg.senderId === currentUserId ? (
+                <span>{`You: ${chat.lastMsg.message}`}</span>
+              ) : (
+                <span>
+                  {chat.isGroup && (chat.lastMsg?.senderName ?? "")}
+                  {chat.lastMsg?.senderName ? ": " : ""}
+                  {chat.lastMsg.message}
+                </span>
+              )}
+            </p>
+          )}
           {chat?.unreadMsgs > 0 && (
             <span className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
               {chat.unreadMsgs}
