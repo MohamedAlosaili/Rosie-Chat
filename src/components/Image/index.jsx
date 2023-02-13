@@ -7,7 +7,7 @@ import { AiOutlineReload } from "react-icons/ai";
 
 import SkeletonLoader from "components/SkeletonLoader";
 
-function Image({ img, className }) {
+function Image({ img, className, style }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -41,8 +41,8 @@ function Image({ img, className }) {
         key={nanoid()}
         src={img.url}
         alt={img.name}
-        loading="lazy"
-        className={`h-full w-full object-cover ${
+        style={style}
+        className={`h-full w-full bg-[var(--color)] object-cover ${
           loading || error ? "hidden" : "block"
         }`}
         onLoad={() => setLoading(false)}
@@ -58,6 +58,7 @@ Image.propTypes = {
     name: PropTypes.string,
   }),
   className: PropTypes.string,
+  style: PropTypes.object,
 };
 
 export default memo(Image);
