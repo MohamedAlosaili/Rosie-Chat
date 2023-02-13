@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 
 import { TbEdit } from "react-icons/tb";
@@ -9,6 +9,7 @@ import Modal from "components/Modal";
 import Input from "components/Input";
 import StatusMessage from "components/StatusMessage";
 import { db } from "rosie-firebase";
+import { UserContext } from "context/UserContext";
 
 function EditMessageModal({
   setShowEditMessageModal,
@@ -16,6 +17,7 @@ function EditMessageModal({
   msgObj,
   isLastMsg,
 }) {
+  const { currentUser } = useContext(UserContext);
   const [editMessageLoading, setEditMessageLoading] = useState(false);
   const [editMessageError, setEditMessageError] = useError();
   const [message, setMessage] = useState({ editMessage: msgObj.message.text });
@@ -48,7 +50,12 @@ function EditMessageModal({
         const file = msgObj.message.file;
         const fileType = file?.type?.slice(0, file?.type?.indexOf("/"));
 
+        const isGroupMsg = msgObj.isGroupMessage
+          ? { "lastMsg.senderName": currentUser.displayName }
+          : {};
         await updateDoc(chatRef, {
+          ...isGroupMsg,
+          "lastMsg.senderId": currentUser.uid,
           "lastMsg.message": message.editMessage.trim() || fileType,
           "lastMsg.createdAt": serverTimestamp(),
         });
