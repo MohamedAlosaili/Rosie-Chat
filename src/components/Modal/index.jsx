@@ -26,10 +26,10 @@ const Modal = ({
       >
         {children}
         <div className="flex gap-4">
-          <Button onClick={closeModal} className="flex-1">
+          <Button onClick={closeModal} className="flex-1 text-sm">
             Cancel
           </Button>
-          <Button onClick={actionButtonHandler} className="flex-1">
+          <Button onClick={actionButtonHandler} className="flex-1 text-sm">
             {actionButtonName}
           </Button>
         </div>
