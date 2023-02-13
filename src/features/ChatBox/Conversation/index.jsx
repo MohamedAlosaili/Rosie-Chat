@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/Io";
 import { CgChevronLeft } from "react-icons/cg";
 
+import useEscape from "hooks/useEscape";
 import Message from "features/ChatBox/Message";
 import Form from "features/ChatBox/Form";
-import useEscape from "hooks/useEscape";
 import StatusMessage from "components/StatusMessage";
 import SkeletonLoader from "components/SkeletonLoader";
 import Image from "components/Image";
@@ -25,7 +25,6 @@ function Conversation({ setIsChatOpen }) {
     prevMessagesLength: 25,
     limit: 25,
   });
-  const [greeting, setGreeting] = useState("");
 
   const isLimitChanged = useRef(false);
   const mostRecentMsgs = useRef(null);
@@ -39,12 +38,6 @@ function Conversation({ setIsChatOpen }) {
     useCollectionData(messagesQuery);
 
   useEscape(() => emptyChat());
-
-  useEffect(() => {
-    if (messages?.length > 0) {
-      setGreeting("");
-    }
-  }, []);
 
   useEffect(() => {
     if (!isLimitChanged.current && !isMessagesLoading) {
@@ -82,6 +75,8 @@ function Conversation({ setIsChatOpen }) {
       showScrollArrow && setShowScrollArrow(false);
     }
   }
+
+  const setGreating = !isMessagesLoading && messages?.length === 0;
 
   const receiverId = selectedChat.members
     .filter((memberId) => memberId !== currentUser.uid)
@@ -148,46 +143,19 @@ function Conversation({ setIsChatOpen }) {
           onScroll={handleChatScroll}
           className="scrollbar flex-1 overflow-y-auto overflow-x-hidden p-4"
         >
-          {messages?.length > 0 ? (
+          {messages?.length > 0 && (
             <div className="mx-auto max-w-2xl">
               {messages?.map((msg, idx, msgs) => (
                 <Message
                   key={msg.id}
-                  prevMsgSender={idx > 0 ? msgs[idx - 1] : null}
+                  prevMsgSenderId={idx > 0 ? msgs[idx - 1]?.senderId : null}
                   msgObj={msg}
                   selectedChat={selectedChat}
+                  isLastMsg={msgs.length === idx + 1}
                 />
               ))}
               <div ref={mostRecentMsgs} className="h-px"></div>
             </div>
-          ) : (
-            !isMessagesLoading && (
-              <div
-                onClick={() =>
-                  setGreeting(
-                    `Hi ${chatInfo.name ?? ""}${
-                      selectedChat.isGroup ? " members" : ""
-                    }`
-                  )
-                }
-                className="absolute top-1/2 left-1/2 w-max -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl p-4 text-center transition-colors dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
-              >
-                <h3 className="font-semibold">No messages here yet...</h3>
-                <p>
-                  Tap here to say Hi to{" "}
-                  <span className="font-semibold dark:text-primary-50">
-                    {chatInfo.name ?? ""} {selectedChat.isGroup && "members"}
-                  </span>
-                </p>
-                <Image
-                  img={{
-                    url: "https://media.tenor.com/XyfkuomEwj4AAAAi/hello.gif",
-                    name: "Greeting gif",
-                  }}
-                  className="mx-auto block aspect-square w-60 !bg-transparent"
-                />
-              </div>
-            )
           )}
         </main>
       }
@@ -212,9 +180,9 @@ function Conversation({ setIsChatOpen }) {
       </AnimatePresence>
       <footer className="z-10 mx-auto w-full max-w-2xl border-t p-2 py-3 dark:border-primary-800">
         <Form
-          key={selectedChat.id}
           scrollToBottom={scrollToBottom}
-          greeting={greeting}
+          selectedChat={{ ...selectedChat, ...chatInfo }}
+          setGreating={setGreating}
         />
       </footer>
     </motion.div>
