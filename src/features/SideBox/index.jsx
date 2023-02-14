@@ -17,7 +17,7 @@ function SideBox() {
       case "profile":
         return <Profile />;
       case "chats":
-        return <ChatsList />;
+        return <ChatsList setTap={setTap} />;
       case "contacts":
         return <Contacts />;
       case "setting":
