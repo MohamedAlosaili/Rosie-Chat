@@ -124,7 +124,7 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
             />
           </div>
         )}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
           <AnimatePresence>
             {showEditMessageModal && (
               <EditMessageModal
