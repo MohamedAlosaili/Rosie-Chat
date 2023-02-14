@@ -32,7 +32,6 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
             actionButtonHandler={(e) =>
               sending ? null : sendMessageHandler(e, validFile, closePreview)
             }
-            className="flex flex-col gap-4"
           >
             {validFile.type.startsWith("video") ? (
               <Video
