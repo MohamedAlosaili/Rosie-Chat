@@ -1,17 +1,16 @@
 import { memo, useState, useContext } from "react";
+import PropTypes from "prop-types";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, query, where } from "firebase/firestore";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { BsExclamationCircleFill } from "react-icons/bs";
 
 import Users from "./Users";
 import { db } from "rosie-firebase";
 import { UserContext } from "context/UserContext";
 
-function Contacts() {
+function Contacts({ defaultContactTap }) {
   const { currentUser, updateDocument } = useContext(UserContext);
-  const [contactTap, setContactTap] = useState("friends");
+  const [contactTap, setContactTap] = useState(defaultContactTap);
 
   const usersQuery = query(
     collection(db, "users"),
@@ -67,5 +66,13 @@ function Contacts() {
     </div>
   );
 }
+
+Contacts.propTypes = {
+  defaultContactTap: PropTypes.string,
+};
+
+Contacts.defaultProps = {
+  defaultContactTap: "friends",
+};
 
 export default memo(Contacts);
