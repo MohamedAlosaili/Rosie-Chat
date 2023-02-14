@@ -37,7 +37,7 @@ const StatusMessage = ({ message, type }) => {
       initial="hidden"
       animate="visible"
       exit="hidden"
-      className="fixed top-4 left-0 z-50 w-full"
+      className="fixed top-4 left-0 z-50 w-full text-sm"
     >
       {statusMessage()}
     </motion.div>,
