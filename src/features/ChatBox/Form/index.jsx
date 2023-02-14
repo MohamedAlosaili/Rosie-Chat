@@ -25,7 +25,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
               }`,
             })
           }
-          className="absolute top-1/2 left-1/2 w-max -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl p-4 text-center transition-colors dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
+          className="absolute top-1/2 left-1/2 w-max max-w-[90%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl p-4 text-center transition-colors dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
         >
           <h3 className="font-semibold">No messages here yet...</h3>
           <p>
