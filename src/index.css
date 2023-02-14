@@ -35,4 +35,12 @@
   .dark .scrollbar {
     scrollbar-color: rgb(30, 41, 59, 0.75) transparent;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none; 
+  }
 }
