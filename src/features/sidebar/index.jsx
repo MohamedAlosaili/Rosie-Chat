@@ -39,7 +39,7 @@ function Sidebar({ tap, setTap }) {
             btnTap="chats"
           />
           <NvButton
-            handleClick={() => setTap("contacts")}
+            handleClick={() => setTap("friends")}
             tap={tap}
             icon={<HiUsers size={25} />}
             btnTap="contacts"
