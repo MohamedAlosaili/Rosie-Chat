@@ -33,7 +33,7 @@ const Button = ({
       disabled={disabled}
       onClick={onClick}
       title={title}
-      className={`flex items-center justify-center gap-3 rounded-xl font-medium transition-colors 
+      className={`flex items-center justify-center gap-3 rounded-xl text-sm font-medium transition-colors
                 ${bgColor} ${padding} ${className}`}
     >
       {children}
