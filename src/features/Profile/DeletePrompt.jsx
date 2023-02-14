@@ -34,7 +34,7 @@ function DeletePrompt({ setShowDeletePrompt, userInfo }) {
           deleteUserLoading ? null : deleteUserAccount(deleteUser)
         }
         actionButtonName={deleteUserLoading ? "Deleting..." : "I'm sure"}
-        className="flex min-w-[20rem] flex-col gap-4 text-center"
+        className="min-w-[20rem] text-center"
       >
         <BsFillExclamationCircleFill
           size="50"

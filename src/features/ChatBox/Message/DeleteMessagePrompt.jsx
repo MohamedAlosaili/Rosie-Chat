@@ -49,7 +49,6 @@ const DeleteMessagePrompt = ({
       {deleteError && <StatusMessage type="error" message={deleteError} />}
       <Modal
         closeModal={() => (deleteLoading ? null : setShowDeletePrompt(false))}
-        className="flex flex-col gap-4"
         actionButtonName={deleteLoading ? "Deleting..." : "Delete"}
         actionButtonHandler={() => (deleteLoading ? null : deleteMessage())}
       >

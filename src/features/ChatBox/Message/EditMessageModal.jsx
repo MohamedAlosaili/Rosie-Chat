@@ -82,7 +82,7 @@ function EditMessageModal({
         actionButtonHandler={() =>
           editMessageLoading ? null : updateMessageText()
         }
-        className="flex w-96 flex-col gap-4"
+        className="w-96"
       >
         <h1 className="flex items-center justify-center gap-2 text-2xl text-primary-200 ">
           Edit Message

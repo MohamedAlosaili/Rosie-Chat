@@ -167,7 +167,7 @@ function EditInfoModal({ setShowEditModal }) {
         actionButtonHandler={() =>
           updateUserInfoLoading ? null : updateUserInfo()
         }
-        className="flex min-w-[20rem] flex-col gap-4"
+        className="min-w-[20rem]"
       >
         <h1 className="text-center font-semibold text-primary-200">
           Edit Information

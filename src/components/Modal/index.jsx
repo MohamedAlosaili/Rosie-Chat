@@ -21,15 +21,15 @@ const Modal = ({
         initial="hidden"
         animate="visible"
         exit="hidden"
-        className={`max-w-full cursor-auto rounded-xl p-6 dark:bg-primary-800 ${className}`}
+        className={`flex max-w-full cursor-auto flex-col gap-4 rounded-xl p-6 dark:bg-primary-800 ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
         <div className="flex gap-4">
-          <Button onClick={closeModal} className="flex-1 text-sm">
+          <Button onClick={closeModal} className="flex-1">
             Cancel
           </Button>
-          <Button onClick={actionButtonHandler} className="flex-1 text-sm">
+          <Button onClick={actionButtonHandler} className="flex-1">
             {actionButtonName}
           </Button>
         </div>
