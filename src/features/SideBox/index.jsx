@@ -18,8 +18,10 @@ function SideBox() {
         return <Profile />;
       case "chats":
         return <ChatsList setTap={setTap} />;
-      case "contacts":
+      case "friends":
         return <Contacts />;
+      case "contacts":
+        return <Contacts defaultContactTap="allUsers" />;
       case "setting":
         return <Setting />;
     }
