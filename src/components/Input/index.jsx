@@ -66,7 +66,7 @@ function Input({
   const light = "text-primary-900 hover:bg-primary-50 border-primary-200";
 
   return (
-    <label className={`w-100 relative flex flex-col gap-2 text-sm font-medium`}>
+    <label className={`relative flex flex-col gap-2 text-sm font-medium`}>
       <div className="flex items-center gap-1">
         {label} {required && <span className="text-error-400">*</span>}
         {type === "password" && (
@@ -80,7 +80,7 @@ function Input({
         )}
       </div>
       <input
-        className={`focus:border-1 rounded-xl border-2 p-3 text-sm ring-2 focus:outline-none 
+        className={`focus:border-1 w-full rounded-xl border-2 p-3 text-sm ring-2 focus:outline-none
                     ${light} ${dark} ${focusColors} ${invalidInputColors}`}
         type={inputType}
         name={name}
