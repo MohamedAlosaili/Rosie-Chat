@@ -39,7 +39,7 @@ function Users({
   ));
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <SearchForm
         value={searchValue}
         setValue={setSearchValue}
@@ -67,7 +67,9 @@ function Users({
         />
       )}
       {usersElements?.length > 0 ? (
-        <ul>{usersElements}</ul>
+        <ul className="no-scrollbar overflow-y-auto overflow-x-hidden">
+          {usersElements}
+        </ul>
       ) : (
         !results.usersLoading &&
         (searchValue === "" && contactTap === "friends" ? (

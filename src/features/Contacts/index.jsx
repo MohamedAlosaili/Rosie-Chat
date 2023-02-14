@@ -20,7 +20,7 @@ function Contacts({ defaultContactTap }) {
   const [allUsers, usersLoading, usersError] = useCollectionData(usersQuery);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-[calc(100%-50px)] flex-col gap-4">
       <div className="relative flex rounded-xl border border-primary-700">
         <div
           className={`absolute top-0 transition-all ${

@@ -49,7 +49,7 @@ function ChatsList({ setTap }) {
   ));
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <div
         className="absolute top-0 right-0 z-50 translate-y-2 cursor-pointer dark:text-primary-200"
         onMouseLeave={() => showNewChatsMenu && setShowNewChatsMenu(false)}
@@ -117,7 +117,9 @@ function ChatsList({ setTap }) {
       {!userChatsLoading &&
         !userChatsError &&
         (chatsElements?.length > 0 ? (
-          <ul>{chatsElements}</ul>
+          <ul className="no-scrollbar overflow-y-auto overflow-x-hidden">
+            {chatsElements}
+          </ul>
         ) : (
           searchValue !== "" && (
             <div className="break-all text-center dark:text-primary-200">
