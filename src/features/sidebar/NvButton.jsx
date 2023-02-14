@@ -50,7 +50,12 @@ const NvButton = ({
           )}
         </div>
       </motion.button>
-      <Tooltip text={btnTap} position="right" className="capitalize" />
+      <Tooltip
+        text={btnTap}
+        position="right"
+        className="capitalize"
+        visibleOnScreen="lg"
+      />
       <span
         className={`text-xs font-medium transition-all lg:hidden lg:text-base ${
           active ? "text-accent" : ""
