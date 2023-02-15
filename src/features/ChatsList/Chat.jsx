@@ -28,49 +28,48 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
   return (
     <li
       onClick={() => !isSelected && changeChat(chat)}
-      className={`relative z-10 mb-2 grid cursor-pointer select-none grid-cols-[auto_1fr] gap-4 overflow-hidden rounded-xl p-4 text-sm 
-                      transition-colors before:absolute before:inset-0 before:-z-10 before:opacity-50 before:transition-colors last:mb-0 
-                      dark:hover:before:bg-primary-800 dark:active:before:bg-primary-700 ${
-                        isSelected ? "dark:bg-primary-800" : ""
-                      }`}
+      className={`relative z-10 mb-2 grid cursor-pointer select-none grid-cols-[auto_1fr_auto] items-center gap-4 overflow-hidden rounded-xl p-4 text-sm transition-colors last:mb-0 
+                       ${
+                         isSelected
+                           ? "dark:bg-primary-800"
+                           : "dark:hover:bg-primary-800/50 dark:active:bg-primary-700/50"
+                       }`}
     >
       <Image
         img={{ url: chatInfo.photoURL, name: chatInfo.name }}
-        className="aspect-square w-14 rounded-full"
+        className="h-14 w-14 rounded-full"
       />
-      <div>
-        <div className="mb-2 flex items-center justify-between gap-2">
-          <h3 className="truncate text-base font-medium dark:text-primary-200">
-            {chatInfo.name}
-          </h3>
-          <time className="whitespace-nowrap">
-            {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
-          </time>
-        </div>
-        <div className="flex items-center justify-between gap-2">
-          {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid ? (
-            <p className="truncate">
-              {chat.lastMsg.message + chatInfo.name + " 👋"}
-            </p>
-          ) : (
-            <p className="truncate">
-              {chat.lastMsg.senderId === currentUserId ? (
-                <span>{`You: ${chat.lastMsg.message}`}</span>
-              ) : (
-                <span>
-                  {chat.isGroup && (chat.lastMsg?.senderName ?? "")}
-                  {chat.lastMsg?.senderName ? ": " : ""}
-                  {chat.lastMsg.message}
-                </span>
-              )}
-            </p>
-          )}
-          {chat?.unreadMsgs > 0 && (
-            <span className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
-              {chat.unreadMsgs}
-            </span>
-          )}
-        </div>
+      <div className="w-full overflow-hidden">
+        <h3 className="mb-2 truncate text-base font-medium dark:text-primary-200">
+          {chatInfo.name}
+        </h3>
+        {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid ? (
+          <p className="truncate">
+            {chat.lastMsg.message + chatInfo.name + " 👋"}
+          </p>
+        ) : (
+          <p className="truncate">
+            {chat.lastMsg.senderId === currentUserId ? (
+              <span>{`You: ${chat.lastMsg.message}`}</span>
+            ) : (
+              <span>
+                {chat.isGroup && (chat.lastMsg?.senderName ?? "")}
+                {chat.lastMsg?.senderName ? ": " : ""}
+                {chat.lastMsg.message}
+              </span>
+            )}
+          </p>
+        )}
+      </div>
+      <div className="flex flex-col items-end gap-2">
+        <time className="whitespace-nowrap">
+          {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
+        </time>
+        {false && (
+          <div className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
+            5
+          </div>
+        )}
       </div>
     </li>
   );
