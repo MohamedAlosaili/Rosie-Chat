@@ -1,4 +1,12 @@
-import { memo, useEffect, useRef, useContext, useState } from "react";
+import {
+  memo,
+  useEffect,
+  useRef,
+  useContext,
+  useState,
+  lazy,
+  Suspense,
+} from "react";
 
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -16,9 +24,13 @@ import { db } from "rosie-firebase";
 import { UserContext } from "context/UserContext";
 import { ChatContext } from "context/ChatContext";
 
+const EditGroupInfoModal = lazy(() => import("./EditGroupInfoModal"));
+
 function Conversation({ setIsChatOpen }) {
   const { currentUser } = useContext(UserContext);
-  const { selectedChat, emptyChat } = useContext(ChatContext);
+  const { selectedChat, emptyChat, changeChat } = useContext(ChatContext);
+
+  const [showGroupInfoModal, setShowGroupInfoModal] = useState(false);
 
   const [showScrollArrow, setShowScrollArrow] = useState(false);
   const [messagesLimit, setMessagesLimit] = useState({
@@ -85,6 +97,9 @@ function Conversation({ setIsChatOpen }) {
     ? selectedChat.chatInfo
     : selectedChat[receiverId];
 
+  const isGroupAdmin =
+    selectedChat.isGroup && selectedChat?.admin === currentUser.uid;
+
   return (
     <motion.div
       initial={{ left: "100%" }}
@@ -104,17 +119,36 @@ function Conversation({ setIsChatOpen }) {
           <StatusMessage
             message="Loading..."
             type="loading"
-            location="absolute top-24"
           />
         )} */}
         {messagesError && (
           <StatusMessage message={messagesError?.code} type="error" />
         )}
       </AnimatePresence>
-      <header className="relative z-10 flex items-center gap-4 border-b border-primary-800 p-4 pt-6 dark:bg-primary-900">
+      <header
+        onClick={() => (isGroupAdmin ? setShowGroupInfoModal(true) : null)}
+        className={`relative z-10 flex items-center gap-4 border-b border-primary-800 p-4 pt-6 dark:bg-primary-900 ${
+          isGroupAdmin ? "cursor-pointer" : ""
+        }`}
+      >
+        <Suspense>
+          <AnimatePresence>
+            {showGroupInfoModal && (
+              <EditGroupInfoModal
+                setShowGroupInfoModal={setShowGroupInfoModal}
+                selectedChat={selectedChat}
+                currentUser={currentUser}
+                changeChat={changeChat}
+              />
+            )}
+          </AnimatePresence>
+        </Suspense>
         <button
-          onClick={() => setIsChatOpen(false)}
-          className="mr-2 flex items-center font-medium dark:text-primary-200 md:hidden"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsChatOpen(false);
+          }}
+          className="mr-2 flex h-full items-center font-medium dark:text-primary-200 md:hidden"
         >
           <CgChevronLeft size={25} />
         </button>
