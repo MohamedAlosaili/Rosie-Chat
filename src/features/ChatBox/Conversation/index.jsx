@@ -31,7 +31,7 @@ function Conversation({ setIsChatOpen }) {
   const { selectedChat, emptyChat, changeChat } = useContext(ChatContext);
 
   const [showGroupInfoModal, setShowGroupInfoModal] = useState(false);
-
+console.log(showGroupInfoModal);
   const [showScrollArrow, setShowScrollArrow] = useState(false);
   const [messagesLimit, setMessagesLimit] = useState({
     prevMessagesLength: 25,
