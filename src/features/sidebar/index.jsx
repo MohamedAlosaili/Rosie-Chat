@@ -56,7 +56,7 @@ function Sidebar({ tap, setTap }) {
             <NvButton
               handleClick={handleSignOut}
               tap={tap}
-              icon={<CiLogout size={25} />}
+              icon={<CiLogout size={25} className="stroke-1" />}
               btnTap="logout"
             />
           </div>
