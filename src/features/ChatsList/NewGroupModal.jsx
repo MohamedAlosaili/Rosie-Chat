@@ -24,8 +24,9 @@ import Input from "components/Input";
 import Image from "components/Image";
 import Button from "components/Button";
 import StatusMessage from "components/StatusMessage";
-import { db } from "rosie-firebase";
+import InputFile from "components/InputFile";
 import SkeletonLoader from "components/SkeletonLoader";
+import { db } from "rosie-firebase";
 
 function NewGroupModal({
   setTap,
@@ -144,34 +145,15 @@ function NewGroupModal({
           createGroupLoading ? null : createNewGroup()
         }
         className="text-sm dark:text-primary-200"
+        modalTitle={{ text: "New Group", icon: <HiUserGroup /> }}
       >
-        <h1 className="flex items-center justify-center gap-2 text-xl">
-          <HiUserGroup size={20} /> New Group
-        </h1>
         <div className="flex items-center gap-4">
-          <label
-            className="relative mt-2 aspect-square w-20 min-w-[5rem] cursor-pointer overflow-hidden rounded-full"
-            title="Add image"
-          >
-            <input
-              type="file"
-              value={file.value}
-              disabled={createGroupLoading}
-              onChange={changeFile}
-              className="hidden"
-            />
-            {!file.previewUrl && (
-              <div className="absolute inset-0 grid place-items-center bg-black/50 transition-colors hover:bg-black/25">
-                <TbEdit size={25} className="" />
-              </div>
-            )}
-            {file.previewUrl && (
-              <Image
-                img={{ url: file.previewUrl, name: groupInfo.name }}
-                className="aspect-square w-full"
-              />
-            )}
-          </label>
+          <InputFile
+            changeFile={changeFile}
+            img={{ url: file.previewUrl, ...groupInfo }}
+            loading={createGroupLoading}
+            isPreviewUrl={file.previewUrl !== ""}
+          />
           <Input
             label="Group name"
             type="text"

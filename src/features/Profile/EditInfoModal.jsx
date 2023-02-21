@@ -18,7 +18,7 @@ import useUploadFile from "hooks/useUploadFile";
 import useError from "hooks/useError";
 import Input from "components/Input";
 import Modal from "components/Modal";
-import Image from "components/Image";
+import InputFile from "components/InputFile";
 import StatusMessage from "components/StatusMessage";
 import { UserContext } from "context/UserContext";
 import { db } from "rosie-firebase";
@@ -168,31 +168,15 @@ function EditInfoModal({ setShowEditModal }) {
           updateUserInfoLoading ? null : updateUserInfo()
         }
         className="min-w-[20rem]"
+        modalTitle={{ text: "Edit Information" }}
       >
-        <h1 className="text-center font-semibold text-primary-200">
-          Edit Information
-        </h1>
-        <label
-          className="relative mx-auto w-28 cursor-pointer overflow-hidden rounded-full"
-          title="Change photo"
-        >
-          <input
-            type="file"
-            value={file.value}
-            disabled={updateUserInfoLoading}
-            onChange={changeFile}
-            className="hidden"
-          />
-          <Image
-            img={{ url: file.previewUrl || photoURL, name: displayName }}
-            className="aspect-square w-full"
-          />
-          {!file.previewUrl && (
-            <div className="absolute inset-0 grid place-items-center bg-black/50 transition-colors hover:bg-black/25">
-              <TbEdit size={25} className="" />
-            </div>
-          )}
-        </label>
+        <InputFile
+          changeFile={changeFile}
+          img={{ url: file.previewUrl || photoURL, name: displayName }}
+          loading={updateUserInfoLoading}
+          isPreviewUrl={file.previewUrl !== ""}
+          className="self-center"
+        />
         <Input
           label="Name"
           type="text"

@@ -18,6 +18,7 @@ import Image from "components/Image";
 import SkeletonLoader from "components/SkeletonLoader";
 import Button from "components/Button";
 import StatusMessage from "components/StatusMessage";
+import InputFile from "components/InputFile";
 import { db } from "rosie-firebase";
 
 function EditGroupInfoModal({
@@ -159,40 +160,22 @@ function EditGroupInfoModal({
         closeModal={() =>
           updateGroupInfoLoading ? null : setShowGroupInfoModal(false)
         }
-        className="text-sm dark:text-primary-200"
         actionButtonName={updateGroupInfoLoading ? "Updating..." : "Update"}
         actionButtonHandler={() =>
           updateGroupInfoLoading ? null : updateGroupInfo()
         }
+        modalTitle={{ text: "Group Info", icon: <HiUserGroup /> }}
       >
-        <h1 className="flex items-center justify-center gap-2 text-xl font-semibold">
-          <HiUserGroup size={20} className="text-primary-50" /> Group info
-        </h1>
         <div className="flex items-center gap-4">
-          <label
-            className="relative mt-2 aspect-square w-20 min-w-[5rem] cursor-pointer overflow-hidden rounded-full"
-            title="Add image"
-          >
-            <input
-              type="file"
-              value={file.value}
-              disabled={updateGroupInfoLoading}
-              onChange={changeFile}
-              className="hidden"
-            />
-            <Image
-              img={{
-                url: file.previewUrl || selectedChat.chatInfo.photoURL,
-                name: groupInfo.name,
-              }}
-              className="aspect-square w-full"
-            />
-            {!file.previewUrl && (
-              <div className="absolute inset-0 grid place-items-center bg-black/50 transition-colors hover:bg-black/25">
-                <TbEdit size={25} className="" />
-              </div>
-            )}
-          </label>
+          <InputFile
+            changeFile={changeFile}
+            loading={updateGroupInfoLoading}
+            img={{
+              url: file.previewUrl || selectedChat.chatInfo.photoURL,
+              ...groupInfo,
+            }}
+            isPreviewUrl={file.previewUrl !== ""}
+          />
           <Input
             label="Group name"
             type="text"
