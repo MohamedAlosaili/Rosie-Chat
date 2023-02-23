@@ -2,9 +2,11 @@ import { lazy, Suspense, useContext, useEffect, useState } from "react";
 
 import { AnimatePresence } from "framer-motion";
 
-const Conversation = lazy(() => import("./Conversation"));
+import ErrorBoundary from "pages/ErrorBoundary";
 import selectChat from "imgs/select-chat.svg";
 import { ChatContext } from "context/ChatContext";
+
+const Conversation = lazy(() => import("./Conversation"));
 
 function ChatBox() {
   const { selectedChat, emptyChat } = useContext(ChatContext);
@@ -31,16 +33,18 @@ function ChatBox() {
     `}
     >
       {selectedChat.id ? (
-        <Suspense>
-          <AnimatePresence mode="wait">
-            {isChatOpen && (
-              <Conversation
-                setIsChatOpen={setIsChatOpen}
-                key={selectedChat.id}
-              />
-            )}
-          </AnimatePresence>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense>
+            <AnimatePresence mode="wait">
+              {isChatOpen && (
+                <Conversation
+                  setIsChatOpen={setIsChatOpen}
+                  key={selectedChat.id}
+                />
+              )}
+            </AnimatePresence>
+          </Suspense>
+        </ErrorBoundary>
       ) : (
         <div className="flex h-full flex-col items-center justify-center p-8">
           <img src={selectChat} alt="empty chat" className="w-full max-w-md" />
