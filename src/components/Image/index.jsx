@@ -10,10 +10,12 @@ import SkeletonLoader from "components/SkeletonLoader";
 function Image({ img, className, style }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [reloadNum, setReloadNum] = useState(0);
 
   const reload = () => {
     setLoading(true);
     setError(false);
+    setReloadNum((prevNum) => prevNum + 1);
   };
 
   const handleError = () => {
@@ -23,7 +25,9 @@ function Image({ img, className, style }) {
 
   return (
     <picture
-      onClick={(e) => (error || loading) && e.stopPropagation()}
+      onClick={(e) =>
+        (error || loading) && reloadNum < 3 && e.stopPropagation()
+      }
       className={`block h-full overflow-hidden ${className ?? ""} ${
         !loading ? "dark:bg-primary-700/75" : ""
       } ${error ? "cursor-auto" : ""}`}
@@ -31,9 +35,14 @@ function Image({ img, className, style }) {
       {loading && <SkeletonLoader.Img className={className ?? ""} />}
       {error && (
         <div className="flex h-full w-full flex-col items-center justify-center gap-1">
-          <button onClick={reload} className="relative">
+          <button
+            onClick={() => (reloadNum < 3 ? reload() : null)}
+            className="relative"
+          >
             <TbFaceIdError className="text-[1.5em]" />
-            <AiOutlineReload className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150 transform text-[2em]" />
+            {reloadNum < 3 && (
+              <AiOutlineReload className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150 transform text-[2em]" />
+            )}
           </button>
         </div>
       )}
