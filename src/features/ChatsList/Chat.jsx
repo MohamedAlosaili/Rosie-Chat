@@ -43,13 +43,13 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
         <h3 className="mb-2 truncate text-base font-medium dark:text-primary-200">
           {chatInfo.name}
         </h3>
-        {chat.lastMsg.message === "Say hi to " && !chat.lastMsg.uid ? (
+        {chat.lastMsg.message === "Say hi to " && !chat.lastMsg?.senderId ? (
           <p className="truncate">
             {chat.lastMsg.message + chatInfo.name + " 👋"}
           </p>
         ) : (
           <p className="truncate">
-            {chat.lastMsg.senderId === currentUserId ? (
+            {chat.lastMsg?.senderId === currentUserId ? (
               <span>{`You: ${chat.lastMsg.message}`}</span>
             ) : (
               <span>
