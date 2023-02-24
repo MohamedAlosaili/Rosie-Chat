@@ -26,14 +26,13 @@ function UserContextProvider({ children }) {
     doc(db, "users", user.uid)
   );
 
-  // TODO: this need to be moved into separate hook
   useEffect(() => {
     if (currentUser && !currentUser.isOnline) {
       updateDocument({ isOnline: true });
     }
 
     return () => {
-      auth.currentUser && updateDocument({ isOnline: false });
+      user && currentUser && updateDocument({ isOnline: false });
     };
   }, [loading]);
 
@@ -59,19 +58,23 @@ function UserContextProvider({ children }) {
               joinedOn: serverTimestamp(),
             })
           );
-          // Alert if user has been added
+
           const createdAt = serverTimestamp();
           const text = `${displayName} joined`;
+          await updateDoc(doc(db, "chats", publicChatId), {
+            lastMsg: {
+              message: text,
+              createdAt,
+            },
+            members: arrayUnion(uid),
+          });
+
+          // Alert if user has been added
           await addDoc(publicChatMessagesRef, {
             id: nanoid(),
             type: "announce",
             message: { text },
             createdAt,
-          });
-          await updateDoc(doc(db, "chats", publicChatId), {
-            "lastMsg.message": text,
-            "lastMsg.createdAt": createdAt,
-            members: arrayUnion(uid),
           });
         } catch (e) {
           console.log(e);
