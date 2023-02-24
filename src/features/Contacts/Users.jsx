@@ -22,11 +22,7 @@ function Users({
           currentUser.friends.includes(user.uid)
         )
       : results.allUsers;
-  const [searchValue, setSearchValue, searchResults] = useSearch(
-    "users",
-    users,
-    "displayName"
-  );
+  const [searchValue, setSearchValue, searchResults] = useSearch(users);
 
   const usersElements = (searchValue ? searchResults : users)?.map((user) => (
     <UserCard
