@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { AnimatePresence } from "framer-motion";
 
+import usePasswordStrength from "./usePasswordStrength";
+import useSignUp from "./useSignUp";
 import Authentication from "../Authentication";
 import Check from "./Check";
 import Input from "components/Input";
 import StatusMessage from "components/StatusMessage";
 import Button from "components/Button";
-import usePasswordStrength from "./usePasswordStrength";
-import { auth } from "rosie-firebase";
 
 function SignUp({ selectedTap, setSelectedTap }) {
   const [signUpValue, setSignUpValue] = useState({
@@ -17,9 +17,8 @@ function SignUp({ selectedTap, setSelectedTap }) {
     password: "",
     confirmPassword: "",
   });
-  const [createUserWithEmailAndPassword, user, singUpLoading, signUpError] =
-    useCreateUserWithEmailAndPassword(auth);
   const [submitForm, setSubmitForm] = useState(false);
+  const [signUp, signUpLoading, signUpError] = useSignUp();
 
   const { password, confirmPassword } = signUpValue;
   const [passwordStrength, isPasswordMatched] = usePasswordStrength(
@@ -37,41 +36,34 @@ function SignUp({ selectedTap, setSelectedTap }) {
   const isEmailValid = regex.email.test(signUpValue.email);
   const isPasswordValid = regex.password.test(signUpValue.password);
 
-  async function signUserIn(e) {
+  async function signUserUp(e) {
     e.preventDefault();
     setSubmitForm(true);
-    const { name, email, password } = signUpValue;
     if (isEmailValid && isPasswordValid && isPasswordMatched) {
-      try {
-        await createUserWithEmailAndPassword(email, password);
-
-        sessionStorage.setItem("user-info", JSON.stringify({ name, email }));
-      } catch (e) {
-        console.log(e);
-      }
+      await signUp(signUpValue);
     }
   }
 
   return (
     <>
-      {singUpLoading && (
-        <StatusMessage message="Creating account..." type="loading" />
-      )}
-      {signUpError && (
-        <StatusMessage message={signUpError?.code} type="error" />
-      )}
+      <AnimatePresence>
+        {signUpLoading && (
+          <StatusMessage message="Creating account..." type="loading" />
+        )}
+        {signUpError && <StatusMessage message={signUpError} type="error" />}
+      </AnimatePresence>
       <Authentication
         title="Sign up."
         greeting="We are excited ✨ that you will be one of us."
         selectedTap={selectedTap}
         setSelectedTap={setSelectedTap}
       >
-        <form onSubmit={signUserIn} className="flex flex-col gap-6">
+        <form onSubmit={signUserUp} className="flex flex-col gap-6">
           <Input
             label="Name"
             type="text"
             name="name"
-            id="name"
+            disabled={signUpLoading}
             value={signUpValue.name}
             setValue={setSignUpValue}
             placeholder="Your name"
@@ -81,7 +73,7 @@ function SignUp({ selectedTap, setSelectedTap }) {
             label="Email"
             type="email"
             name="email"
-            id="email"
+            disabled={signUpLoading}
             value={signUpValue.email}
             setValue={setSignUpValue}
             placeholder="example@gmail.com"
@@ -96,7 +88,7 @@ function SignUp({ selectedTap, setSelectedTap }) {
               label="Password"
               type="password"
               name="password"
-              id="password"
+              disabled={signUpLoading}
               value={signUpValue.password}
               setValue={setSignUpValue}
               placeholder="●●●●●●●●"
@@ -131,7 +123,7 @@ function SignUp({ selectedTap, setSelectedTap }) {
               label="Confirm Password"
               type="password"
               name="confirmPassword"
-              id="confirmPassword"
+              disabled={signUpLoading}
               value={signUpValue.confirmPassword}
               setValue={setSignUpValue}
               placeholder="●●●●●●●●"
@@ -143,8 +135,8 @@ function SignUp({ selectedTap, setSelectedTap }) {
             />
             <Check condition="Password matched" passed={isPasswordMatched} />
           </div>
-          <Button disabled={singUpLoading}>
-            {singUpLoading ? "Creating account..." : "Create account"}
+          <Button disabled={signUpLoading}>
+            {signUpLoading ? "Creating account..." : "Create account"}
           </Button>
         </form>
       </Authentication>
