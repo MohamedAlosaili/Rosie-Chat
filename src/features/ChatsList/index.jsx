@@ -34,9 +34,9 @@ function ChatsList({ setTap }) {
     useCollectionData(chatsQuery);
   // TODO: Not work well because the the info of the chat is different from private and group chats
   const [searchValue, setSearchValue, searchResults] = useSearch(
-    "chats",
     chats,
-    "name"
+    "chats",
+    currentUser.uid
   );
 
   const chatsElements = (searchValue ? searchResults : chats)?.map((chat) => (
@@ -47,6 +47,8 @@ function ChatsList({ setTap }) {
       isSelected={chat.id === selectedChat.id}
     />
   ));
+
+  const userChatsReady = !userChatsLoading && !userChatsError;
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -114,8 +116,7 @@ function ChatsList({ setTap }) {
           )}
         </div>
       )}
-      {!userChatsLoading &&
-        !userChatsError &&
+      {userChatsReady &&
         (chatsElements?.length > 0 ? (
           <ul className="no-scrollbar overflow-y-auto overflow-x-hidden pb-20 lg:pb-0">
             {chatsElements}
