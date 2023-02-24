@@ -14,8 +14,8 @@ const Modal = ({
   children,
   actionButtonName,
   actionButtonHandler,
-}) => {
-  return createPortal(
+}) =>
+  createPortal(
     <Backdrop onClick={closeModal}>
       <motion.div
         variants={modalVariants}
@@ -43,7 +43,6 @@ const Modal = ({
     </Backdrop>,
     document.getElementById("modal")
   );
-};
 
 Modal.propTypes = {
   closeModal: PropTypes.func,
@@ -52,7 +51,7 @@ Modal.propTypes = {
     text: PropTypes.string,
     icon: PropTypes.element,
   }),
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
   actionButtonName: PropTypes.string,
   actionButtonHandler: PropTypes.func,
 };
