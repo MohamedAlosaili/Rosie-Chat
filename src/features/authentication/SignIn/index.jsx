@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { AnimatePresence } from "framer-motion";
 
 import Authentication from "../Authentication";
 import Input from "components/Input";
@@ -22,12 +23,14 @@ function SignIn({ selectedTap, setSelectedTap }) {
 
   return (
     <>
-      {signInLoading && (
-        <StatusMessage message="Signing in..." type="loading" />
-      )}
-      {signInError && (
-        <StatusMessage message={signInError?.code} type="error" />
-      )}
+      <AnimatePresence>
+        {signInLoading && (
+          <StatusMessage message="Signing in..." type="loading" />
+        )}
+        {signInError && (
+          <StatusMessage message={signInError?.code} type="error" />
+        )}
+      </AnimatePresence>
       <Authentication
         title="Sign in."
         greeting={
