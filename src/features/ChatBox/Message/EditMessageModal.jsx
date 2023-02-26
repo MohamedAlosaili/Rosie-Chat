@@ -43,9 +43,7 @@ function EditMessageModal({
     try {
       const messageRef = doc(db, `chats/${chatId}/messages/${msgObj.id}`);
       const chatRef = doc(db, `chats/${chatId}`);
-      await updateDoc(messageRef, {
-        "message.text": message.editMessage,
-      });
+
       if (isLastMsg) {
         const file = msgObj.message.file;
         const fileType = file?.type?.slice(0, file?.type?.indexOf("/"));
@@ -53,11 +51,20 @@ function EditMessageModal({
         const isGroupMsg = msgObj.isGroupMessage
           ? { "lastMsg.senderName": currentUser.displayName }
           : {};
-        await updateDoc(chatRef, {
-          ...isGroupMsg,
-          "lastMsg.senderId": currentUser.uid,
-          "lastMsg.message": message.editMessage.trim() || fileType,
-          "lastMsg.createdAt": serverTimestamp(),
+        await Promise.all([
+          updateDoc(messageRef, {
+            "message.text": message.editMessage,
+          }),
+          updateDoc(chatRef, {
+            ...isGroupMsg,
+            "lastMsg.senderId": currentUser.uid,
+            "lastMsg.message": message.editMessage.trim() || fileType,
+            "lastMsg.createdAt": serverTimestamp(),
+          }),
+        ]);
+      } else {
+        await updateDoc(messageRef, {
+          "message.text": message.editMessage,
         });
       }
       setEditMessageLoading(false);
