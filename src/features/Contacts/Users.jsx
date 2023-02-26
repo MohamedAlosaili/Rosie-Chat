@@ -63,7 +63,7 @@ function Users({
         />
       )}
       {usersElements?.length > 0 ? (
-        <ul className="no-scrollbar overflow-y-auto overflow-x-hidden">
+        <ul className="no-scrollbar overflow-y-auto overflow-x-hidden pb-20 lg:pb-0">
           {usersElements}
         </ul>
       ) : (
