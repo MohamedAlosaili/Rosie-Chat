@@ -4,6 +4,7 @@ import { FiSun } from "react-icons/fi";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { RiComputerLine } from "react-icons/ri";
+import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { AnimatePresence, motion } from "framer-motion";
 import { signOut } from "firebase/auth";
 
@@ -60,10 +61,14 @@ function Setting() {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setShowThemeMenu(true)}
+          onClick={() => null} // setShowThemeMenu(true)
           className="flex w-full cursor-pointer items-center justify-between rounded-xl py-2 px-4 font-semibold transition-colors dark:hover:bg-primary-800/50"
         >
           Theme
+          <span className="flex items-center gap-2 text-xs dark:text-primary-400">
+            <BsFillExclamationCircleFill />
+            Theme feature not ready yet
+          </span>
           {theme === "dark" ? (
             <MdOutlineDarkMode size={20} className="text-info-400" />
           ) : (
