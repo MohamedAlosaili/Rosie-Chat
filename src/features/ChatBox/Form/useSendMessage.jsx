@@ -40,7 +40,6 @@ function useSendMessage(scrollToBottom) {
    * @param {object} validFile - An object that contains all file data that comes from file input (name, type, etc).
    */
   function sendMessage(event, validFile, closePreview) {
-    console.log("sendMessage...");
     event.preventDefault();
 
     const msgHasFile = validFile !== undefined;
@@ -82,40 +81,43 @@ function useSendMessage(scrollToBottom) {
 
     const type = file?.type ? "file" : "text";
     const createdAt = serverTimestamp();
-    // TODO: Add message doc and update chat doc are used in two places (useSendMessage & UserContext) try to combined them
+
     const additionGroupInfo = selectedChat?.isGroup
       ? {
           senderName: displayName,
           senderPhotoURL: photoURL,
         }
       : {};
-    await setDoc(
-      doc(messagesRef, id),
-      messageDocTemplate({
-        type,
-        id,
-        isGroupMessage: selectedChat.isGroup,
-        senderId: uid,
-        ...additionGroupInfo,
-        message: {
-          text: message.text.trim(),
-          file,
-        },
-        createdAt,
-      })
-    );
 
     const lastMsgText =
       message.text || file?.type?.slice(0, file?.type?.indexOf("/"));
     const groupInfo = selectedChat?.isGroup ? { senderName: displayName } : {};
-    await updateDoc(chatRef, {
-      lastMsg: {
-        ...groupInfo,
-        senderId: uid,
-        message: lastMsgText,
-        createdAt,
-      },
-    });
+
+    await Promise.all([
+      setDoc(
+        doc(messagesRef, id),
+        messageDocTemplate({
+          type,
+          id,
+          isGroupMessage: selectedChat.isGroup,
+          senderId: uid,
+          ...additionGroupInfo,
+          message: {
+            text: message.text.trim(),
+            file,
+          },
+          createdAt,
+        })
+      ),
+      updateDoc(chatRef, {
+        lastMsg: {
+          ...groupInfo,
+          senderId: uid,
+          message: lastMsgText,
+          createdAt,
+        },
+      }),
+    ]);
   }
 
   /**
