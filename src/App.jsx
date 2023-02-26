@@ -21,9 +21,7 @@ function App() {
 
   return (
     <main>
-      <Suspense>
-        {user?.emailVerified ? <Home user={user} /> : <UserAuth user={user} />}
-      </Suspense>
+      <Suspense>{user ? <Home /> : <UserAuth />}</Suspense>
     </main>
   );
 }
