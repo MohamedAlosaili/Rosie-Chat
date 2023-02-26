@@ -24,16 +24,19 @@ const DeleteMessagePrompt = ({
     try {
       const messageRef = doc(db, `chats/${chatId}/messages/${messageId}`);
       const chatRef = doc(db, `chats/${chatId}`);
-      await deleteDoc(messageRef);
-
       if (isLastMsg) {
-        await updateDoc(chatRef, {
-          lastMsg: {
-            uid: null,
-            message: "Last message was deleted.",
-            createdAt: serverTimestamp(),
-          },
-        });
+        await Promise.all([
+          deleteDoc(messageRef),
+          updateDoc(chatRef, {
+            lastMsg: {
+              uid: null,
+              message: "Last message was deleted.",
+              createdAt: serverTimestamp(),
+            },
+          }),
+        ]);
+      } else {
+        await deleteDoc(messageRef);
       }
 
       setDeleteLoading(false);
