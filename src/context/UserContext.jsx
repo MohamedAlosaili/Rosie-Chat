@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { nanoid } from "nanoid";
@@ -12,9 +12,11 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { auth, db } from "rosie-firebase";
+import useError from "hooks/useError";
 import StatusMessage from "components/StatusMessage";
+import { auth, db } from "rosie-firebase";
 import { userDocTemplate } from "util/objectsTemplate";
+import { AnimatePresence } from "framer-motion";
 
 const UserContext = React.createContext();
 
@@ -22,73 +24,82 @@ function UserContextProvider({ children }) {
   const user = auth.currentUser;
   const userRef = doc(db, "users", user.uid);
 
-  const [currentUser, loading, error] = useDocumentData(
+  const [currentUser, currentUserLoading, currentUserError] = useDocumentData(
     doc(db, "users", user.uid)
   );
 
-  useEffect(() => {
-    if (currentUser && !currentUser.isOnline) {
-      updateDocument({ isOnline: true });
-    }
-
-    return () => {
-      user && currentUser && updateDocument({ isOnline: false });
-    };
-  }, [loading]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useError();
 
   useEffect(() => {
-    const { displayName, email, photoURL, uid } = user;
+    if (!currentUser && !currentUserLoading) {
+      setLoading(true);
+      const createdAt = serverTimestamp();
+      const text = `${user.displayName} joined`;
 
-    if (!currentUser && !loading) {
-      (async function () {
-        try {
-          const publicChatId = "public_chat";
-          const publicChatMessagesRef = collection(
-            db,
-            `chats/${publicChatId}/messages`
-          );
-
-          await setDoc(
-            userRef,
-            userDocTemplate({
-              uid,
-              displayName,
-              email,
-              photoURL,
-              joinedOn: serverTimestamp(),
-            })
-          );
-
-          const createdAt = serverTimestamp();
-          const text = `${displayName} joined`;
-          await updateDoc(doc(db, "chats", publicChatId), {
-            lastMsg: {
-              message: text,
-              createdAt,
-            },
-            members: arrayUnion(uid),
-          });
-
-          // Alert if user has been added
-          await addDoc(publicChatMessagesRef, {
-            id: nanoid(),
-            type: "announce",
-            message: { text },
-            createdAt,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      })();
+      Promise.all([
+        createUserDoc(user),
+        updatePublicChatDoc(text, createdAt, user.uid),
+        memberJoinMessage(text, createdAt),
+      ])
+        .then(() => setLoading(false))
+        .catch((error) => {
+          setLoading(false);
+          setError(error);
+        });
     }
-  }, [currentUser, loading]);
+  }, [currentUser, currentUserLoading]);
 
-  if (loading) {
-    return <StatusMessage message="Loading..." type="loading" />;
+  const createUserDoc = async ({ uid, displayName, email, photoURL }) => {
+    await setDoc(
+      userRef,
+      userDocTemplate({
+        uid,
+        displayName,
+        email,
+        photoURL,
+        joinedOn: serverTimestamp(),
+      })
+    );
+  };
+
+  const updatePublicChatDoc = async (message, createdAt, uid) => {
+    await updateDoc(doc(db, "chats", "public_chat"), {
+      lastMsg: {
+        message,
+        createdAt,
+      },
+      members: arrayUnion(uid),
+    });
+  };
+
+  const memberJoinMessage = async (text, createdAt) => {
+    const publicChatMessagesRef = collection(db, `chats/public_chat/messages`);
+    await addDoc(publicChatMessagesRef, {
+      id: nanoid(),
+      type: "announce",
+      message: { text },
+      createdAt,
+    });
+  };
+
+  if (currentUserLoading || loading) {
+    return (
+      <AnimatePresence>
+        <StatusMessage message="Loading..." type="loading" />;
+      </AnimatePresence>
+    );
   }
 
-  if (error) {
-    return <StatusMessage message={error?.code} type="error" />;
+  if (error || currentUserError) {
+    return (
+      <AnimatePresence>
+        <StatusMessage
+          message={error?.toString() ?? currentUserError?.code}
+          type="error"
+        />
+      </AnimatePresence>
+    );
   }
 
   async function updateDocument(newValues) {
