@@ -34,7 +34,7 @@ function EditInfoModal({ setShowEditModal }) {
   const [updateUserInfoError, setUpdateUserInfoError] = useError();
 
   async function updateUserInfo() {
-    if (editValues.displayName === "") {
+    if (editValues.displayName.trim() === "") {
       setUpdateUserInfoError("Name can't be empty!");
       return;
     } else if (editValues.displayName.length > 64) {
@@ -42,11 +42,11 @@ function EditInfoModal({ setShowEditModal }) {
       return;
     }
     if (
-      editValues.displayName === currentUser.displayName &&
-      editValues.about === currentUser.about &&
+      editValues.displayName.trim() === currentUser.displayName &&
+      editValues.about.trim() === currentUser.about &&
       !file.validFile
     ) {
-      setUpdateUserInfoError("Nothing change in your info");
+      setShowEditModal(false);
       return;
     }
 
@@ -55,12 +55,12 @@ function EditInfoModal({ setShowEditModal }) {
 
       let newValues = {};
 
-      if (displayName !== currentUser.displayName)
+      if (displayName.trim() !== currentUser.displayName)
         newValues.displayName = displayName;
-      if (about !== currentUser.about) newValues.about = about;
+      if (about.trim() !== currentUser.about) newValues.about = about;
       if (
-        displayName === currentUser.displayName &&
-        about === currentUser.about
+        displayName.trim() === currentUser.displayName &&
+        about.trim() === currentUser.about
       )
         newValues = null;
 
@@ -74,12 +74,12 @@ function EditInfoModal({ setShowEditModal }) {
       if (file.validFile) {
         photoURL = (await fileUploader(file.validFile, currentUser.uid)).url;
         const info = newValues ? newValues : {};
-        await batch.update(currentUserRef, {
+        batch.update(currentUserRef, {
           photoURL,
           ...info,
         });
       } else if (newValues) {
-        await batch.update(currentUserRef, {
+        batch.update(currentUserRef, {
           ...newValues,
         });
       }
@@ -91,8 +91,10 @@ function EditInfoModal({ setShowEditModal }) {
         const newPhotoURL = photoURL ? { photoURL } : {};
         const newUserInfo = { ...newDisplayName, ...newPhotoURL };
 
-        await updateMessagesDocs(newUserInfo, batch);
-        await updateChatsDocs(newUserInfo, batch);
+        await Promise.all([
+          updateMessagesDocs(newUserInfo, batch),
+          updateChatsDocs(newUserInfo, batch),
+        ]);
       }
 
       batch.commit();
@@ -106,12 +108,9 @@ function EditInfoModal({ setShowEditModal }) {
   }
 
   async function updateMessagesDocs(newUserInfo, batch) {
-    const senderName = newUserInfo?.name
-      ? { senderName: newUserInfo.name }
-      : {};
-    const senderPhotoURL = newUserInfo?.photoURL
-      ? { senderPhotoURL: newUserInfo.photoURL }
-      : {};
+    const senderInfo = {};
+    newUserInfo?.name && (senderInfo.senderName = newUserInfo.name);
+    newUserInfo?.photoURL && (senderInfo.senderPhotoURL = newUserInfo.photoURL);
 
     const messagesRef = collectionGroup(db, "messages");
     const messagesQuery = query(
@@ -122,10 +121,7 @@ function EditInfoModal({ setShowEditModal }) {
     const messages = await getDocs(messagesQuery);
 
     messages.forEach(async (doc) => {
-      await batch.update(doc.ref, {
-        ...senderName,
-        ...senderPhotoURL,
-      });
+      batch.update(doc.ref, { ...senderInfo });
     });
   }
 
@@ -138,7 +134,7 @@ function EditInfoModal({ setShowEditModal }) {
     const chats = await getDocs(chatsQuery);
 
     chats.forEach(async (chat) => {
-      await batch.update(chat.ref, {
+      batch.update(chat.ref, {
         [currentUser.uid]: { ...chat.data()[currentUser.uid], ...newUserInfo },
       });
     });
