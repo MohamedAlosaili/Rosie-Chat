@@ -48,9 +48,10 @@ const DeleteMessagePrompt = ({
     <>
       {deleteError && <StatusMessage type="error" message={deleteError} />}
       <Modal
-        closeModal={() => (deleteLoading ? null : setShowDeletePrompt(false))}
+        closeModal={() => setShowDeletePrompt(false)}
         actionButtonName={deleteLoading ? "Deleting..." : "Delete"}
-        actionButtonHandler={() => (deleteLoading ? null : deleteMessage())}
+        actionButtonHandler={deleteMessage}
+        loading={deleteLoading}
       >
         <BsFillExclamationCircleFill size={45} className="mx-auto text-error" />
         <p className="text-center dark:text-primary-200">

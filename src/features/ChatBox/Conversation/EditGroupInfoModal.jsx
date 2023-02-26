@@ -157,14 +157,11 @@ function EditGroupInfoModal({
         )}
       </AnimatePresence>
       <Modal
-        closeModal={() =>
-          updateGroupInfoLoading ? null : setShowGroupInfoModal(false)
-        }
+        closeModal={() => setShowGroupInfoModal(false)}
         actionButtonName={updateGroupInfoLoading ? "Updating..." : "Update"}
-        actionButtonHandler={() =>
-          updateGroupInfoLoading ? null : updateGroupInfo()
-        }
+        actionButtonHandler={updateGroupInfo}
         modalTitle={{ text: "Group Info", icon: <HiUserGroup /> }}
+        loading={updateGroupInfoLoading}
       >
         <div className="flex items-center gap-4">
           <InputFile

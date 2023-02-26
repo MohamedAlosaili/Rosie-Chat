@@ -27,11 +27,12 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
         {validFile && (
           <Modal
             key="sendFileModal"
-            closeModal={() => (sending ? null : closePreview())}
+            closeModal={closePreview}
             actionButtonName={sending ? "Sending..." : "Send"}
             actionButtonHandler={(e) =>
-              sending ? null : sendMessageHandler(e, validFile, closePreview)
+              sendMessageHandler(e, validFile, closePreview)
             }
+            loading={sending}
           >
             {validFile.type.startsWith("video") ? (
               <Video

@@ -1,7 +1,6 @@
 import { memo, useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import { TbEdit } from "react-icons/tb";
 import { AnimatePresence } from "framer-motion";
 import {
   collection,
@@ -160,15 +159,12 @@ function EditInfoModal({ setShowEditModal }) {
       </AnimatePresence>
       <Modal
         kay="EditInfoModal"
-        closeModal={() =>
-          updateUserInfoLoading ? null : setShowEditModal(false)
-        }
+        closeModal={() => setShowEditModal(false)}
         actionButtonName={updateUserInfoLoading ? "Updating..." : "Update"}
-        actionButtonHandler={() =>
-          updateUserInfoLoading ? null : updateUserInfo()
-        }
+        actionButtonHandler={updateUserInfo}
         className="min-w-[20rem]"
         modalTitle={{ text: "Edit Information" }}
+        loading={updateUserInfoLoading}
       >
         <InputFile
           changeFile={changeFile}

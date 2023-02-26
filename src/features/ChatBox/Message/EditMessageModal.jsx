@@ -75,14 +75,11 @@ function EditMessageModal({
         <StatusMessage type="error" message={editMessageError} />
       )}
       <Modal
-        closeModal={() =>
-          editMessageLoading ? null : setShowEditMessageModal(false)
-        }
+        closeModal={() => setShowEditMessageModal(false)}
         actionButtonName={editMessageLoading ? "Updating..." : "Update"}
-        actionButtonHandler={() =>
-          editMessageLoading ? null : updateMessageText()
-        }
+        actionButtonHandler={updateMessageText}
         className="w-96"
+        loading={editMessageLoading}
       >
         <h1 className="flex items-center justify-center gap-2 text-2xl text-primary-200 ">
           Edit Message

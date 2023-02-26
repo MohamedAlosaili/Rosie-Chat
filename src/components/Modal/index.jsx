@@ -8,6 +8,7 @@ import Button from "components/Button";
 import { modalVariants } from "util/motionVariants";
 
 const Modal = ({
+  loading,
   closeModal,
   className,
   modalTitle,
@@ -16,7 +17,7 @@ const Modal = ({
   actionButtonHandler,
 }) =>
   createPortal(
-    <Backdrop onClick={closeModal}>
+    <Backdrop onClick={() => (loading ? null : closeModal())}>
       <motion.div
         variants={modalVariants}
         initial="hidden"
@@ -32,10 +33,16 @@ const Modal = ({
         )}
         {children}
         <div className="flex gap-4">
-          <Button onClick={closeModal} className="flex-1">
+          <Button
+            onClick={() => (loading ? null : closeModal())}
+            className="flex-1"
+          >
             Cancel
           </Button>
-          <Button onClick={actionButtonHandler} className="flex-1">
+          <Button
+            onClick={(e) => (loading ? null : actionButtonHandler(e))}
+            className="flex-1"
+          >
             {actionButtonName}
           </Button>
         </div>
@@ -45,6 +52,7 @@ const Modal = ({
   );
 
 Modal.propTypes = {
+  loading: PropTypes.bool,
   closeModal: PropTypes.func,
   className: PropTypes.string,
   modalTitle: PropTypes.shape({

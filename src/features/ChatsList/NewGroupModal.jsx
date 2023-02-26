@@ -137,15 +137,12 @@ function NewGroupModal({
         )}
       </AnimatePresence>
       <Modal
-        closeModal={() =>
-          createGroupLoading ? null : setShowNewGroupModal(false)
-        }
+        closeModal={() => setShowNewGroupModal(false)}
         actionButtonName={createGroupLoading ? "Creating..." : "Create"}
-        actionButtonHandler={() =>
-          createGroupLoading ? null : createNewGroup()
-        }
+        actionButtonHandler={createNewGroup}
         className="text-sm dark:text-primary-200"
         modalTitle={{ text: "New Group", icon: <HiUserGroup /> }}
+        loading={createGroupLoading}
       >
         <div className="flex items-center gap-4">
           <InputFile
