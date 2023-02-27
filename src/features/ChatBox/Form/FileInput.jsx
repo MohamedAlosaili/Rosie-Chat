@@ -67,6 +67,7 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
           className="hidden"
           value={file.value}
           onChange={changeFile}
+          accept="image/*, video/*"
         />
       </label>
     </>

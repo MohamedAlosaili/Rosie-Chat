@@ -16,6 +16,7 @@ const InputFile = ({ changeFile, className, img, loading, isPreviewUrl }) => (
       disabled={loading}
       onChange={changeFile}
       className="hidden"
+      accept="image/*"
     />
     {img?.url && <Image img={img} className="aspect-square w-full" />}
     {!isPreviewUrl && (
