@@ -77,21 +77,30 @@ function useSendMessage(scrollToBottom) {
    * @param {object} [file = null] - An object that contains file info to be added to the message document (name, type, url).
    */
   async function addMessageDocument(id, file = null) {
-    const { uid, photoURL, displayName } = currentUser;
+    const {
+      uid: senderId,
+      photoURL: senderPhotoURL,
+      displayName: senderName,
+    } = currentUser;
 
     const type = file?.type ? "file" : "text";
     const createdAt = serverTimestamp();
 
     const additionGroupInfo = selectedChat?.isGroup
-      ? {
-          senderName: displayName,
-          senderPhotoURL: photoURL,
-        }
+      ? { senderName, senderPhotoURL }
       : {};
 
+    // readBy map(object) helps me count the unreadMessages
+    // where the currentUser have his Id equal to false
+    const readBy = {};
+    selectedChat.members.forEach(
+      (id) => id !== senderId && (readBy[id] = false)
+    );
+
+    // lastMsg map(object) values
     const lastMsgText =
       message.text || file?.type?.slice(0, file?.type?.indexOf("/"));
-    const groupInfo = selectedChat?.isGroup ? { senderName: displayName } : {};
+    const groupInfo = selectedChat?.isGroup ? { senderName } : {};
 
     await Promise.all([
       setDoc(
@@ -100,19 +109,20 @@ function useSendMessage(scrollToBottom) {
           type,
           id,
           isGroupMessage: selectedChat.isGroup,
-          senderId: uid,
+          senderId,
           ...additionGroupInfo,
           message: {
             text: message.text.trim(),
             file,
           },
+          readBy,
           createdAt,
         })
       ),
       updateDoc(chatRef, {
         lastMsg: {
           ...groupInfo,
-          senderId: uid,
+          senderId,
           message: lastMsgText,
           createdAt,
         },
