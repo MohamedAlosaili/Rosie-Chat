@@ -1,8 +1,14 @@
 import { memo, useContext } from "react";
 import PropTypes from "prop-types";
 
+import { collection, query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { AnimatePresence } from "framer-motion";
+
 import Image from "components/Image";
+import StatusMessage from "components/StatusMessage";
 import { ChatContext } from "context/ChatContext";
+import { db } from "rosie-firebase";
 
 const Chat = ({ chat, currentUserId, isSelected }) => {
   const { changeChat } = useContext(ChatContext);
@@ -11,6 +17,12 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
     .filter((memberId) => memberId !== currentUserId)
     .join("");
   const chatInfo = chat.isGroup ? chat.chatInfo : chat[receiverId];
+
+  const unreadMsgsQuery = query(
+    collection(db, `chats/${chat.id}/messages`),
+    where(`readBy.${currentUserId}`, "==", false)
+  );
+  const [unreadMsgs, , unreadMsgsError] = useCollectionData(unreadMsgsQuery);
 
   // TODO: This block needs some refactor
   const today = new Date();
@@ -35,6 +47,11 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
                            : "dark:hover:bg-primary-800/50 dark:active:bg-primary-700/50"
                        }`}
     >
+      <AnimatePresence>
+        {unreadMsgsError && (
+          <StatusMessage type="error" message={unreadMsgsError?.toString()} />
+        )}
+      </AnimatePresence>
       <Image
         img={{ url: chatInfo.photoURL, name: chatInfo.name }}
         className="h-14 w-14 rounded-full"
@@ -65,9 +82,9 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
         <time className="whitespace-nowrap">
           {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
         </time>
-        {false && (
+        {unreadMsgs?.length > 0 && (
           <div className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
-            5
+            {unreadMsgs.length <= 99 ? unreadMsgs.length : "+99"}
           </div>
         )}
       </div>
