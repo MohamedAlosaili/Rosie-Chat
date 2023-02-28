@@ -18,7 +18,7 @@ function useSearch(list, type, currentUserId) {
 
   const setUsersResults = (newSearchValue) => {
     results.current = list.filter((item) =>
-      item.displayName.toLowerCase().includes(newSearchValue.toLowerCase())
+      item.displayName?.toLowerCase().includes(newSearchValue.toLowerCase())
     );
   };
 
