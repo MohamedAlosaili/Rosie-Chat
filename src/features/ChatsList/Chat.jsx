@@ -18,6 +18,8 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
     .join("");
   const chatInfo = chat.isGroup ? chat.chatInfo : chat[receiverId];
 
+  // I found this workaround solution to query dynamic map fields without an index
+  // on stack Overflow: https://stackoverflow.com/a/50980337/17077666
   const unreadMsgsQuery = query(
     collection(db, `chats/${chat.id}/messages`),
     where(`readBy.${currentUserId}`, "==", false)
