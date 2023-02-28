@@ -1,20 +1,24 @@
-import { memo, lazy, Suspense, useState } from "react";
+import { memo, lazy, Suspense, useState, useContext } from "react";
 import PropTypes from "prop-types";
 
 import uniqolor from "uniqolor";
 import { TbEdit } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AnimatePresence } from "framer-motion";
+import { updateDoc, doc, arrayUnion, getDoc } from "firebase/firestore";
 
 import MediaModal from "components/MediaModal";
 import Image from "components/Image";
 import Video from "components/Video";
-import { auth } from "rosie-firebase";
+import { UserContext } from "context/UserContext";
+import { db } from "rosie-firebase";
 
 const EditMessageModal = lazy(() => import("./EditMessageModal"));
 const DeleteMessagePrompt = lazy(() => import("./DeleteMessagePrompt"));
 
 const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
+  const { currentUser } = useContext(UserContext);
+
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
   const [showEditMessageModal, setShowEditMessageModal] = useState(false);
 
@@ -27,6 +31,10 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
     );
   }
 
+  const currentUserMsg = currentUser.uid === msgObj.senderId;
+  const isTheSameSender = prevMsgSenderId === msgObj.senderId;
+  const otherGroupMebmersMsgs = selectedChat.isGroup && !currentUserMsg;
+
   const userColor = {
     "--color": uniqolor(msgObj.senderId + selectedChat.id, { lightness: 50 })
       .color,
@@ -35,9 +43,11 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
   // I choose to set the value as a combination of userId & chatId
   // With that I can generate different colors for the same user + I don't have to save it in the database
 
-  const currentUserMsg = auth.currentUser.uid === msgObj.senderId;
-  const isTheSameSender = prevMsgSenderId === msgObj.senderId;
-  const otherGroupMebmersMsgs = selectedChat.isGroup && !currentUserMsg;
+  if (!currentUserMsg && msgObj?.readBy?.[currentUser.uid] === false) {
+    updateDoc(doc(db, `chats/${selectedChat.id}/messages/${msgObj.id}`), {
+      [`readBy.${currentUser.uid}`]: true,
+    });
+  }
 
   const dateFormater = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
