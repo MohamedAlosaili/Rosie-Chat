@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { AnimatePresence } from "framer-motion";
@@ -13,6 +13,9 @@ import StatusMessage from "components/StatusMessage";
 function Form({ scrollToBottom, selectedChat, setGreating }) {
   const [message, setMessage, sendMessageHandler, sending, sendingError] =
     useSendMessage(scrollToBottom);
+
+  const textFieldRef = useRef(null);
+  useEffect(() => textFieldRef.current?.focus(), []);
 
   return (
     <>
@@ -66,6 +69,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
           sending={sending}
         />
         <input
+          ref={textFieldRef}
           type="text"
           placeholder="Type a message"
           value={sending ? "" : message.text}
