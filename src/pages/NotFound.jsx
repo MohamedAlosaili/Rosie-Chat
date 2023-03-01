@@ -10,9 +10,9 @@ const NotFound = () => (
       404 Page Not Found
     </h1>
     <p>We're sorry, the page you requested could not be found.</p>
-    <Button className="w-32">
-      <Link to="/">Home page</Link>
-    </Button>
+    <Link to="/">
+      <Button className="w-32">Home page</Button>
+    </Link>
   </div>
 );
 
