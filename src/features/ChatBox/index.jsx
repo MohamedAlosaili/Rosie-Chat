@@ -3,6 +3,7 @@ import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 import ErrorBoundary from "pages/ErrorBoundary";
+import StatusMessage from "components/StatusMessage";
 import selectChat from "imgs/select-chat.svg";
 import { ChatContext } from "context/ChatContext";
 
@@ -34,7 +35,9 @@ function ChatBox() {
     >
       {selectedChat.id ? (
         <ErrorBoundary>
-          <Suspense>
+          <Suspense
+            fallback={<StatusMessage message="Loading..." type="loading" />}
+          >
             <AnimatePresence mode="wait">
               {isChatOpen && (
                 <Conversation

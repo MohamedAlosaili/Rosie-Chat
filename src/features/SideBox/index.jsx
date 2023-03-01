@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import Sidebar from "features/Sidebar";
 import ErrorBoundary from "pages/ErrorBoundary";
+import StatusMessage from "components/StatusMessage";
 import { fadeInLeft } from "util/motionVariants";
 
 const Profile = lazy(() => import("features/Profile"));
@@ -48,7 +49,11 @@ function SideBox() {
               {tap === "friends" ? "contacts" : tap}
             </h1>
             <ErrorBoundary>
-              <Suspense>{currentTap()}</Suspense>
+              <Suspense
+                fallback={<StatusMessage message="Loading..." type="loading" />}
+              >
+                {currentTap()}
+              </Suspense>
             </ErrorBoundary>
           </motion.div>
         </article>

@@ -5,11 +5,12 @@ import uniqolor from "uniqolor";
 import { TbEdit } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AnimatePresence } from "framer-motion";
-import { updateDoc, doc, arrayUnion, getDoc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 
 import MediaModal from "components/MediaModal";
 import Image from "components/Image";
 import Video from "components/Video";
+import StatusMessage from "components/StatusMessage";
 import { UserContext } from "context/UserContext";
 import { db } from "rosie-firebase";
 
@@ -134,7 +135,9 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
             />
           </div>
         )}
-        <Suspense fallback={<div></div>}>
+        <Suspense
+          fallback={<StatusMessage message="Loading..." type="loading" />}
+        >
           <AnimatePresence>
             {showEditMessageModal && (
               <EditMessageModal

@@ -12,6 +12,7 @@ import Chat from "./Chat";
 import SearchForm from "components/SearchForm";
 import Tooltip from "components/Tooltip";
 import SkeletonLoader from "components/SkeletonLoader";
+import StatusMessage from "components/StatusMessage";
 import { db } from "rosie-firebase";
 import { UserContext } from "context/UserContext";
 import { ChatContext } from "context/ChatContext";
@@ -89,7 +90,9 @@ function ChatsList({ setTap }) {
       </div>
       <AnimatePresence>
         {showNewGroupModal && (
-          <Suspense fallback={<div></div>}>
+          <Suspense
+            fallback={<StatusMessage message="Loading..." type="loading" />}
+          >
             <NewGroupModal
               setTap={setTap}
               setShowNewGroupModal={setShowNewGroupModal}

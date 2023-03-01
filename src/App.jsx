@@ -21,7 +21,11 @@ function App() {
 
   return (
     <main>
-      <Suspense>{user ? <Home /> : <UserAuth />}</Suspense>
+      <Suspense
+        fallback={<StatusMessage message="Loading..." type="loading" />}
+      >
+        {user ? <Home /> : <UserAuth />}
+      </Suspense>
     </main>
   );
 }

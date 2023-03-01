@@ -131,7 +131,9 @@ function Conversation({ setIsChatOpen }) {
           isGroupAdmin ? "cursor-pointer" : ""
         }`}
       >
-        <Suspense>
+        <Suspense
+          fallback={<StatusMessage message="Loading..." type="loading" />}
+        >
           <AnimatePresence>
             {showGroupInfoModal && (
               <EditGroupInfoModal
