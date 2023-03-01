@@ -5,12 +5,22 @@ import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "features/Sidebar";
 import ErrorBoundary from "pages/ErrorBoundary";
 import StatusMessage from "components/StatusMessage";
-import { fadeInLeft } from "util/motionVariants";
 
 const Profile = lazy(() => import("features/Profile"));
 const ChatsList = lazy(() => import("features/ChatsList"));
 const Contacts = lazy(() => import("features/Contacts"));
 const Setting = lazy(() => import("features/Setting"));
+
+const fadeLeftVariants = {
+  hidden: {
+    x: "-30%",
+    opacity: 0,
+  },
+  visible: {
+    x: "0%",
+    opacity: 1,
+  },
+};
 
 function SideBox() {
   const [tap, setTap] = useState("chats");
@@ -39,7 +49,7 @@ function SideBox() {
         <article className="flex-1 py-6 px-4">
           <motion.div
             key={tap}
-            variants={fadeInLeft}
+            variants={fadeLeftVariants}
             initial="hidden"
             animate="visible"
             exit="hidden"

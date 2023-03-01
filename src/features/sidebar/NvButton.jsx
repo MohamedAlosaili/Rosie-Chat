@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 
 import Tooltip from "components/Tooltip";
 import Image from "components/Image";
-import { buttonMotion } from "util/motionVariants";
 
 const NvButton = ({
   handleClick,
@@ -29,8 +28,8 @@ const NvButton = ({
   return (
     <div className="relative flex flex-col items-center gap-2 dark:hover:text-primary-200">
       <motion.button
-        whileHover={buttonMotion.hover}
-        whileTap={buttonMotion.tap}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={handleClick}
         className={`group peer ring-2 ring-transparent transition-[shadow,background-color,color] focus:outline-none lg:ring-4
           ${btnTap === "profile" ? profileButtonStyle : buttonStyle}`}
