@@ -139,6 +139,14 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
             />
           </div>
         )}
+        {!currentUserMsg && currentUser.uid === selectedChat?.admin && (
+          <div className="absolute top-1/2 left-full -translate-y-1/2 translate-x-2">
+            <BsFillTrashFill
+              onClick={() => setShowDeletePrompt(true)}
+              className="cursor-pointer text-red-700 transition-all hover:text-red-600 group-hover:opacity-100 md:text-lg md:opacity-0"
+            />
+          </div>
+        )}
         <Suspense
           fallback={<StatusMessage message="Loading..." type="loading" />}
         >
