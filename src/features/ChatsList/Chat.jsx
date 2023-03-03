@@ -45,8 +45,8 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
       className={`relative z-10 mb-2 grid cursor-pointer select-none grid-cols-[auto_1fr_auto] items-center gap-4 overflow-hidden rounded-xl p-4 text-sm transition-colors last:mb-0 
                        ${
                          isSelected
-                           ? "dark:bg-primary-800"
-                           : "dark:hover:bg-primary-800/50 dark:active:bg-primary-700/50"
+                           ? "bg-primary-300 dark:bg-primary-800"
+                           : "hover:bg-primary-300/50 active:bg-primary-400/50 dark:hover:bg-primary-800/50 dark:active:bg-primary-700/50"
                        }`}
     >
       <AnimatePresence>
@@ -59,7 +59,7 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
         className="h-14 w-14 rounded-full"
       />
       <div className="w-full overflow-hidden">
-        <h3 className="mb-2 truncate text-base font-medium dark:text-primary-200">
+        <h3 className="mb-2 truncate text-base font-medium text-primary-900 dark:text-primary-200">
           {chatInfo.name}
         </h3>
         {chat.lastMsg.message === "Say hi to " && !chat.lastMsg?.senderId ? (
@@ -85,7 +85,7 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
           {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
         </time>
         {unreadMsgs?.length > 0 && (
-          <div className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none dark:text-primary-200">
+          <div className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none text-white">
             {unreadMsgs.length <= 99 ? unreadMsgs.length : "+99"}
           </div>
         )}

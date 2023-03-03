@@ -116,13 +116,13 @@ function EditGroupInfoModal({
     arrOfMembers?.map((member) => (
       <div
         key={member.uid}
-        className="flex items-center gap-2 px-4 py-2 dark:hover:bg-primary-700/75"
+        className={`flex items-center gap-2 px-4 py-2 hover:bg-primary-400/50 dark:hover:bg-primary-700/75`}
       >
         <Image
           img={{ url: member.photoURL, name: member.displayName }}
           className="aspect-square w-12 rounded-full"
         />
-        <h3 className="mr-auto">{member.displayName}</h3>
+        <h3 className="mr-auto font-semibold">{member.displayName}</h3>
         {member.uid !== currentUser.uid &&
           (isCurrentMembers ? (
             <MdOutlineRemoveCircle
@@ -184,10 +184,10 @@ function EditGroupInfoModal({
           />
         </div>
         <div>
-          <h2 className="mb-2 flex justify-between font-medium">
+          <h2 className="mb-2 flex justify-between font-semibold">
             Members <span>{membersList.length} / 10</span>
           </h2>
-          <div className="no-scrollbar relative h-32 overflow-y-auto overflow-x-hidden rounded-xl border-2 dark:border-primary-700">
+          <div className="no-scrollbar relative h-32 overflow-y-auto overflow-x-hidden rounded-xl border-2 border-primary-400/50 dark:border-primary-700">
             {usersListLoading || !usersList ? (
               <SkeletonLoader.Div height="100%" borderRadius={0} />
             ) : (
@@ -205,10 +205,10 @@ function EditGroupInfoModal({
         )}
         {showNewMembersBox && (
           <div>
-            <h2 className="mb-2 flex justify-between font-medium">
+            <h2 className="mb-2 flex justify-between font-semibold">
               Add Members
             </h2>
-            <div className="no-scrollbar relative h-32 overflow-y-auto overflow-x-hidden rounded-xl border-2 dark:border-primary-700">
+            <div className="no-scrollbar relative h-32 overflow-y-auto overflow-x-hidden rounded-xl border-2 border-primary-400/50 dark:border-primary-700">
               {friendsNotMembers?.length > 0 ? (
                 membersListElements(friendsNotMembers)
               ) : (

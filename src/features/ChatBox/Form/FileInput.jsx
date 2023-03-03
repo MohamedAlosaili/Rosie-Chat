@@ -21,9 +21,7 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
   return (
     <>
       <AnimatePresence>
-        {fileError && (
-          <StatusMessage type="error" message={fileError} zIndex="z-[60]" />
-        )}
+        {fileError && <StatusMessage type="error" message={fileError} />}
         {validFile && (
           <Modal
             key="sendFileModal"
@@ -38,12 +36,12 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
               <Video
                 video={{ url: file.previewUrl, type: "video/mp4" }}
                 autoPlay={true}
-                className="-mb-2 w-80 max-w-full rounded-xl"
+                className="-mb-2 w-full max-w-full rounded-xl"
               />
             ) : (
               <Image
                 img={{ url: file.previewUrl, name: "" }}
-                className="-mb-2 aspect-square w-80 max-w-full rounded-xl"
+                className="-mb-2 aspect-square w-full max-w-full rounded-xl"
               />
             )}
             <Input
@@ -60,7 +58,7 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
       <label className="cursor-pointer px-2">
         <AiOutlinePaperClip
           size={30}
-          className="transition-colors dark:hover:text-primary-200"
+          className="transition-colors hover:text-primary-900 dark:hover:text-primary-200 md:text-primary-400"
         />
         <input
           type="file"

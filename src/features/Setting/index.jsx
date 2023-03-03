@@ -55,20 +55,16 @@ function Setting() {
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="relative dark:text-primary-200"
+        className="relative text-primary-900 dark:text-primary-200"
         onMouseLeave={() => setShowThemeMenu(false)}
       >
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => null} // setShowThemeMenu(true)
-          className="flex w-full cursor-pointer items-center justify-between rounded-xl py-2 px-4 font-semibold transition-colors dark:hover:bg-primary-800/50"
+          onClick={() => setShowThemeMenu(true)}
+          className="flex w-full cursor-pointer items-center justify-between rounded-xl py-2 px-4 font-semibold transition-colors hover:bg-primary-300/50 dark:hover:bg-primary-800/50"
         >
           Theme
-          <span className="flex items-center gap-2 text-xs dark:text-primary-400">
-            <BsFillExclamationCircleFill />
-            Theme feature not ready yet
-          </span>
           {theme === "dark" ? (
             <MdOutlineDarkMode size={20} className="text-info-400" />
           ) : (
@@ -82,11 +78,11 @@ function Setting() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ type: "tween" }}
-              className="absolute top-2 right-2 z-10 w-44 overflow-hidden rounded-xl text-sm dark:bg-primary-800"
+              className="absolute top-2 right-2 z-10 w-44 overflow-hidden rounded-xl bg-primary-300 text-sm dark:bg-primary-800"
             >
               <button
                 onClick={() => changeTheme("dark")}
-                className={`flex w-full items-center p-2 font-semibold transition-colors dark:hover:bg-primary-700/75 ${
+                className={`flex w-full items-center p-2 font-semibold transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75 ${
                   getStorageTheme === "dark" ? "text-accent" : ""
                 }`}
               >
@@ -94,7 +90,7 @@ function Setting() {
               </button>
               <button
                 onClick={() => changeTheme("light")}
-                className={`flex w-full items-center p-2 font-semibold transition-colors dark:hover:bg-primary-700/75 ${
+                className={`flex w-full items-center p-2 font-semibold transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75 ${
                   getStorageTheme === "light" ? "text-accent" : ""
                 }`}
               >
@@ -102,7 +98,7 @@ function Setting() {
               </button>
               <button
                 onClick={() => changeTheme("system")}
-                className={`flex w-full items-center p-2 font-semibold transition-colors dark:hover:bg-primary-700/75 ${
+                className={`flex w-full items-center p-2 font-semibold transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75 ${
                   !getStorageTheme ? "text-accent" : ""
                 }`}
               >
@@ -117,7 +113,7 @@ function Setting() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleSignOut}
-        className="flex w-full items-center justify-between rounded-xl py-2 px-4 font-semibold text-red-600 transition-colors hover:bg-red-600/10"
+        className="flex w-full items-center justify-between rounded-xl py-2 px-4 font-semibold text-red-600 transition-colors hover:bg-red-600/5 dark:hover:bg-red-600/10"
       >
         Logout <CiLogout size={20} className="stroke-1" />
       </motion.button>

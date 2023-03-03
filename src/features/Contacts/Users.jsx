@@ -46,7 +46,7 @@ function Users({
         }
       />
       {results.usersError && (
-        <div className="mt-4 flex items-center justify-center gap-2 dark:text-primary-200">
+        <div className="mt-4 flex items-center justify-center gap-2 text-primary-900 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
           {usersError?.code ?? (
             <span className="text-sm">
@@ -74,10 +74,10 @@ function Users({
             <BsFillPersonPlusFill size={20} />
           </Button>
         ) : (
-          <div className="break-all text-center dark:text-primary-200">
+          <div className="break-all text-center font-semibold text-primary-900 dark:text-primary-200">
             <p>
               Results for:{" "}
-              <span className="italic dark:text-primary-400">
+              <span className="italic text-primary-700/75 dark:text-primary-400">
                 {searchValue}
               </span>
             </p>

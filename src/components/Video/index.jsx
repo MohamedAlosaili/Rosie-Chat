@@ -30,7 +30,7 @@ function Video({ video, className, videoRef, autoPlay }) {
     >
       {loading && <SkeletonLoader.Img className={className} />}
       {error && (
-        <div className="relative z-50 flex h-full w-full flex-col items-center justify-center gap-1 bg-primary-700/75">
+        <div className="relative z-50 flex h-full w-full flex-col items-center justify-center gap-1 bg-primary-400/50 dark:bg-primary-700/75">
           <button onClick={reload} className="relative">
             <TbFaceIdError className="text-[1.5em]" />
             <AiOutlineReload className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150 transform text-[2em]" />

@@ -29,7 +29,7 @@ function Image({ img, className, style }) {
         (error || loading) && reloadNum < 3 && e.stopPropagation()
       }
       className={`block h-full overflow-hidden ${className ?? ""} ${
-        !loading ? "dark:bg-primary-700/75" : ""
+        !loading ? "bg-primary-400/50 dark:bg-primary-700/75" : ""
       } ${error ? "cursor-auto" : ""}`}
     >
       {loading && <SkeletonLoader.Img className={className ?? ""} />}

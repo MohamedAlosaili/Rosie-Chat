@@ -88,7 +88,7 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
   }
 
   return (
-    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl p-4 transition-colors dark:hover:bg-primary-800">
+    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl p-4 transition-colors hover:bg-primary-300 dark:hover:bg-primary-800">
       {loading && <StatusMessage type="loading" message="Opening chat..." />}
       {error && <StatusMessage type="error" message={error} />}
       <Image
@@ -96,7 +96,7 @@ const UserCard = ({ user, isFriend, currentUser, updateDocument }) => {
         className="aspect-square w-14 rounded-full"
       />
       <div className="w-full overflow-hidden">
-        <h3 className="truncate font-semibold dark:text-primary-200">
+        <h3 className="truncate font-semibold text-primary-900 dark:text-primary-200">
           {user.displayName}
         </h3>
         {user.about && <p className="truncate">{user.about}</p>}

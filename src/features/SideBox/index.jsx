@@ -42,7 +42,7 @@ function SideBox() {
 
   return (
     <section
-      className={`relative flex h-screen border-r border-primary-800 md:shrink md:basis-[25rem] lg:basis-[30rem]`}
+      className={`relative flex h-screen border-r border-primary-400/50 dark:border-primary-800 md:shrink md:basis-[25rem] lg:basis-[30rem]`}
     >
       <Sidebar tap={tap} setTap={setTap} />
       <AnimatePresence initial={false} mode="wait">
@@ -55,7 +55,7 @@ function SideBox() {
             exit="hidden"
             className="h-[calc(100%-50px)]"
           >
-            <h1 className="mb-4 border-b-2 pb-2 text-2xl font-semibold capitalize dark:border-primary-800 dark:text-primary-200">
+            <h1 className="mb-4 border-b-2 border-primary-400/50 pb-2 text-2xl font-semibold capitalize text-primary-900 dark:border-primary-800 dark:text-primary-200">
               {tap === "friends" ? "contacts" : tap}
             </h1>
             <ErrorBoundary>

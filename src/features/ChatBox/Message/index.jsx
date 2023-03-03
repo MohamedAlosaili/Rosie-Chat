@@ -26,7 +26,7 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
   // Announces are messages like create a group and members joined
   if (msgObj.type === "announce") {
     return (
-      <div className="mx-auto my-2 w-fit rounded-lg bg-primary-700 p-2 text-xs leading-none">
+      <div className="mx-auto my-2 w-fit rounded-lg bg-primary-300 p-2 text-xs font-medium leading-none dark:bg-primary-700">
         {msgObj.message.text}
       </div>
     );
@@ -76,8 +76,12 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
         className={`max-w-[75%] lg:max-w-[65%] ${
           msgObj.type === "file" ? "w-[75%] p-1 lg:w-[65%]" : "p-2"
         } relative rounded-xl 
-                  ${currentUserMsg ? "bg-accent" : "dark:bg-primary-800"} 
-                  dark:text-primary-200
+                  ${
+                    currentUserMsg
+                      ? "bg-accent"
+                      : "bg-primary-700 dark:bg-primary-800"
+                  } 
+                  text-primary-200
         `}
       >
         {otherGroupMebmersMsgs && !isTheSameSender && (
@@ -127,7 +131,7 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
           <div className="absolute top-1/2 right-full -translate-y-1/2 -translate-x-2">
             <TbEdit
               onClick={() => setShowEditMessageModal(true)}
-              className="mb-2 cursor-pointer transition-all group-hover:opacity-100 dark:text-primary-400 dark:hover:text-primary-200 md:text-lg md:opacity-0"
+              className="mb-2 cursor-pointer text-primary-900 transition-all group-hover:opacity-100 dark:text-primary-400 dark:hover:text-primary-200 md:text-lg md:opacity-0"
             />
             <BsFillTrashFill
               onClick={() => setShowDeletePrompt(true)}

@@ -34,9 +34,9 @@ function SignIn({ selectedTap, setSelectedTap }) {
       <Authentication
         title="Sign in."
         greeting={
-          <span>
+          <>
             Welcome back! 👋 <br /> Please enter your details.
-          </span>
+          </>
         }
         selectedTap={selectedTap}
         setSelectedTap={setSelectedTap}

@@ -111,7 +111,7 @@ function Conversation({ setIsChatOpen }) {
           duration: 0.3,
         },
       }}
-      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-[url('/src/imgs/chat-bg.png')] bg-contain dark:bg-primary-900 
+      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-primary-200 bg-[url('/src/imgs/chat-bg.png')] bg-contain dark:bg-primary-900 
                   md:static`}
     >
       <AnimatePresence mode="wait">
@@ -127,7 +127,7 @@ function Conversation({ setIsChatOpen }) {
       </AnimatePresence>
       <header
         onClick={() => (isGroupAdmin ? setShowGroupInfoModal(true) : null)}
-        className={`relative z-10 flex items-center gap-4 border-b border-primary-800 p-4 pt-6 dark:bg-primary-900 ${
+        className={`relative z-10 flex items-center gap-4 border-b border-primary-400/50 bg-primary-200 p-4 pt-6 dark:border-primary-800 dark:bg-primary-900 ${
           isGroupAdmin ? "cursor-pointer" : ""
         }`}
       >
@@ -166,7 +166,7 @@ function Conversation({ setIsChatOpen }) {
         </div>
         <div>
           {chatInfo.name ? (
-            <h3 className="font-medium dark:text-primary-200">
+            <h3 className="font-semibold text-primary-900 dark:text-primary-200">
               {chatInfo.name ?? ""}
             </h3>
           ) : (
@@ -202,9 +202,9 @@ function Conversation({ setIsChatOpen }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0, y: 10 }}
             className={`
-              fixed bottom-24 right-6 z-10 grid h-12 w-12 cursor-pointer place-items-center rounded-full bg-primary-100
+              fixed bottom-24 right-6 z-10 grid h-12 w-12 cursor-pointer place-items-center rounded-full bg-primary-300
               text-primary-900 transition-colors
-              hover:bg-primary-100/75 focus:bg-primary-100/75
+              hover:bg-primary-300/75 focus:bg-primary-300/75
               dark:bg-primary-800 dark:text-primary-200
               dark:hover:bg-primary-800/75 dark:focus:bg-primary-800/75
             `}
@@ -214,7 +214,7 @@ function Conversation({ setIsChatOpen }) {
           </motion.button>
         )}
       </AnimatePresence>
-      <footer className="z-10 mx-auto w-full max-w-2xl border-t p-2 py-3 dark:border-primary-800">
+      <footer className="z-10 mx-auto w-full max-w-2xl border-t border-primary-400/50 p-2 py-3 dark:border-primary-800">
         <Form
           scrollToBottom={scrollToBottom}
           selectedChat={{ ...selectedChat, ...chatInfo }}

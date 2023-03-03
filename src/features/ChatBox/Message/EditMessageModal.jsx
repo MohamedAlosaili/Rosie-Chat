@@ -85,13 +85,12 @@ function EditMessageModal({
         closeModal={() => setShowEditMessageModal(false)}
         actionButtonName={editMessageLoading ? "Updating..." : "Update"}
         actionButtonHandler={updateMessageText}
-        className="w-96"
         loading={editMessageLoading}
+        modalTitle={{
+          text: "Edit Message",
+          icon: <TbEdit className="text-[1.2em]" />,
+        }}
       >
-        <h1 className="flex items-center justify-center gap-2 text-2xl text-primary-200 ">
-          Edit Message
-          <TbEdit />
-        </h1>
         <Input
           disabled={editMessageLoading}
           name="editMessage"

@@ -36,7 +36,7 @@ const Modal = ({
         animate="visible"
         exit="hidden"
         transition={{ y: { duration: 0.25, type: "Tween" } }}
-        className={`flex max-w-full cursor-auto flex-col gap-4 rounded-xl p-6 text-sm dark:bg-primary-800 dark:text-primary-200 ${className}`}
+        className={`flex w-96 max-w-full cursor-auto flex-col gap-4 rounded-xl bg-primary-300 p-6 text-sm text-primary-900 dark:bg-primary-800 dark:text-primary-200 ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {modalTitle?.text && (

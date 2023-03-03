@@ -113,13 +113,13 @@ function NewGroupModal({
     <div
       key={member.uid}
       onClick={() => (createGroupLoading ? null : toggleMember(member.uid))}
-      className="flex cursor-pointer items-center gap-2 px-4 py-2 dark:hover:bg-primary-700/75"
+      className="flex cursor-pointer items-center gap-2 px-4 py-2 transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75"
     >
       <Image
         img={{ url: member.photoURL, name: member.displayName }}
         className="aspect-square w-12 rounded-full"
       />
-      <h3 className="mr-auto">{member.displayName}</h3>
+      <h3 className="mr-auto font-semibold">{member.displayName}</h3>
       {membersList.includes(member.uid) && (
         <BsCheckCircleFill className="text-accent" />
       )}
@@ -140,7 +140,6 @@ function NewGroupModal({
         closeModal={() => setShowNewGroupModal(false)}
         actionButtonName={createGroupLoading ? "Creating..." : "Create"}
         actionButtonHandler={createNewGroup}
-        className="text-sm dark:text-primary-200"
         modalTitle={{ text: "New Group", icon: <HiUserGroup /> }}
         loading={createGroupLoading}
       >
@@ -165,7 +164,7 @@ function NewGroupModal({
           <h2 className="mb-2 flex justify-between">
             Add Members <span>{membersList.length} / 10</span>
           </h2>
-          <div className="no-scrollbar relative h-52 overflow-y-auto overflow-x-hidden rounded-xl border-2 dark:border-primary-700">
+          <div className="no-scrollbar relative h-52 overflow-y-auto overflow-x-hidden rounded-xl border-2 border-primary-400/50 dark:border-primary-700">
             {usersListLoading || !usersList ? (
               <SkeletonLoader.Div height="100%" borderRadius={0} />
             ) : usersList?.length > 0 ? (

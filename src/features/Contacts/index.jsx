@@ -21,7 +21,7 @@ function Contacts({ defaultContactTap }) {
 
   return (
     <div className="flex h-[calc(100%-50px)] flex-col gap-4">
-      <div className="relative flex rounded-xl border border-primary-700">
+      <div className="relative flex rounded-xl border border-primary-400/50 dark:border-primary-700">
         <div
           className={`absolute top-0 transition-all ${
             contactTap === "friends" ? "left-0" : "left-1/2"
@@ -35,8 +35,8 @@ function Contacts({ defaultContactTap }) {
           className={`flex-1 rounded-xl p-2 font-medium transition-colors focus:outline-none
                                 ${
                                   contactTap === "friends"
-                                    ? "dark:text-primary-200"
-                                    : "dark:hover:bg-primary-800 dark:focus:bg-primary-800"
+                                    ? "text-white"
+                                    : "hover:bg-primary-300 focus:hover:bg-primary-300 dark:hover:bg-primary-800 dark:focus:bg-primary-800"
                                 }
                     `}
         >
@@ -48,8 +48,8 @@ function Contacts({ defaultContactTap }) {
           className={`flex-1 rounded-xl p-2 font-medium transition-colors focus:outline-none
                                 ${
                                   contactTap === "allUsers"
-                                    ? "dark:text-primary-200"
-                                    : "dark:hover:bg-primary-800 dark:focus:bg-primary-800"
+                                    ? "text-white"
+                                    : "focus:hover:bg-primary-300dark:hover:bg-primary-800 hover:bg-primary-300 dark:focus:bg-primary-800"
                                 }
                     `}
         >

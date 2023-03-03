@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 
 import ErrorBoundary from "pages/ErrorBoundary";
 import StatusMessage from "components/StatusMessage";
-import selectChat from "imgs/select-chat.svg";
+import EmptyChatImage from "./EmptyChatImage";
 import { ChatContext } from "context/ChatContext";
 
 const Conversation = lazy(() => import("./Conversation"));
@@ -36,7 +36,11 @@ function ChatBox() {
       {selectedChat.id ? (
         <ErrorBoundary>
           <Suspense
-            fallback={<StatusMessage message="Loading..." type="loading" />}
+            fallback={
+              <AnimatePresence>
+                <StatusMessage message="Loading..." type="loading" />
+              </AnimatePresence>
+            }
           >
             <AnimatePresence mode="wait">
               {isChatOpen && (
@@ -50,8 +54,8 @@ function ChatBox() {
         </ErrorBoundary>
       ) : (
         <div className="flex h-full flex-col items-center justify-center p-8">
-          <img src={selectChat} alt="empty chat" className="w-full max-w-md" />
-          <h3 className="mt-8 text-lg font-medium text-primary-300">
+          <EmptyChatImage className="h-fit w-full max-w-md" />
+          <h3 className="mt-8 text-lg font-medium text-primary-900 dark:text-primary-200">
             Select a chat to start messaging
           </h3>
         </div>

@@ -17,12 +17,18 @@ const NvButton = ({
   const active = tap === btnTap;
 
   const buttonStyle = `lg:p-4 rounded-xl 
-  ${active ? "lg:bg-accent" : "lg:dark:hover:bg-primary-700"}
-    dark:hover:text-primary-200
-    lg:dark:focus:ring-primary-700 lg:dark:focus:text-primary-200
+  ${
+    active
+      ? "lg:bg-accent text-white"
+      : "lg:hover:bg-primary-400/50 lg:dark:hover:bg-primary-700"
+  }
+    hover:text-primary-900 dark:hover:text-primary-200
+    lg:focus:ring-primary-400/50 lg:dark:focus:ring-primary-700 lg:dark:focus:text-primary-200
     `;
   const profileButtonStyle = `p-0.5 lg:p-1 rounded-50 ${
-    active ? "ring-accent" : "dark:focus:ring-primary-700"
+    active
+      ? "ring-accent"
+      : "lg:focus:ring-primary-400/50 dark:focus:ring-primary-700"
   }`;
 
   return (

@@ -33,7 +33,6 @@ function ChatsList({ setTap }) {
   );
   const [chats, userChatsLoading, userChatsError] =
     useCollectionData(chatsQuery);
-  // TODO: Not work well because the the info of the chat is different from private and group chats
   const [searchValue, setSearchValue, searchResults] = useSearch(
     chats,
     "chats",
@@ -54,7 +53,7 @@ function ChatsList({ setTap }) {
   return (
     <div className="flex h-full flex-col gap-4">
       <div
-        className="absolute top-0 right-0 z-50 translate-y-2 cursor-pointer dark:text-primary-200"
+        className="absolute top-0 right-0 z-50 translate-y-2 cursor-pointer text-primary-900 dark:text-primary-200"
         onMouseLeave={() => showNewChatsMenu && setShowNewChatsMenu(false)}
       >
         <TbEdit
@@ -70,17 +69,17 @@ function ChatsList({ setTap }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ type: "tween" }}
-              className="absolute top-2 right-2 z-10 flex w-max w-56 flex-col overflow-hidden rounded-xl text-sm dark:bg-primary-800"
+              className="absolute top-2 right-2 z-10 flex w-max w-56 flex-col overflow-hidden rounded-xl bg-primary-300 text-sm dark:bg-primary-800"
             >
               <button
                 onClick={() => setTap("friends")}
-                className="flex items-center gap-2 p-4 transition-colors dark:hover:bg-primary-700/75"
+                className="flex items-center gap-2 p-4 font-semibold transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75"
               >
                 <BsFillPersonFill size={20} /> New chat
               </button>
               <button
                 onClick={() => setShowNewGroupModal(true)}
-                className="flex items-center gap-2 p-4 transition-colors dark:hover:bg-primary-700/75"
+                className="flex items-center gap-2 p-4 font-semibold transition-colors hover:bg-primary-400/50 dark:hover:bg-primary-700/75"
               >
                 <HiUserGroup size={20} /> New group
               </button>
@@ -109,7 +108,7 @@ function ChatsList({ setTap }) {
       />
       {userChatsLoading && <SkeletonLoader.Cards />}
       {userChatsError && (
-        <div className="mt-4 flex items-center justify-center gap-2 dark:text-primary-200">
+        <div className="mt-4 flex items-center justify-center gap-2 text-primary-900 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
           {userChatsError?.code ?? (
             <span className="text-sm">
@@ -126,10 +125,10 @@ function ChatsList({ setTap }) {
           </ul>
         ) : (
           searchValue !== "" && (
-            <div className="break-all text-center dark:text-primary-200">
+            <div className="break-all text-center font-semibold text-primary-900 dark:text-primary-200">
               <p>
                 Results for:{" "}
-                <span className="italic dark:text-primary-400">
+                <span className="italic text-primary-700/75 dark:text-primary-400">
                   {searchValue}
                 </span>
               </p>

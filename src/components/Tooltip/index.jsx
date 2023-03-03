@@ -32,8 +32,8 @@ const Tooltip = ({ text, position, className, visibleOnScreen }) => {
                   ? "peer-focus:translate-y-0"
                   : "peer-focus:translate-x-0 "
               } 
-              dark:bg-primary-200 
-              dark:text-primary-700 
+              bg-primary-300 text-primary-900 
+              dark:bg-primary-800 dark:text-primary-200 
               ${className}
         `}
       >

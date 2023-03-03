@@ -15,13 +15,11 @@ const Button = ({
 }) => {
   let bgColor;
   if (bg === "full")
-    bgColor = `bg-accent ${
-      !disabled && "hover:bg-accent-600"
-    } text-primary-200`;
+    bgColor = `bg-accent ${!disabled && "hover:bg-accent-600"} text-white`;
   else if (bg === "red") {
-    bgColor = "bg-error hover:bg-error-600 text-primary-200";
+    bgColor = "bg-error hover:bg-error-600 text-white";
   } else {
-    bgColor = `ring-1 ring-primary-400 dark:ring-primary-700 hover:ring-primary-500 hover:bg-primary-100 dark:hover:bg-primary-800`;
+    bgColor = `ring-2 ring-primary-300 dark:ring-primary-700 hover:ring-primary-300 hover:bg-primary-300 dark:hover:bg-primary-800`;
   }
 
   return (

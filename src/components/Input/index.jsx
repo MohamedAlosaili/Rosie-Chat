@@ -62,8 +62,9 @@ function Input({
     value !== "" && validateValue ? validateColors : "focus:ring-accent";
 
   const dark =
-    "dark:text-primary-200 dark:bg-primary-800 dark:hover:bg-primary-700 dark:border-primary-700";
-  const light = "text-primary-900 hover:bg-primary-50 border-primary-200";
+    "dark:text-primary-200 dark:bg-primary-800 dark:hover:bg-primary-700 dark:border-primary-700 dark:focus:bg-primary-800";
+  const light =
+    "bg-primary-300 text-primary-900 hover:bg-primary-400/50 border-primary-400/50 focus:hover:bg-primary-300";
 
   return (
     <label className={`relative flex flex-col gap-2 text-sm font-medium`}>
@@ -80,7 +81,7 @@ function Input({
         )}
       </div>
       <input
-        className={`focus:border-1 w-full rounded-xl border-2 p-3 text-sm ring-2 focus:outline-none
+        className={`focus:border-1 w-full rounded-xl border-2 p-3 text-sm ring-2 transition-all placeholder:transition-opacity focus:outline-none focus:placeholder:opacity-0
                     ${light} ${dark} ${focusColors} ${invalidInputColors}`}
         type={inputType}
         name={name}

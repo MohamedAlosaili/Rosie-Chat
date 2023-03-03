@@ -43,8 +43,8 @@ const Authentication = ({
       </h1>
       <p className="text-center font-medium">{greeting}</p>
       {children}
-      <div className="relative before:absolute before:left-0 before:top-[50%] before:-mt-px before:h-px before:w-full before:bg-primary-400 dark:before:bg-primary-700">
-        <span className="relative mx-auto block h-full w-16 bg-white text-center dark:bg-primary-900">
+      <div className="relative before:absolute before:left-0 before:top-[50%] before:-mt-px before:h-[2px] before:w-full before:bg-primary-400 dark:before:bg-primary-700">
+        <span className="relative mx-auto block h-full w-16 bg-primary-200 text-center font-semibold dark:bg-primary-900">
           or
         </span>
       </div>

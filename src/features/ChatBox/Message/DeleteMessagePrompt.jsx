@@ -56,8 +56,11 @@ const DeleteMessagePrompt = ({
         actionButtonHandler={deleteMessage}
         loading={deleteLoading}
       >
-        <BsFillExclamationCircleFill size={45} className="mx-auto text-error" />
-        <p className="text-center dark:text-primary-200">
+        <BsFillExclamationCircleFill
+          size={45}
+          className="mx-auto text-red-700 dark:text-error"
+        />
+        <p className="text-center font-semibold text-primary-900 dark:text-primary-200">
           Are you sure you want to delete this message
         </p>
       </Modal>

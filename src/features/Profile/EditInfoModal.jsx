@@ -158,7 +158,6 @@ function EditInfoModal({ setShowEditModal }) {
         closeModal={() => setShowEditModal(false)}
         actionButtonName={updateUserInfoLoading ? "Updating..." : "Update"}
         actionButtonHandler={updateUserInfo}
-        className="min-w-[20rem]"
         modalTitle={{ text: "Edit Information" }}
         loading={updateUserInfoLoading}
       >

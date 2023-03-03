@@ -28,7 +28,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
               }`,
             })
           }
-          className="absolute top-1/2 left-1/2 w-max max-w-[90%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl p-4 text-center transition-colors dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
+          className="absolute top-1/2 left-1/2 w-max max-w-[90%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl bg-primary-300 p-4 text-center text-primary-900 transition-colors hover:bg-primary-400/50 dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
         >
           <h3 className="font-semibold">No messages here yet...</h3>
           <p>
@@ -48,7 +48,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
       )}
       <form
         onSubmit={sendMessageHandler}
-        className="flex items-center rounded-full border p-2 dark:border-primary-700 dark:bg-primary-900"
+        className="flex items-center rounded-full border border-primary-400/50 bg-primary-200 p-2 dark:border-primary-700 dark:bg-primary-900"
       >
         <AnimatePresence>
           {sendingError && (
@@ -74,7 +74,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
           placeholder="Type a message"
           value={sending ? "" : message.text}
           onChange={(e) => setMessage({ text: e.target.value })}
-          className="flex-1 bg-transparent px-4 text-primary-200 focus:outline-none"
+          className="flex-1 bg-transparent px-4 text-primary-900 placeholder:transition-opacity focus:outline-none focus:placeholder:opacity-0 dark:text-primary-200"
         />
         <div
           className={`rounded-full transition-transform ${

@@ -20,7 +20,7 @@ const InputFile = ({ changeFile, className, img, loading, isPreviewUrl }) => (
     />
     {img?.url && <Image img={img} className="aspect-square w-full" />}
     {!isPreviewUrl && (
-      <div className="absolute inset-0 grid place-items-center bg-black/50 transition-colors hover:bg-black/25">
+      <div className="absolute inset-0 grid place-items-center bg-black/50 text-primary-200 transition-colors hover:bg-black/25">
         <TbEdit size={25} />
       </div>
     )}

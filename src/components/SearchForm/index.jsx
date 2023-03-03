@@ -12,13 +12,13 @@ function SearchForm({ value, setValue, disabled }) {
         value={value}
         onChange={setValue}
         placeholder="Search..."
-        className={`peer w-full rounded-full border-2 py-2 pl-4 pr-10 text-sm transition-colors placeholder:transition-colors 
-                            focus:outline-none dark:border-primary-700 dark:bg-primary-800
-                            dark:text-primary-200 dark:focus:border-accent dark:focus:placeholder:text-primary-200 `}
+        className={`peer w-full rounded-full border-2 border-primary-300 bg-primary-100 py-2 pl-4 pr-10 text-sm text-primary-900 transition-colors 
+                            placeholder:transition-opacity focus:border-accent focus:outline-none focus:placeholder:opacity-0 dark:border-primary-700
+                            dark:bg-primary-800 dark:text-primary-200 dark:focus:border-accent`}
       />
       <BiSearchAlt
         size={20}
-        className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors dark:peer-focus:text-primary-200`}
+        className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors peer-focus:text-accent`}
       />
     </form>
   );

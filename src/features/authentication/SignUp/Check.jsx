@@ -5,9 +5,11 @@ import { FaCheckCircle } from "react-icons/fa";
 const Check = ({ condition, passed }) => {
   return (
     <p
-      className={`mt-2 flex basis-2/4 items-center gap-1 text-xs 
+      className={`mt-2 flex basis-2/4 items-center gap-1 text-xs font-semibold
             ${
-              passed ? "text-slate-700 dark:text-slate-300" : "text-slate-400"
+              passed
+                ? "text-primary-700 dark:text-primary-200"
+                : "text-slate-400"
             }`}
     >
       <FaCheckCircle size={12} className={passed ? "text-green-600" : ""} />

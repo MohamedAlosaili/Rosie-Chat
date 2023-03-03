@@ -28,19 +28,26 @@ function Profile() {
             className="mx-auto block aspect-square w-24 rounded-full md:w-32"
           />
         </div>
-        <h3 className="text-center font-semibold text-primary-300">
+        <h3 className="text-center font-semibold text-primary-900 dark:text-primary-200">
           {displayName}
         </h3>
-        <div className="flex flex-col gap-2 border-b border-t py-4 dark:border-primary-700">
+        <div className="flex flex-col gap-2 border-b-2 border-t-2 border-primary-400/50 py-4 dark:border-primary-800">
           <p>
-            <span className="dark:text-primary-200">About: </span>
+            <span className="font-semibold text-primary-900 dark:text-primary-200">
+              About:{" "}
+            </span>
             {about || "Write something about your self"}
           </p>
           <h4>
-            <span className="dark:text-primary-200">Email: </span> {email}
+            <span className="font-semibold text-primary-900 dark:text-primary-200">
+              Email:{" "}
+            </span>{" "}
+            {email}
           </h4>
           <p>
-            <span className="dark:text-primary-200">Joined on: </span>{" "}
+            <span className="font-semibold text-primary-900 dark:text-primary-200">
+              Joined on:{" "}
+            </span>{" "}
             {joinedDate}
           </p>
         </div>
