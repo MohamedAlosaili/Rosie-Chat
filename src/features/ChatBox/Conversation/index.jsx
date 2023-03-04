@@ -111,7 +111,7 @@ function Conversation({ setIsChatOpen }) {
           duration: 0.3,
         },
       }}
-      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-primary-200 bg-[url('/src/imgs/chat-bg.png')] bg-contain dark:bg-primary-900 
+      className={`fixed top-0 left-0 flex h-full w-full flex-col bg-primary-200 bg-[url('/assets/imgs/chat-bg.png')] bg-contain dark:bg-primary-900 
                   md:static`}
     >
       <AnimatePresence mode="wait">

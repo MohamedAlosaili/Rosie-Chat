@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import Button from "components/Button";
-import pageNotFound from "imgs/page_not_found.svg";
+import pageNotFound from "/assets/imgs/page-not-found.svg";
 
 const NotFound = () => (
   <div className="mx-auto flex h-screen w-full max-w-full flex-col items-center gap-4 p-4 pt-32 text-center">

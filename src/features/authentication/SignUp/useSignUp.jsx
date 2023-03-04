@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 import useError from "hooks/useError";
-import photoURL from "imgs/default-avatar.png";
+import photoURL from "/assets/imgs/default-avatar.png";
 import { auth } from "rosie-firebase";
 
 function useSignUp() {

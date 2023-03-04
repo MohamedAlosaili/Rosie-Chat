@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { updateProfile } from "firebase/auth";
 import { useSendEmailVerification } from "react-firebase-hooks/auth";
 
-import defaultAvatar from "imgs/default-avatar.png";
+import defaultAvatar from "/assets/imgs/default-avatar.png";
 import useStorage from "hooks/useStorage";
 import { auth } from "rosie-firebase";
 

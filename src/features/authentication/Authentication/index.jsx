@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { signWithProviders } from "rosie-firebase";
 import Button from "components/Button";
-import googleLogo from "imgs/Google_logo.svg";
+import googleLogo from "/assets/imgs/google-logo.svg";
 
 const variants = {
   hidden: {
