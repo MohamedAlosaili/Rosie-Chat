@@ -10,8 +10,8 @@ function UserAuth() {
   const [selectedTap, setSelectedTap] = useState("signin");
 
   return (
-    <div className="grid min-h-screen place-items-center">
-      <div className="w-96 max-w-full p-4">
+    <div className="grid min-h-screen place-items-center p-4">
+      <div className="w-full max-w-sm">
         <Suspense
           fallback={<StatusMessage type="loading" message="loading..." />}
         >
