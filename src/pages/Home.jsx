@@ -7,7 +7,7 @@ import { UserContextProvider } from "context/UserContext";
 import { ChatContextProvider } from "context/ChatContext";
 
 const Home = () => (
-  <div className={`absolute inset-0 overflow-hidden md:flex`}>
+  <div className={`relative overflow-x-hidden md:flex`}>
     <UserContextProvider>
       <ChatContextProvider>
         <SideBox />

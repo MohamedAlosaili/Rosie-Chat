@@ -21,7 +21,7 @@ function Sidebar({ tap, setTap }) {
 
   return (
     <aside
-      className={`absolute bottom-0 left-0 z-10 w-full bg-primary-300 shadow-lg dark:bg-primary-800 lg:static lg:w-auto lg:min-w-[60px] lg:shrink-0`}
+      className={`fixed bottom-0 left-0 z-10 w-full bg-primary-300 shadow-lg dark:bg-primary-800 md:absolute lg:relative lg:w-auto lg:min-w-[60px] lg:shrink-0`}
     >
       <nav className="mx-auto flex max-w-md items-center justify-between px-4 py-2 lg:h-screen lg:flex-col lg:py-6">
         <NvButton
