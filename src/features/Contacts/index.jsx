@@ -49,7 +49,7 @@ function Contacts({ defaultContactTap }) {
                                 ${
                                   contactTap === "allUsers"
                                     ? "text-white"
-                                    : "focus:hover:bg-primary-300dark:hover:bg-primary-800 hover:bg-primary-300 dark:focus:bg-primary-800"
+                                    : "hover:bg-primary-300 focus:hover:bg-primary-300 dark:hover:bg-primary-800 dark:focus:bg-primary-800"
                                 }
                     `}
         >
