@@ -27,11 +27,11 @@ I built this app to put the concepts that I have learned in Reactjs & Firebase i
 
 
 ### App Features
-- Auth users and signin/signup
-- Authenticate with Google accounts
-- Verify accounts using email
+- Authenticate users with email/passowrd
+- Authenticate users with Google accounts
 - Create private and group chats
-- Send images and videos
+- Send and receive images and videos
+- New and unread messages notification on each chat
 - Light and Dark modes
 
 
@@ -40,7 +40,7 @@ Node => v18.12.1
 
 NPM => v8.19.2
 
-If you haven't had node installed in your machine install it from [here](https://nodejs.org/en/) then follow these steps:
+If you haven't had nodejs installed on your machine install it from [here](https://nodejs.org/en/) then follow these steps:
 
 1 - Create a project in [Firebase console](https://console.firebase.google.com/u/2/)
 
@@ -60,13 +60,19 @@ export default {
 }
 ```
 
-4 - Instal the dependencies 
+4- Clone the repo 
+
+```
+git clone https://github.com/MohamedAlosaili/Rosie-Chat.git
+```
+
+5 - Once it cloned instal the dependencies 
 
 ``` 
 npm install 
 ```
 
-5 - Run the server 
+6 - Run the server 
 
 ```
 npm run dev
