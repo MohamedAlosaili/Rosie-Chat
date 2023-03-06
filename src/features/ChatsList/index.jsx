@@ -110,7 +110,7 @@ function ChatsList({ setTap }) {
       {userChatsError && (
         <div className="mt-4 flex items-center justify-center gap-2 text-primary-900 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
-          {userChatsError?.code ?? (
+          {userChatsError?.toString() ?? (
             <span className="text-sm">
               Something went wrong while loading chats <br /> Please try again
               in a minute
