@@ -34,13 +34,13 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
           >
             {validFile.type.startsWith("video") ? (
               <Video
-                video={{ url: file.previewUrl, type: "video/mp4" }}
+                video={{ url: file.previewUrl, type: validFile.type }}
                 autoPlay={true}
                 className="-mb-2 w-full max-w-full rounded-xl"
               />
             ) : (
               <Image
-                img={{ url: file.previewUrl, name: "" }}
+                img={{ url: file.previewUrl, name: "Preview of image message" }}
                 className="-mb-2 aspect-square w-full max-w-full rounded-xl"
               />
             )}
