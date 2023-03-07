@@ -6,8 +6,8 @@ import { updateDoc, doc, serverTimestamp } from "firebase/firestore";
 
 import useError from "hooks/useError";
 import Modal from "components/Modal";
-import Input from "components/Input";
 import StatusMessage from "components/StatusMessage";
+import MessageBox from "components/MessageBox";
 import { db } from "rosie-firebase";
 import { UserContext } from "context/UserContext";
 
@@ -20,17 +20,17 @@ function EditMessageModal({
   const { currentUser } = useContext(UserContext);
   const [editMessageLoading, setEditMessageLoading] = useState(false);
   const [editMessageError, setEditMessageError] = useError();
-  const [message, setMessage] = useState({ editMessage: msgObj.message.text });
+  const [message, setMessage] = useState({ text: msgObj.message.text });
 
   async function updateMessageText() {
-    if (msgObj.type === "text" && message.editMessage.trim() === "") {
+    if (msgObj.type === "text" && message.text.trim() === "") {
       setEditMessageError("Messages of type text can't be empty");
       return;
     }
 
     if (
       msgObj.type === "file" &&
-      message.editMessage.trim() === "" &&
+      message.text.trim() === "" &&
       msgObj.message.text === ""
     ) {
       setShowEditMessageModal(false);
@@ -53,18 +53,18 @@ function EditMessageModal({
           : {};
         await Promise.all([
           updateDoc(messageRef, {
-            "message.text": message.editMessage,
+            "message.text": message.text.trim(),
           }),
           updateDoc(chatRef, {
             ...isGroupMsg,
             "lastMsg.senderId": currentUser.uid,
-            "lastMsg.message": message.editMessage.trim() || fileType,
+            "lastMsg.message": message.text.trim() || fileType,
             "lastMsg.createdAt": serverTimestamp(),
           }),
         ]);
       } else {
         await updateDoc(messageRef, {
-          "message.text": message.editMessage,
+          "message.text": message.text,
         });
       }
       setEditMessageLoading(false);
@@ -91,13 +91,13 @@ function EditMessageModal({
           icon: <TbEdit className="text-[1.2em]" />,
         }}
       >
-        <Input
-          disabled={editMessageLoading}
-          name="editMessage"
-          placeholder="Edit message text"
-          type="text"
-          value={message.editMessage}
-          setValue={setMessage}
+        <MessageBox
+          message={message}
+          setMessage={(e) => setMessage({ text: e.target.innerText })}
+          loading={editMessageLoading}
+          className="rounded-xl border-2 border-primary-700 border-primary-400/50 p-3"
+          placeholder="Type a message"
+          hasInitialValue={true}
         />
       </Modal>
     </>

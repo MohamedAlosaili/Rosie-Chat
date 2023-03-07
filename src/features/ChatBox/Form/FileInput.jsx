@@ -6,16 +6,21 @@ import { AiOutlinePaperClip } from "react-icons/ai";
 
 import useValidateFile from "hooks/useValidateFile";
 import StatusMessage from "components/StatusMessage";
-import Input from "components/Input";
 import Modal from "components/Modal";
 import Video from "components/Video";
 import Image from "components/Image";
+import MessageBox from "components/MessageBox";
 
 const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
   const [file, changeFile, fileError, closePreview] = useValidateFile([
     "image",
     "video",
   ]);
+
+  const cancelPreview = () => {
+    closePreview();
+    setMessage({ text: "" });
+  };
 
   const { validFile } = file;
   return (
@@ -25,7 +30,7 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
         {validFile && (
           <Modal
             key="sendFileModal"
-            closeModal={closePreview}
+            closeModal={cancelPreview}
             actionButtonName={sending ? "Sending..." : "Send"}
             actionButtonHandler={(e) =>
               sendMessageHandler(e, validFile, closePreview)
@@ -36,21 +41,20 @@ const FileInput = ({ message, setMessage, sendMessageHandler, sending }) => {
               <Video
                 video={{ url: file.previewUrl, type: validFile.type }}
                 autoPlay={true}
-                className="-mb-2 w-full max-w-full rounded-xl"
+                className="w-full max-w-full rounded-xl"
               />
             ) : (
               <Image
                 img={{ url: file.previewUrl, name: "Preview of image message" }}
-                className="-mb-2 aspect-square w-full max-w-full rounded-xl"
+                className="aspect-square w-full max-w-full rounded-xl"
               />
             )}
-            <Input
-              type="text"
+            <MessageBox
+              message={message}
+              setMessage={(e) => setMessage({ text: e.target.innerText })}
+              loading={sending}
+              className="rounded-xl border-2 border-primary-700 border-primary-400/50 p-3"
               placeholder="Caption"
-              name="text"
-              disabled={sending}
-              value={message.text}
-              setValue={setMessage}
             />
           </Modal>
         )}

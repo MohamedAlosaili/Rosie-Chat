@@ -9,6 +9,7 @@ import FileInput from "./FileInput";
 import Button from "components/Button";
 import Image from "components/Image";
 import StatusMessage from "components/StatusMessage";
+import MessageBox from "components/MessageBox";
 
 function Form({ scrollToBottom, selectedChat, setGreating }) {
   const [message, setMessage, sendMessageHandler, sending, sendingError] =
@@ -68,13 +69,12 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
           sendMessageHandler={sendMessageHandler}
           sending={sending}
         />
-        <input
-          ref={textFieldRef}
-          type="text"
+        <MessageBox
+          message={message}
+          setMessage={(e) => setMessage({ text: e.target.innerText })}
+          loading={sending}
+          className="bg-primary-200 dark:bg-primary-900"
           placeholder="Type a message"
-          value={sending ? "" : message.text}
-          onChange={(e) => setMessage({ text: e.target.value })}
-          className="flex-1 bg-transparent px-4 text-primary-900 placeholder:transition-opacity focus:outline-none focus:placeholder:opacity-0 dark:text-primary-200"
         />
         <div
           className={`rounded-full transition-transform ${
