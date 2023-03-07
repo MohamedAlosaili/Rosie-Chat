@@ -113,7 +113,11 @@ const Message = ({ msgObj, prevMsgSenderId, selectedChat, isLastMsg }) => {
             </>
           )}
           {msgObj.message.text && (
-            <p className={`${msgObj.type === "file" ? "px-1" : ""}`}>
+            <p
+              className={`${
+                msgObj.type === "file" ? "px-1" : ""
+              } whitespace-pre-wrap break-words`}
+            >
               {msgObj.message.text}
             </p>
           )}
