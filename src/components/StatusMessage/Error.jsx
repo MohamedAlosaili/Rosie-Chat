@@ -9,7 +9,6 @@ const Error = ({ message, className }) => {
 
   return (
     <div className={`${className} bg-red-800 text-white`}>
-      {/* TODO: Error bg-color need to declare in tailwind config */}
       <BsExclamationCircle size={25} />
       <p>{finalErrorMsg}</p>
     </div>

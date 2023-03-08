@@ -9,7 +9,7 @@ import { auth } from "rosie-firebase";
 
 function useSendVerification(user, isTimerRunning, startTimer) {
   const [sendEmailVerification, , error] = useSendEmailVerification(auth);
-  // TODO: need improvement
+
   const [getEmailVerify, setEmailVerify] = useStorage(
     "sessionStorage",
     "email-verify"
