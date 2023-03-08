@@ -32,7 +32,7 @@ class ErrorBoundary extends Component {
   render() {
     return this.state.hasError ? (
       <div className="mx-auto flex h-full w-full max-w-full flex-col items-center justify-center gap-4 p-4 pt-16 text-center text-primary-900 dark:text-primary-200">
-        <BsExclamationCircleFill size={60} className="text-error" />
+        <BsExclamationCircleFill size={60} className="text-red-800" />
         <h2 className="text-xl font-semibold">Oops! Something went wrong.</h2>
         <p className="mt-2 text-sm font-medium text-red-600">
           {this.state.error?.toString()}

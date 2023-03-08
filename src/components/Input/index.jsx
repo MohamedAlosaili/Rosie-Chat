@@ -50,11 +50,11 @@ function Input({
 
   const validFocus = "focus:ring-info focus:text-info dark:focus:text-info";
   const invalidFocus =
-    "focus:ring-error-400 focus:text-error-400 dark:focus:text-error-400";
+    "focus:ring-red-700 focus:text-red-700 dark:focus:text-red-700";
 
   const invalidInputColors =
     submitForm && !valid
-      ? `ring-error-400 text-error-400 dark:text-error-400`
+      ? `ring-red-700 text-red-700 dark:text-red-700`
       : `ring-transparent text-primary-900 dark:text-primary-200`;
 
   const validateColors = valid ? validFocus : invalidFocus;
@@ -69,7 +69,7 @@ function Input({
   return (
     <label className={`relative flex flex-col gap-2 text-sm font-medium`}>
       <div className="flex items-center gap-1">
-        {label} {required && <span className="text-error-400">*</span>}
+        {label} {required && <span className="text-red-700">*</span>}
         {type === "password" && (
           <div className="ml-2 cursor-pointer" onClick={changePasswordState}>
             {inputType === "password" ? (
@@ -92,7 +92,7 @@ function Input({
         onChange={changeValue}
       />
       {submitForm && !valid && (
-        <span className="absolute top-1 right-2 text-xs font-bold text-error-400">
+        <span className="absolute top-1 right-2 text-xs font-bold text-red-700">
           {invalidMessage()}
         </span>
       )}

@@ -154,7 +154,7 @@ function Conversation({ setIsChatOpen }) {
         >
           <CgChevronLeft size={25} />
         </button>
-        <div className="aspect-square w-10 overflow-hidden rounded-50">
+        <div className="aspect-square w-10 overflow-hidden rounded-full">
           {chatInfo.photoURL ? (
             <Image
               img={{ url: chatInfo.photoURL, name: chatInfo.name }}

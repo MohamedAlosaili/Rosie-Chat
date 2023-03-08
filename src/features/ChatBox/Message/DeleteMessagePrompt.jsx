@@ -58,7 +58,7 @@ const DeleteMessagePrompt = ({
       >
         <BsFillExclamationCircleFill
           size={45}
-          className="mx-auto text-red-700 dark:text-error"
+          className="mx-auto text-red-700 dark:text-red-800"
         />
         <p className="text-center font-semibold text-primary-900 dark:text-primary-200">
           Are you sure you want to delete this message

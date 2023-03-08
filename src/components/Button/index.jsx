@@ -17,7 +17,7 @@ const Button = ({
   if (bg === "full")
     bgColor = `bg-accent ${!disabled && "hover:bg-accent-600"} text-white`;
   else if (bg === "red") {
-    bgColor = "bg-error hover:bg-error-600 text-white";
+    bgColor = "bg-red-800 hover:bg-red-900 text-white";
   } else {
     bgColor = `ring-2 ring-primary-300 dark:ring-primary-700 hover:ring-primary-300 hover:bg-primary-300 dark:hover:bg-primary-800`;
   }
