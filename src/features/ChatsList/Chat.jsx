@@ -10,6 +10,26 @@ import StatusMessage from "components/StatusMessage";
 import { ChatContext } from "context/ChatContext";
 import { db } from "rosie-firebase";
 
+function formater(createdAt) {
+  if (!createdAt) return;
+  const msgTime = createdAt?.toDate();
+  const now = new Date();
+
+  const timeDiff = now.getTime() - msgTime.getTime();
+  const dayDiff = timeDiff / (1000 * 3600 * 24);
+
+  let options = {};
+  if (dayDiff < 1) {
+    options.hour = "numeric";
+    options.minute = "numeric";
+  } else if (dayDiff < 7) {
+    options.weekday = "short";
+  }
+  const timeFormater = new Intl.DateTimeFormat("en-US", options);
+
+  return timeFormater;
+}
+
 const Chat = ({ chat, currentUserId, isSelected }) => {
   const { changeChat } = useContext(ChatContext);
 
@@ -26,18 +46,7 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
   );
   const [unreadMsgs, , unreadMsgsError] = useCollectionData(unreadMsgsQuery);
 
-  // TODO: This block needs some refactor
-  const today = new Date();
-  const messageDate = new Date(chat.lastMsg.createdAt?.toDate());
-  const timeDiffrence = Math.round((today - messageDate) / 1000 / 60 / 60 / 24);
-  let options = {};
-  if (timeDiffrence < 1) {
-    options.hour = "numeric";
-    options.minute = "numeric";
-  } else if (timeDiffrence < 7) {
-    options.weekday = "short";
-  }
-  const timeFormater = new Intl.DateTimeFormat("en-US", options);
+  const timeFormater = formater(chat.lastMsg.createdAt);
 
   return (
     <li
@@ -82,7 +91,7 @@ const Chat = ({ chat, currentUserId, isSelected }) => {
       </div>
       <div className="flex flex-col items-end gap-2">
         <time className="whitespace-nowrap">
-          {timeFormater.format(chat.lastMsg.createdAt?.toDate())}
+          {timeFormater?.format(chat.lastMsg.createdAt?.toDate()) ?? "--:-- _M"}
         </time>
         {unreadMsgs?.length > 0 && (
           <div className="rounded-full bg-accent py-[0.3rem] px-2 text-xs font-semibold leading-none text-white">
