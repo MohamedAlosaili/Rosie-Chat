@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+import { lazy, Suspense, useContext, useState } from "react";
 
 import { AnimatePresence } from "framer-motion";
 // import { BsFillTrashFill } from "react-icons/bs";
 import { TbEdit } from "react-icons/tb";
 
-import EditInfoModal from "./EditInfoModal";
 // import DeletePrompt from "./DeletePrompt";
 import Image from "components/Image";
 import Button from "components/Button";
 import { UserContext } from "context/UserContext";
+
+const EditInfoModal = lazy(() => import("./EditInfoModal"));
 
 function Profile() {
   const {
@@ -70,15 +71,22 @@ function Profile() {
         </Button>
         */}
       </div>
-      <AnimatePresence>
-        {showEditModal && <EditInfoModal setShowEditModal={setShowEditModal} />}
-        {/* 
+
+      <Suspense
+        fallback={<StatusMessage message="Loading..." type="loading" />}
+      >
+        <AnimatePresence>
+          {showEditModal && (
+            <EditInfoModal setShowEditModal={setShowEditModal} />
+          )}
+          {/* 
         TODO: Deleting account not ready yet
         {showDeletePrompt && (
           <DeletePrompt setShowDeletePrompt={setShowDeletePrompt} userInfo={{uid, displayName}} />
-        )} 
+          )} 
         */}
-      </AnimatePresence>
+        </AnimatePresence>
+      </Suspense>
     </>
   );
 }
