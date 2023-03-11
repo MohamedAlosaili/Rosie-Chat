@@ -88,7 +88,7 @@ function Conversation({ setIsChatOpen }) {
     }
   }
 
-  const setGreating = !isMessagesLoading && messages?.length === 0;
+  const setGreeting = !isMessagesLoading && messages?.length === 0;
 
   const receiverId = selectedChat.members
     .filter((memberId) => memberId !== currentUser.uid)
@@ -115,12 +115,9 @@ function Conversation({ setIsChatOpen }) {
                   md:static`}
     >
       <AnimatePresence mode="wait">
-        {/* {isMessagesLoading && (
-          <StatusMessage
-            message="Loading..."
-            type="loading"
-          />
-        )} */}
+        {isMessagesLoading && (
+          <StatusMessage message="Loading..." type="loading" />
+        )}
         {messagesError && (
           <StatusMessage message={messagesError?.code} type="error" />
         )}
@@ -218,7 +215,7 @@ function Conversation({ setIsChatOpen }) {
         <Form
           scrollToBottom={scrollToBottom}
           selectedChat={{ ...selectedChat, ...chatInfo }}
-          setGreating={setGreating}
+          setGreeting={setGreeting}
         />
       </footer>
     </motion.div>
