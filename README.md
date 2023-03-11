@@ -1,4 +1,4 @@
-# Rosie Chat
+# [Rosie Chat](https://rosie-ch.web.app)
 
 
 ### Description 
