@@ -11,24 +11,29 @@ import Image from "components/Image";
 import StatusMessage from "components/StatusMessage";
 import MessageBox from "components/MessageBox";
 
-function Form({ scrollToBottom, selectedChat, setGreating }) {
+function Form({ scrollToBottom, selectedChat, setGreeting }) {
   const [message, setMessage, sendMessageHandler, sending, sendingError] =
     useSendMessage(scrollToBottom);
 
   const textFieldRef = useRef(null);
+  const isGreetingClicked = useRef(false);
+
   useEffect(() => textFieldRef.current?.focus(), []);
+
+  const greetingBoxHandler = () => {
+    isGreetingClicked.current = true;
+    setMessage({
+      text: `Hi ${selectedChat.name ?? ""}${
+        selectedChat.isGroup ? " members" : ""
+      }`,
+    });
+  };
 
   return (
     <>
-      {setGreating && (
+      {setGreeting && (
         <div
-          onClick={() =>
-            setMessage({
-              text: `Hi ${selectedChat.name ?? ""}${
-                selectedChat.isGroup ? " members" : ""
-              }`,
-            })
-          }
+          onClick={greetingBoxHandler}
           className="absolute top-1/2 left-1/2 w-max max-w-[90%] -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-xl bg-primary-300 p-4 text-center text-primary-900 transition-colors hover:bg-primary-400/50 dark:bg-primary-800 dark:text-primary-200 dark:hover:bg-primary-800/75"
         >
           <h3 className="font-semibold">No messages here yet...</h3>
@@ -75,6 +80,7 @@ function Form({ scrollToBottom, selectedChat, setGreating }) {
           loading={sending}
           className="bg-primary-200 dark:bg-primary-900"
           placeholder="Type a message"
+          hasInitialValue={isGreetingClicked.current}
         />
         <div
           className={`rounded-full transition-transform ${
