@@ -24,3 +24,5 @@ firebaseConfig.js
 *.njsproj
 *.sln
 *.sw?
+
+stats.html
