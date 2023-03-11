@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { TbEdit } from "react-icons/tb";
 
 // import DeletePrompt from "./DeletePrompt";
+import StatusMessage from "components/StatusMessage";
 import Image from "components/Image";
 import Button from "components/Button";
 import { UserContext } from "context/UserContext";
