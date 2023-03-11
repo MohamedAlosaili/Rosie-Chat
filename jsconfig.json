@@ -8,9 +8,17 @@
       "hooks/*": ["./src/hooks/*"],
       "rosie-firebase/*": ["./src/rosie-firebase/*"],
       "pages/*": ["./src/pages/*"],
-      "util/*": ["./src/util/*"]
+      "util/*": ["./src/util/*"],
+      "react/*": ["./node_modules/react/*"],
+      "react-dom/*": ["./node_modules/react-dom/*"],
+      "react-router-dom/*": ["./node_modules/react-router-dom/*"],
+      "firebase/*": ["./node_modules/firebase/*"],
+      "react-firebase-hooks/*": ["./node_modules/react-firebase-hooks/*"],
+      "react-icons/*": ["./node_modules/react-icons/*"],
+      "nanoid/*": ["./node_modules/nanoid/*"],
+      "framer-motion/*": ["./node_modules/framer-motion/*"],
+      "uniqolor/*": ["./node_modules/uniqolor/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["src/rosie-firebase"]
+  "include": ["src"]
 }
