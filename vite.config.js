@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { terser } from "rollup-plugin-terser";
+import { visualizer } from "rollup-plugin-visualizer";
 import path from "path";
 
 // https://vitejs.dev/config/
@@ -12,9 +14,15 @@ export default defineConfig({
       context: path.resolve(__dirname, "./src/context"),
       "rosie-firebase": path.resolve(__dirname, "./src/rosie-firebase"),
       pages: path.resolve(__dirname, "./src/pages"),
-      imgs: path.resolve(__dirname, "./src/imgs"),
       util: path.resolve(__dirname, "./src/util"),
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    terser({
+      compress: true,
+      mangle: true,
+    }),
+    visualizer(),
+  ],
 });
