@@ -1,7 +1,7 @@
 import { memo, useContext } from "react";
 
 import { signOut } from "firebase/auth";
-import { IoMdChatbubbles, IoMdSettings } from "react-icons/Io";
+import { IoMdChatbubbles, IoMdSettings } from "react-icons/io";
 import { HiUsers } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
 
