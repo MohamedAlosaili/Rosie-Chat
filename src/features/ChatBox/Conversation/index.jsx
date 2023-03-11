@@ -11,7 +11,7 @@ import {
 import { collection, query, orderBy, limitToLast } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { AnimatePresence, motion } from "framer-motion";
-import { IoIosArrowDown } from "react-icons/Io";
+import { SlArrowDown } from "react-icons/sl";
 import { CgChevronLeft } from "react-icons/cg";
 
 import useEscape from "hooks/useEscape";
@@ -207,7 +207,7 @@ function Conversation({ setIsChatOpen }) {
             `}
             onClick={scrollToBottom}
           >
-            <IoIosArrowDown size={25} />
+            <SlArrowDown size={20} className="mt-px stroke-2" />
           </motion.button>
         )}
       </AnimatePresence>
