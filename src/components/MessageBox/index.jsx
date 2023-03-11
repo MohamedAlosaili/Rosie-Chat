@@ -15,7 +15,7 @@ const MessageBox = ({
     if (textBoxRef.current && hasInitialValue) {
       textBoxRef.current.innerHTML = message.text;
     }
-  }, []);
+  }, [hasInitialValue]);
 
   if (textBoxRef.current && message.text === "") {
     textBoxRef.current.innerHTML = "";
