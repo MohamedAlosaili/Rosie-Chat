@@ -1,7 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 
-import { BsFillPersonPlusFill } from "react-icons/bs";
+import { BsFillPersonPlusFill, BsExclamationCircleFill } from "react-icons/bs";
 
 import UserCard from "./UserCard";
 import SkeletonLoader from "components/SkeletonLoader";
@@ -48,7 +48,7 @@ function Users({
       {results.usersError && (
         <div className="mt-4 flex items-center justify-center gap-2 text-primary-900 dark:text-primary-200">
           <BsExclamationCircleFill size={20} className="text-red-800" />
-          {usersError?.code ?? (
+          {results.usersError?.code ?? (
             <span className="text-sm">
               Something went wrong while loading users <br /> Please try again
               in a minute
