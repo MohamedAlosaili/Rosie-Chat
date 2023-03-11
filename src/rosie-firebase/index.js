@@ -5,13 +5,10 @@ import {
   signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
-import { getFirestore, collection } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getStorage, ref } from "firebase/storage";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-
-// import firebaseConfig from "./firebaseConfig";
+import firebaseConfig from "./firebaseConfig";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
@@ -34,4 +31,4 @@ export async function signWithProviders(providerType = "google") {
   }
 }
 
-export { auth, db, collection, storage, ref, useAuthState, useCollectionData };
+export { auth, db, storage, ref };
